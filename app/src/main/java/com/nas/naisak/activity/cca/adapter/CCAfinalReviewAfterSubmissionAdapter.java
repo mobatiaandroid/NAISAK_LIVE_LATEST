@@ -102,16 +102,6 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         holder.textViewCCADay.setText(mCCADetailModelArrayList.get(position).getDay());
-
-
-        if(mCCADetailModelArrayList.get(position).getCca_item_description().length()>40)
-        {
-            holder.readMore1.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            holder.readMore1.setVisibility(View.GONE);
-        }
         holder.attendanceListIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,6 +151,14 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
             holder.linearChoice1.setVisibility(View.GONE);
             holder.textViewCCAChoice1.setText("Choice 1 : Nil");
         } else {
+            if(mCCADetailModelArrayList.get(position).getCca_item_description().length()>40)
+            {
+                holder.readMore1.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                holder.readMore1.setVisibility(View.GONE);
+            }
             holder.linearChoice1.setVisibility(View.VISIBLE);
             holder.textViewCCAChoice1.setText(mCCADetailModelArrayList.get(position).getChoice1());
             if (mCCADetailModelArrayList.get(position).getVenue().equalsIgnoreCase("0") || mCCADetailModelArrayList.get(position).getVenue().equalsIgnoreCase(""))
