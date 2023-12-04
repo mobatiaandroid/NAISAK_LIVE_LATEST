@@ -11,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.exoplayer2.util.Log
 import com.nas.naisak.R
 import com.nas.naisak.activity.parents_meeting.ParentsMeetingCalendarActivity
 import com.nas.naisak.activity.parents_meeting.ParentsMeetingInfoActivity
@@ -53,6 +56,7 @@ class ParentsMeetingFragment : Fragment() {
     private lateinit var staffRelative: RelativeLayout
     private lateinit var studentRelative:RelativeLayout
     private lateinit var relativeMain:RelativeLayout
+    private lateinit var progressDialog:RelativeLayout
     private lateinit var selectStaffImgView: ImageView
     private lateinit var selectStudentImgView: ImageView
     private lateinit var next: ImageView
@@ -85,6 +89,7 @@ class ParentsMeetingFragment : Fragment() {
     }
 
     private fun getStudentList() {
+        progressDialog.visibility=View.VISIBLE
         mListViewArray = ArrayList()
         val token = PreferenceManager.getUserCode(mContext)
         val call: Call<StudentListReponseModel> =
@@ -95,31 +100,38 @@ class ParentsMeetingFragment : Fragment() {
                 response: Response<StudentListReponseModel>
             ) {
                 if (response.isSuccessful){
+                   // progressDialog.visibility=View.GONE
                     if (response.body() != null){
                         if (response.body()!!.status.toString() == "100"){
+                            //progressDialog.visibility=View.GONE
+                            Log.e("stud",response.body()!!.data!!.lists!!.size.toString())
                             if (response.body()!!.data!!.lists!!.size > 0 ){
-
+                                progressDialog.visibility=View.GONE
                                 for (i in response.body()!!.data!!.lists!!.indices){
                                     mListViewArray!!.add(response.body()!!.data!!.lists!![i]!!)
                                 }
                             }else{
-
+                                progressDialog.visibility=View.GONE
                                 //CustomStatusDialog();
                                 Toast.makeText(mContext, "No Student Found.", Toast.LENGTH_SHORT)
                                     .show()
                             }
                         }else{
+                            progressDialog.visibility=View.GONE
                             CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
                         }
                     }else{
+                        progressDialog.visibility=View.GONE
                         CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
                     }
                 }else{
+                    progressDialog.visibility=View.GONE
                     CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
                 }
             }
 
             override fun onFailure(call: Call<StudentListReponseModel>, t: Throwable) {
+                progressDialog.visibility=View.GONE
                 CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
             }
 
@@ -131,6 +143,7 @@ class ParentsMeetingFragment : Fragment() {
     private fun initialiseUI() {
         mTitleTextView = requireView().findViewById<View>(R.id.titleTextView) as TextView
         studentNameTV = requireView().findViewById<View>(R.id.studentNameTV) as TextView
+        progressDialog =requireView().findViewById(R.id.progressDialog)
         staffNameTV = requireView().findViewById<View>(R.id.staffNameTV) as TextView
         selectStaffImgView = requireView().findViewById<View>(R.id.selectStaffImgView) as ImageView
         next = requireView().findViewById<View>(R.id.next) as ImageView
@@ -141,6 +154,9 @@ class ParentsMeetingFragment : Fragment() {
         relativeMain = requireView().findViewById<View>(R.id.relMain) as RelativeLayout
         reviewImageView = requireView().findViewById<View>(R.id.reviewImageView) as ImageView
         infoImg = requireView().findViewById<View>(R.id.infoImg) as ImageView
+        val aniRotate: Animation =
+            AnimationUtils.loadAnimation(mContext, R.anim.linear_interpolator)
+        progressDialog.startAnimation(aniRotate)
         infoImg.setOnClickListener {
             val mIntent = Intent(mContext, ParentsMeetingInfoActivity::class.java)
             mContext.startActivity(mIntent)
@@ -160,6 +176,7 @@ class ParentsMeetingFragment : Fragment() {
             }
         }
         selectStudentImgView.setOnClickListener {
+
             if (mListViewArray!!.size > 0) {
                 showStudentList()
             } else {

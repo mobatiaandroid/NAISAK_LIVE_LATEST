@@ -138,7 +138,9 @@ class PaymentActivity : AppCompatActivity(){
             ) {
                 if (response.body()!!.status == 100)
                 {
+                    studentListArrayList=ArrayList()
                     studentListArrayList.addAll(response.body()!!.dataArray.studentListArray)
+                    Log.e("studlistsize",studentListArrayList.size.toString())
                     if (PreferenceManager.getStudentID(mContext)==0)
                     {
                         Log.e("Empty", "Empty")
