@@ -26,9 +26,9 @@ import com.nas.naisak.activity.login.LoginActivity
 import com.nas.naisak.constants.*
 import com.nas.naisak.fragment.aboutus.NordAngliaEductaionFragment
 import com.nas.naisak.fragment.calendar.CalendarFragment
-import com.nas.naisak.fragment.cca.CCAFragment
 import com.nas.naisak.fragment.communications.CommunicationFragment
 import com.nas.naisak.fragment.contactus.ContactUsFragment
+import com.nas.naisak.fragment.gallerynew.GalleryFragmentNew
 import com.nas.naisak.fragment.home.model.Bannerresponse
 import com.nas.naisak.fragment.home.model.HomeBadgeResponse
 import com.nas.naisak.fragment.home.model.LogoutResponseModel
@@ -36,7 +36,6 @@ import com.nas.naisak.fragment.notification.NotificationFragment
 import com.nas.naisak.fragment.parents_meeting.ParentsMeetingFragment
 import com.nas.naisak.fragment.parentsessentials.ParentsEssentialsFragment
 import com.nas.naisak.fragment.payment.PaymentFragment
-import com.nas.naisak.fragment.settings.SettingsFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -63,7 +62,6 @@ lateinit var relTxtthree: TextView
 lateinit var relTxtfour: TextView
 
 
-
 lateinit var relImgone: ImageView
 lateinit var relImgtwo: ImageView
 lateinit var relImgthree: ImageView
@@ -83,6 +81,7 @@ lateinit var appController: AppController
 lateinit var listitems: Array<String>
 lateinit var mListImgArrays: TypedArray
 lateinit var TouchedView: View
+
 //lateinit var TAB_ID: String
 private var TAB_ID: String = ""
 private var CLICKED: String = ""
@@ -138,8 +137,8 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
 
     private fun getbannerimages() {
         bannerarray = ArrayList()
-        val  call: Call<Bannerresponse> = ApiClient.getClient.bannerimages()
-        call.enqueue(object :retrofit2.Callback<Bannerresponse>{
+        val call: Call<Bannerresponse> = ApiClient.getClient.bannerimages()
+        call.enqueue(object : retrofit2.Callback<Bannerresponse> {
             override fun onFailure(call: Call<Bannerresponse>, t: Throwable) {
             }
 
@@ -147,7 +146,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                 call: Call<Bannerresponse>,
                 response: Response<Bannerresponse>
             ) {
-                if (response.body()!!.status==100){
+                if (response.body()!!.status == 100) {
                     bannerarray.addAll(response.body()!!.data.banner_images)
 
                     val handler = Handler()
@@ -220,7 +219,8 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
         if (v == relfour) {
 
             INTENT_TAB_ID = PreferenceManager.getButtonFourRegTabID(
-                mContext).toString()
+                mContext
+            ).toString()
             CHECKINTENTVALUE(INTENT_TAB_ID)
         }
         if (v == relfive) {
@@ -262,8 +262,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     )
                 ) {
                     JsonConstants.EAP
-                }
-                else {
+                } else {
                     ClassNameConstants.CALENDAR
                 }
             relTxtone.text = relTwoStr
@@ -273,113 +272,141 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     .getButtonOneGuestBg(mContext)
             )
 
-            if (PreferenceManager.getButtonOneRegTabID(mContext).equals(NasTabConstants.TAB_CALENDAR_REG))
-            {
-                if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)==0)
-                {
-                    relImgOneDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)>0) {
+            if (PreferenceManager.getButtonOneRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_CALENDAR_REG)
+            ) {
+                if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgOneDot.visibility = View.GONE
+                } else if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text =
                         PreferenceManager.getCalendarEditedBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>0 && PreferenceManager.getCalendarEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>1 && PreferenceManager.getCalendarEditedBadge(mContext)>1) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 1 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 1
+                ) {
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgOneDot.visibility = View.GONE
                 }
-                else{
-                    relImgOneDot.visibility= View.GONE
-                }
-            }
-            else if (PreferenceManager.getButtonOneRegTabID(mContext).equals(NasTabConstants.TAB_NOTIFICATIONS_REG))
-            {
-                if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)==0)
-                {
-                    relImgOneDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+            } else if (PreferenceManager.getButtonOneRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_NOTIFICATIONS_REG)
+            ) {
+                if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgOneDot.visibility = View.GONE
+                } else if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text =
                         PreferenceManager.getNotificationEditedBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgOneDot.visibility = View.GONE
                 }
-                else
-                {
-                    relImgOneDot.visibility= View.GONE
-                }
-            }
+            } else if (PreferenceManager.getButtonOneRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_GALLERY)
+            ) {
+                if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgOneDot.visibility = View.GONE
 
-            else if (PreferenceManager.getButtonOneRegTabID(mContext).equals(NasTabConstants.TAB_ECA_REG))
-            {
-                if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0)
-                {
-                    relImgOneDot.visibility= View.GONE
-
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text =
                         PreferenceManager.getWholeSchoolEditedBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
 
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
-            }
-            else if (PreferenceManager.getButtonOneRegTabID(mContext).equals(NasTabConstants.TAB_TRIPS_REG))
-            {
-                if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)==0)
-                {
-                    relImgOneDot.visibility= View.GONE
+            } else if (PreferenceManager.getButtonOneRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_TRIPS_REG)
+            ) {
+                if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgOneDot.visibility = View.GONE
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text = PreferenceManager.getPaymentEditedBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgOneDot.visibility = View.VISIBLE
                     relImgOneDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
             }
-
 
 
         }
@@ -407,107 +434,136 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
 
 
 
-            if (PreferenceManager.getButtonTwoRegTabID(mContext).equals(NasTabConstants.TAB_CALENDAR_REG))
-            {
-                if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)==0)
-                {
-                    relImgTwoDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)>0) {
+            if (PreferenceManager.getButtonTwoRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_CALENDAR_REG)
+            ) {
+                if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgTwoDot.visibility = View.GONE
+                } else if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text =
                         PreferenceManager.getCalendarEditedBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>0 && PreferenceManager.getCalendarEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>1 && PreferenceManager.getCalendarEditedBadge(mContext)>1) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 1 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 1
+                ) {
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgTwoDot.visibility = View.GONE
                 }
-                else{
-                    relImgTwoDot.visibility= View.GONE
-                }
-            }
-            else if (PreferenceManager.getButtonTwoRegTabID(mContext).equals(NasTabConstants.TAB_NOTIFICATIONS_REG))
-            {
-                if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)==0)
-                {
-                    relImgTwoDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+            } else if (PreferenceManager.getButtonTwoRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_NOTIFICATIONS_REG)
+            ) {
+                if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgTwoDot.visibility = View.GONE
+                } else if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text =
                         PreferenceManager.getNotificationEditedBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgTwoDot.visibility = View.GONE
                 }
-                else
-                {
-                    relImgTwoDot.visibility= View.GONE
-                }
-            }
+            } else if (PreferenceManager.getButtonTwoRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_GALLERY)
+            ) {
+                if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgTwoDot.visibility = View.GONE
 
-            else if (PreferenceManager.getButtonTwoRegTabID(mContext).equals(NasTabConstants.TAB_ECA_REG))
-            {
-                if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0)
-                {
-                    relImgTwoDot.visibility= View.GONE
-
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text =
                         PreferenceManager.getWholeSchoolEditedBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
 
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
-            }
-            else if (PreferenceManager.getButtonTwoRegTabID(mContext).equals(NasTabConstants.TAB_TRIPS_REG))
-            {
-                if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)==0)
-                {
-                    relImgTwoDot.visibility= View.GONE
+            } else if (PreferenceManager.getButtonTwoRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_TRIPS_REG)
+            ) {
+                if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgTwoDot.visibility = View.GONE
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text = PreferenceManager.getPaymentEditedBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgTwoDot.visibility = View.VISIBLE
                     relImgTwoDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_red)
@@ -539,110 +595,139 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             )
 
 
-            if (PreferenceManager.getButtonThreeRegTabID(mContext).equals(NasTabConstants.TAB_CALENDAR_REG))
-            {
-                if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)==0)
-                {
-                    relImgThreeDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)>0) {
+            if (PreferenceManager.getButtonThreeRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_CALENDAR_REG)
+            ) {
+                if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgThreeDot.visibility = View.GONE
+                } else if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text =
                         PreferenceManager.getCalendarEditedBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>0 && PreferenceManager.getCalendarEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>1 && PreferenceManager.getCalendarEditedBadge(mContext)>1) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 1 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 1
+                ) {
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgThreeDot.visibility = View.GONE
                 }
-                else{
-                    relImgThreeDot.visibility= View.GONE
-                }
-            }
-            else if (PreferenceManager.getButtonThreeRegTabID(mContext).equals(NasTabConstants.TAB_NOTIFICATIONS_REG))
-            {
-                if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)==0)
-                {
-                    relImgThreeDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+            } else if (PreferenceManager.getButtonThreeRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_NOTIFICATIONS_REG)
+            ) {
+                if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgThreeDot.visibility = View.GONE
+                } else if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text =
                         PreferenceManager.getNotificationEditedBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text =
                         PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text =
                         PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgThreeDot.visibility = View.GONE
                 }
-                else
-                {
-                    relImgThreeDot.visibility= View.GONE
-                }
-            }
+            } else if (PreferenceManager.getButtonThreeRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_GALLERY)
+            ) {
+                if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgThreeDot.visibility = View.GONE
 
-            else if (PreferenceManager.getButtonThreeRegTabID(mContext).equals(NasTabConstants.TAB_ECA_REG))
-            {
-                if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0)
-                {
-                    relImgThreeDot.visibility= View.GONE
-
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text =
                         PreferenceManager.getWholeSchoolEditedBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
 
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
-            }
-            else if (PreferenceManager.getButtonThreeRegTabID(mContext).equals(NasTabConstants.TAB_TRIPS_REG))
-            {
-                if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)==0)
-                {
-                    relImgThreeDot.visibility= View.GONE
+            } else if (PreferenceManager.getButtonThreeRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_TRIPS_REG)
+            ) {
+                if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgThreeDot.visibility = View.GONE
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text =
                         PreferenceManager.getPaymentEditedBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgThreeDot.visibility = View.VISIBLE
                     relImgThreeDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_red)
@@ -664,8 +749,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                 )
             ) {
                 JsonConstants.EAP
-            }
-            else {
+            } else {
                 ClassNameConstants.COMMUNICATIONS
             }
             relTxtfour.text = relTwoStr
@@ -676,108 +760,137 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             )
 
 
-            if (PreferenceManager.getButtonFourRegTabID(mContext).equals(NasTabConstants.TAB_CALENDAR_REG))
-            {
-                if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)==0)
-                {
-                    relImgFourDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)>0) {
+            if (PreferenceManager.getButtonFourRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_CALENDAR_REG)
+            ) {
+                if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgFourDot.visibility = View.GONE
+                } else if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text =
                         PreferenceManager.getCalendarEditedBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>0 && PreferenceManager.getCalendarEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>1 && PreferenceManager.getCalendarEditedBadge(mContext)>1) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 1 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 1
+                ) {
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgFourDot.visibility = View.GONE
                 }
-                else{
-                    relImgFourDot.visibility= View.GONE
-                }
-            }
-            else if (PreferenceManager.getButtonFourRegTabID(mContext).equals(NasTabConstants.TAB_NOTIFICATIONS_REG))
-            {
-                if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)==0)
-                {
-                    relImgFourDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+            } else if (PreferenceManager.getButtonFourRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_NOTIFICATIONS_REG)
+            ) {
+                if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgFourDot.visibility = View.GONE
+                } else if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text =
                         PreferenceManager.getNotificationEditedBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgFourDot.visibility = View.GONE
                 }
-                else
-                {
-                    relImgFourDot.visibility= View.GONE
-                }
-            }
+            } else if (PreferenceManager.getButtonFourRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_GALLERY)
+            ) {
+                if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgFourDot.visibility = View.GONE
 
-            else if (PreferenceManager.getButtonFourRegTabID(mContext).equals(NasTabConstants.TAB_ECA_REG))
-            {
-                if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0)
-                {
-                    relImgFourDot.visibility= View.GONE
-
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text =
                         PreferenceManager.getWholeSchoolEditedBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
 
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
-            }
-            else if (PreferenceManager.getButtonFourRegTabID(mContext).equals(NasTabConstants.TAB_TRIPS_REG))
-            {
-                if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)==0)
-                {
-                    relImgFourDot.visibility= View.GONE
+            } else if (PreferenceManager.getButtonFourRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_TRIPS_REG)
+            ) {
+                if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgFourDot.visibility = View.GONE
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text =
                         PreferenceManager.getPaymentEditedBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgFourDot.visibility = View.VISIBLE
                     relImgFourDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_red)
@@ -787,8 +900,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
         }
 
 
-        if (PreferenceManager.getButtonFiveRegTextImage(mContext)!!.toInt() != 0)
-        {
+        if (PreferenceManager.getButtonFiveRegTextImage(mContext)!!.toInt() != 0) {
             relImgfive.setImageResource(R.drawable.notif)
             var relTwoStr: String? = ""
             relTwoStr = if (listitems[PreferenceManager
@@ -809,109 +921,138 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             )
 
 
-            if (PreferenceManager.getButtonFiveRegTabID(mContext).equals(NasTabConstants.TAB_CALENDAR_REG))
-            {
-                if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)==0)
-                {
-                    relImgFiveDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)>0) {
+            if (PreferenceManager.getButtonFiveRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_CALENDAR_REG)
+            ) {
+                if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgFiveDot.visibility = View.GONE
+                } else if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text =
                         PreferenceManager.getCalendarEditedBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>0 && PreferenceManager.getCalendarEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>1 && PreferenceManager.getCalendarEditedBadge(mContext)>1) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 1 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 1
+                ) {
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgFiveDot.visibility = View.GONE
                 }
-                else{
-                    relImgFiveDot.visibility= View.GONE
-                }
-            }
-            else if (PreferenceManager.getButtonFiveRegTabID(mContext).equals(NasTabConstants.TAB_NOTIFICATIONS_REG))
-            {
-                if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)==0)
-                {
-                    relImgFiveDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+            } else if (PreferenceManager.getButtonFiveRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_NOTIFICATIONS_REG)
+            ) {
+                if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgFiveDot.visibility = View.GONE
+                } else if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text =
                         PreferenceManager.getNotificationEditedBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     Log.e("It enters", "notify")
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgFiveDot.visibility = View.GONE
                 }
-                else
-                {
-                    relImgFiveDot.visibility= View.GONE
-                }
-            }
+            } else if (PreferenceManager.getButtonFiveRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_GALLERY)
+            ) {
+                if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgFiveDot.visibility = View.GONE
 
-            else if (PreferenceManager.getButtonFiveRegTabID(mContext).equals(NasTabConstants.TAB_ECA_REG))
-            {
-                if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0)
-                {
-                    relImgFiveDot.visibility= View.GONE
-
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text =
                         PreferenceManager.getWholeSchoolEditedBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
 
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
-            }
-            else if (PreferenceManager.getButtonFiveRegTabID(mContext).equals(NasTabConstants.TAB_TRIPS_REG))
-            {
-                if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)==0)
-                {
-                    relImgFiveDot.visibility= View.GONE
+            } else if (PreferenceManager.getButtonFiveRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_TRIPS_REG)
+            ) {
+                if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgFiveDot.visibility = View.GONE
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text =
                         PreferenceManager.getPaymentEditedBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_red)
@@ -921,7 +1062,8 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
 
         }
         if (PreferenceManager.getButtonSixRegTextImage(mContext)!!.toInt() != 0) {
-            relImgsix.setImageResource(R.drawable.parent
+            relImgsix.setImageResource(
+                R.drawable.parent
             )
             var relTwoStr: String? = ""
             relTwoStr = if (listitems[PreferenceManager
@@ -931,7 +1073,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                 )
             ) {
                 JsonConstants.EAP
-            }  else {
+            } else {
                 ClassNameConstants.PARENT_ESSENTIALS
             }
             relTxtsix.text = relTwoStr
@@ -942,107 +1084,136 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             )
 
 
-            if (PreferenceManager.getButtonSixRegTabID(mContext).equals(NasTabConstants.TAB_CALENDAR_REG))
-            {
-                if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)==0)
-                {
-                    relImgSixDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)>0) {
+            if (PreferenceManager.getButtonSixRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_CALENDAR_REG)
+            ) {
+                if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgSixDot.visibility = View.GONE
+                } else if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text =
                         PreferenceManager.getCalendarEditedBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>0 && PreferenceManager.getCalendarEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>1 && PreferenceManager.getCalendarEditedBadge(mContext)>1) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 1 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 1
+                ) {
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgSixDot.visibility = View.GONE
                 }
-                else{
-                    relImgSixDot.visibility= View.GONE
-                }
-            }
-            else if (PreferenceManager.getButtonSixRegTabID(mContext).equals(NasTabConstants.TAB_NOTIFICATIONS_REG))
-            {
-                if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)==0)
-                {
-                    relImgSixDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+            } else if (PreferenceManager.getButtonSixRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_NOTIFICATIONS_REG)
+            ) {
+                if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgSixDot.visibility = View.GONE
+                } else if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text =
                         PreferenceManager.getNotificationEditedBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgSixDot.visibility = View.GONE
                 }
-                else
-                {
-                    relImgSixDot.visibility= View.GONE
-                }
-            }
+            } else if (PreferenceManager.getButtonSixRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_GALLERY)
+            ) {
+                if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgSixDot.visibility = View.GONE
 
-            else if (PreferenceManager.getButtonSixRegTabID(mContext).equals(NasTabConstants.TAB_ECA_REG))
-            {
-                if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0)
-                {
-                    relImgSixDot.visibility= View.GONE
-
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text =
                         PreferenceManager.getWholeSchoolEditedBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
 
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
-            }
-            else if (PreferenceManager.getButtonSixRegTabID(mContext).equals(NasTabConstants.TAB_TRIPS_REG))
-            {
-                if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)==0)
-                {
-                    relImgSixDot.visibility= View.GONE
+            } else if (PreferenceManager.getButtonSixRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_TRIPS_REG)
+            ) {
+                if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgSixDot.visibility = View.GONE
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text = PreferenceManager.getPaymentEditedBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgSixDot.visibility = View.VISIBLE
                     relImgSixDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_red)
@@ -1054,7 +1225,8 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
         if (PreferenceManager
                 .getButtonSevenRegTextImage(mContext)!!.toInt() != 0
         ) {
-            relImgseven.setImageResource(R.drawable.ccas
+            relImgseven.setImageResource(
+                R.drawable.gallery
             )
             var relTwoStr: String? = ""
             relTwoStr = if (listitems[PreferenceManager
@@ -1065,7 +1237,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             ) {
                 JsonConstants.EAP
             } else {
-                ClassNameConstants.ECA
+                ClassNameConstants.GALLERY
             }
             relTxtseven.text = relTwoStr
             relTxtseven.setTextColor(ContextCompat.getColor(mContext, R.color.white))
@@ -1075,110 +1247,139 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             )
 
 
-            if (PreferenceManager.getButtonSevenRegTabID(mContext).equals(NasTabConstants.TAB_CALENDAR_REG))
-            {
-                if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)==0)
-                {
-                    relImgSevenDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)>0) {
+            if (PreferenceManager.getButtonSevenRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_CALENDAR_REG)
+            ) {
+                if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgSevenDot.visibility = View.GONE
+                } else if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text =
                         PreferenceManager.getCalendarEditedBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>0 && PreferenceManager.getCalendarEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>1 && PreferenceManager.getCalendarEditedBadge(mContext)>1) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 1 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 1
+                ) {
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgSevenDot.visibility = View.GONE
                 }
-                else{
-                    relImgSevenDot.visibility= View.GONE
-                }
-            }
-            else if (PreferenceManager.getButtonSevenRegTabID(mContext).equals(NasTabConstants.TAB_NOTIFICATIONS_REG))
-            {
-                if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)==0)
-                {
-                    relImgSevenDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+            } else if (PreferenceManager.getButtonSevenRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_NOTIFICATIONS_REG)
+            ) {
+                if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgSevenDot.visibility = View.GONE
+                } else if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text =
                         PreferenceManager.getNotificationEditedBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text =
                         PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text =
                         PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgSevenDot.visibility = View.GONE
                 }
-                else
-                {
-                    relImgSevenDot.visibility= View.GONE
-                }
-            }
+            } else if (PreferenceManager.getButtonSevenRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_GALLERY)
+            ) {
+                if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgSevenDot.visibility = View.GONE
 
-            else if (PreferenceManager.getButtonSevenRegTabID(mContext).equals(NasTabConstants.TAB_ECA_REG))
-            {
-                if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0)
-                {
-                    relImgSevenDot.visibility= View.GONE
-
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text =
                         PreferenceManager.getWholeSchoolEditedBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
 
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
-            }
-            else if (PreferenceManager.getButtonSevenRegTabID(mContext).equals(NasTabConstants.TAB_TRIPS_REG))
-            {
-                if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)==0)
-                {
-                    relImgSevenDot.visibility= View.GONE
+            } else if (PreferenceManager.getButtonSevenRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_TRIPS_REG)
+            ) {
+                if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgSevenDot.visibility = View.GONE
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text =
                         PreferenceManager.getPaymentEditedBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgSevenDot.visibility = View.VISIBLE
                     relImgSevenDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_red)
@@ -1186,12 +1387,12 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             }
 
 
-
         }
         if (PreferenceManager
                 .getButtonEightRegTextImage(mContext)!!.toInt() != 0
         ) {
-            relImgeight.setImageResource(R.drawable.payment
+            relImgeight.setImageResource(
+                R.drawable.payment
             )
             var relTwoStr: String? = ""
             relTwoStr = if (listitems[PreferenceManager
@@ -1212,110 +1413,139 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             )
 
 
-            if (PreferenceManager.getButtonEightRegTabID(mContext).equals(NasTabConstants.TAB_CALENDAR_REG))
-            {
-                if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)==0)
-                {
-                    relImgEightDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)>0) {
+            if (PreferenceManager.getButtonEightRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_CALENDAR_REG)
+            ) {
+                if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgEightDot.visibility = View.GONE
+                } else if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text =
                         PreferenceManager.getCalendarEditedBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>0 && PreferenceManager.getCalendarEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>1 && PreferenceManager.getCalendarEditedBadge(mContext)>1) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 1 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 1
+                ) {
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgEightDot.visibility = View.GONE
                 }
-                else{
-                    relImgEightDot.visibility= View.GONE
-                }
-            }
-            else if (PreferenceManager.getButtonEightRegTabID(mContext).equals(NasTabConstants.TAB_NOTIFICATIONS_REG))
-            {
-                if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)==0)
-                {
-                    relImgEightDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+            } else if (PreferenceManager.getButtonEightRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_NOTIFICATIONS_REG)
+            ) {
+                if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgEightDot.visibility = View.GONE
+                } else if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text =
                         PreferenceManager.getNotificationEditedBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text =
                         PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text =
                         PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgEightDot.visibility = View.GONE
                 }
-                else
-                {
-                    relImgEightDot.visibility= View.GONE
-                }
-            }
+            } else if (PreferenceManager.getButtonEightRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_GALLERY)
+            ) {
+                if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgEightDot.visibility = View.GONE
 
-            else if (PreferenceManager.getButtonEightRegTabID(mContext).equals(NasTabConstants.TAB_ECA_REG))
-            {
-                if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0)
-                {
-                    relImgEightDot.visibility= View.GONE
-
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text =
                         PreferenceManager.getWholeSchoolEditedBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
 
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
-            }
-            else if (PreferenceManager.getButtonEightRegTabID(mContext).equals(NasTabConstants.TAB_TRIPS_REG))
-            {
-                if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)==0)
-                {
-                    relImgEightDot.visibility= View.GONE
+            } else if (PreferenceManager.getButtonEightRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_TRIPS_REG)
+            ) {
+                if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgEightDot.visibility = View.GONE
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text =
                         PreferenceManager.getPaymentEditedBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgEightDot.visibility = View.VISIBLE
                     relImgEightDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_red)
@@ -1323,12 +1553,12 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             }
 
 
-
         }
         if (PreferenceManager
                 .getButtonNineRegTextImage(mContext)!!.toInt() != 0
         ) {
-            relImgnine.setImageResource(R.drawable.naeprogramme
+            relImgnine.setImageResource(
+                R.drawable.naeprogramme
             )
             var relTwoStr: String? = ""
             relTwoStr = if (listitems[PreferenceManager
@@ -1349,114 +1579,142 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             )
 
 
-            if (PreferenceManager.getButtonNineRegTabID(mContext).equals(NasTabConstants.TAB_CALENDAR_REG))
-            {
-                if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)==0)
-                {
-                    relImgNineDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)==0 && PreferenceManager.getCalendarEditedBadge(mContext)>0) {
+            if (PreferenceManager.getButtonNineRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_CALENDAR_REG)
+            ) {
+                if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgNineDot.visibility = View.GONE
+                } else if (PreferenceManager.getCalendarBadge(mContext) == 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text =
                         PreferenceManager.getCalendarEditedBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>0 && PreferenceManager.getCalendarEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 0 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getCalendarBadge(mContext)>1 && PreferenceManager.getCalendarEditedBadge(mContext)>1) {
+                } else if (PreferenceManager.getCalendarBadge(mContext) > 1 && PreferenceManager.getCalendarEditedBadge(
+                        mContext
+                    ) > 1
+                ) {
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text = PreferenceManager.getCalendarBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgNineDot.visibility = View.GONE
                 }
-                else{
-                    relImgNineDot.visibility= View.GONE
-                }
-            }
-            else if (PreferenceManager.getButtonNineRegTabID(mContext).equals(NasTabConstants.TAB_NOTIFICATIONS_REG))
-            {
-                if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)==0)
-                {
-                    relImgNineDot.visibility= View.GONE
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)==0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+            } else if (PreferenceManager.getButtonNineRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_NOTIFICATIONS_REG)
+            ) {
+                if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgNineDot.visibility = View.GONE
+                } else if (PreferenceManager.getNotificationBadge(mContext) == 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text =
                         PreferenceManager.getNotificationEditedBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getNotificationBadge(mContext)>0 && PreferenceManager.getNotificationEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getNotificationBadge(mContext) > 0 && PreferenceManager.getNotificationEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_red)
+                } else {
+                    relImgNineDot.visibility = View.GONE
                 }
-                else
-                {
-                    relImgNineDot.visibility= View.GONE
-                }
-            }
+            } else if (PreferenceManager.getButtonNineRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_GALLERY)
+            ) {
+                if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgNineDot.visibility = View.GONE
 
-            else if (PreferenceManager.getButtonNineRegTabID(mContext).equals(NasTabConstants.TAB_ECA_REG))
-            {
-                if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0)
-                {
-                    relImgNineDot.visibility= View.GONE
-
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)==0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) == 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text =
                         PreferenceManager.getWholeSchoolEditedBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_navy)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
 
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getWholeSchoolBadge(mContext)>0 && PreferenceManager.getWholeSchoolEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getWholeSchoolBadge(mContext) > 0 && PreferenceManager.getWholeSchoolEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text = PreferenceManager.getWholeSchoolBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
-            }
-            else if (PreferenceManager.getButtonNineRegTabID(mContext).equals(NasTabConstants.TAB_TRIPS_REG))
-            {
-                if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)==0)
-                {
-                    relImgNineDot.visibility= View.GONE
+            } else if (PreferenceManager.getButtonNineRegTabID(mContext)
+                    .equals(NasTabConstants.TAB_TRIPS_REG)
+            ) {
+                if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
+                    relImgNineDot.visibility = View.GONE
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)==0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
 
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text =
                         PreferenceManager.getPaymentEditedBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_navy)
 
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)==0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) == 0
+                ) {
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_red)
-                }
-                else if (PreferenceManager.getPaymentBadge(mContext)>0 && PreferenceManager.getPaymentEditedBadge(mContext)>0) {
+                } else if (PreferenceManager.getPaymentBadge(mContext) > 0 && PreferenceManager.getPaymentEditedBadge(
+                        mContext
+                    ) > 0
+                ) {
                     relImgNineDot.visibility = View.VISIBLE
                     relImgNineDot.text = PreferenceManager.getPaymentBadge(mContext).toString()
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
             }
-
 
 
         }
@@ -1545,7 +1803,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     val relstring: String
                     if (listitems[sPosition] == "CCAs") {
                         relstring = "CCAS"
-                    }  else {
+                    } else {
                         relstring = listitems[sPosition].uppercase(Locale.getDefault())
                     }
                     relTxtsix.text = relstring
@@ -1571,7 +1829,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     val relstring: String
                     if (listitems[sPosition] == "CCAs") {
                         relstring = "CCAS"
-                    }else {
+                    } else {
                         relstring = listitems[sPosition].uppercase(Locale.getDefault())
                     }
                     relTxteight.text = relstring
@@ -1584,8 +1842,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     val relstring: String
                     if (listitems[sPosition] == "CCAs") {
                         relstring = "CCAS"
-                    }
-                    else {
+                    } else {
                         relstring = listitems[sPosition].uppercase(Locale.getDefault())
                     }
                     reltxtnine.text = relstring
@@ -1660,15 +1917,17 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     TAB_ID = NasTabConstants.TAB_CALENDAR_REG
 
                 }
+
                 textdata.equals(ClassNameConstants.NOTIFICATIONS) -> {
                     TAB_ID = NasTabConstants.TAB_NOTIFICATIONS_REG
 
                 }
 
-                textdata.equals(ClassNameConstants.ECA) -> {
-                    TAB_ID = NasTabConstants.TAB_ECA_REG
+                textdata.equals(ClassNameConstants.GALLERY) -> {
+                    TAB_ID = NasTabConstants.TAB_GALLERY
 
                 }
+
                 textdata.equals(ClassNameConstants.PAYMENT) -> {
                     TAB_ID = NasTabConstants.TAB_TRIPS_REG
                 }
@@ -1680,12 +1939,15 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                 textdata.equals(ClassNameConstants.PARENTS_MEETING) -> {
                     TAB_ID = NasTabConstants.TAB_PARENT_MEETINGS_REG
                 }
+
                 textdata.equals(ClassNameConstants.CONTACT_US) -> {
                     TAB_ID = NasTabConstants.TAB_CONTACT_US_REG
                 }
+
                 textdata.equals(ClassNameConstants.COMMUNICATIONS) -> {
                     TAB_ID = NasTabConstants.TAB_COMMU
                 }
+
                 textdata.equals(ClassNameConstants.ABOUT_US) -> {
                     TAB_ID = NasTabConstants.TAB_ABOUT_US
                 }
@@ -1742,39 +2004,63 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
         mSectionText = arrayOfNulls(9)
 
 
-
     }
-
-
 
 
     private fun CHECKINTENTVALUE(intentTabId: String) {
         TAB_ID = intentTabId
         var mFragment: Fragment? = null
-        Log.e("Click",intentTabId)
-        Log.e("tabID",TAB_ID.toString())
-        if (PreferenceManager.getUserCode(mContext).equals(""))
-        {
-            when (intentTabId)
-            {
+        Log.e("Click", intentTabId)
+        Log.e("tabID", TAB_ID.toString())
+        if (PreferenceManager.getUserCode(mContext).equals("")) {
+            when (intentTabId) {
 
                 NasTabConstants.TAB_CALENDAR_REG -> {
-                   CommonMethods.showDialogueWithOk(mContext,"This Feature is only available for registered users","Alert")
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
                 }
-                NasTabConstants.TAB_ECA_REG -> {
-                    CommonMethods.showDialogueWithOk(mContext,"This Feature is only available for registered users","Alert")
+
+                NasTabConstants.TAB_GALLERY -> {
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
                 }
+
                 NasTabConstants.TAB_NOTIFICATIONS_REG -> {
-                    CommonMethods.showDialogueWithOk(mContext,"This Feature is only available for registered users","Alert")
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
                 }
+
                 NasTabConstants.TAB_TRIPS_REG -> {
-                    CommonMethods.showDialogueWithOk(mContext,"This Feature is only available for registered users","Alert")
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
                 }
+
                 NasTabConstants.TAB_PARENT_ESSENTIALS_REG -> {
-                    CommonMethods.showDialogueWithOk(mContext,"This Feature is only available for registered users","Alert")
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
                 }
+
                 NasTabConstants.TAB_PARENT_MEETINGS_REG -> {
-                    CommonMethods.showDialogueWithOk(mContext,"This Feature is only available for registered users","Alert")
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
 
 //                    CommonMethods.showDialogueWithOk(mContext,"This Feature is only available for registered users","Alert")
                 }
@@ -1799,28 +2085,37 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                         fragmentIntent(mFragment)
                     }
                 }
+
                 NasTabConstants.TAB_COMMU -> {
-                    CommonMethods.showDialogueWithOk(mContext,"This Feature is only available for registered users","Alert")
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
 
                     /* mFragment = SettingsFragment()
                      fragmentIntent(mFragment)*/
                 }
+
                 NasTabConstants.TAB_ABOUT_US -> {
                     mFragment = NordAngliaEductaionFragment()
                     fragmentIntent(mFragment)
-                  //  showLogoutDialogue(mContext)
+                    //  showLogoutDialogue(mContext)
                 }
             }
-        }
-        else{
-            when (intentTabId)
-            {
+        } else {
+            when (intentTabId) {
 
 
                 NasTabConstants.TAB_CALENDAR_REG -> {
-                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext,
+                    if (ActivityCompat.checkSelfPermission(
+                            mContext,
+                            Manifest.permission.READ_CALENDAR
+                        ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                            mContext,
                             Manifest.permission.WRITE_CALENDAR
-                        ) != PackageManager.PERMISSION_GRANTED) {
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         checkcalpermission()
 
 
@@ -1830,36 +2125,53 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     }
 
                 }
-                NasTabConstants.TAB_ECA_REG -> {
-                    mFragment = CCAFragment()
+
+                NasTabConstants.TAB_GALLERY -> {
+                    mFragment = GalleryFragmentNew()
                     fragmentIntent(mFragment)
                 }
+
                 NasTabConstants.TAB_NOTIFICATIONS_REG -> {
                     mFragment = NotificationFragment()
                     fragmentIntent(mFragment)
                 }
+
                 NasTabConstants.TAB_TRIPS_REG -> {
-                    Log.e("pay","if frag")
-                    if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                    {
+                    Log.e("pay", "if frag")
+                    if (ActivityCompat.checkSelfPermission(
+                            mContext,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            mContext,
+                            Manifest.permission.READ_CALENDAR
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            mContext,
+                            Manifest.permission.WRITE_CALENDAR
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            mContext,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         checkpermissionStorage()
 
 
-                    }else {
-                        Log.e("pay","frag")
+                    } else {
+                        Log.e("pay", "frag")
                         PreferenceManager.setStudentID(mContext, 0)
                         mFragment = PaymentFragment()
                         fragmentIntent(mFragment)
                     }
 
                 }
+
                 NasTabConstants.TAB_PARENT_ESSENTIALS_REG -> {
                     mFragment = ParentsEssentialsFragment()
                     fragmentIntent(mFragment)
                 }
+
                 NasTabConstants.TAB_PARENT_MEETINGS_REG -> {
                     mFragment = ParentsMeetingFragment()
                     fragmentIntent(mFragment)
@@ -1885,20 +2197,21 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                         fragmentIntent(mFragment)
                     }
                 }
+
                 NasTabConstants.TAB_COMMU -> {
                     mFragment = CommunicationFragment()
                     fragmentIntent(mFragment)
                 }
+
                 NasTabConstants.TAB_ABOUT_US -> {
-              mFragment = NordAngliaEductaionFragment()
-              fragmentIntent(mFragment)
-                   // showLogoutDialogue(mContext)
+                    mFragment = NordAngliaEductaionFragment()
+                    fragmentIntent(mFragment)
+                    // showLogoutDialogue(mContext)
                 }
             }
         }
 
     }
-
 
 
     private fun checkpermission() {
@@ -1924,6 +2237,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             )
         }
     }
+
     private fun checkcalpermission() {
         if (ContextCompat.checkSelfPermission(
                 mContext,
@@ -1931,7 +2245,8 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
                 mContext,
                 Manifest.permission.WRITE_CALENDAR
-            ) != PackageManager.PERMISSION_GRANTED) {
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             ActivityCompat.requestPermissions(
                 this.requireActivity(),
                 arrayOf(
@@ -1942,6 +2257,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             )
         }
     }
+
     private fun checkpaypermission() {
         if (ContextCompat.checkSelfPermission(
                 mContext,
@@ -1949,7 +2265,8 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
                 mContext,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED) {
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             ActivityCompat.requestPermissions(
                 this.requireActivity(),
                 arrayOf(
@@ -1960,9 +2277,9 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             )
         }
     }
+
     @SuppressLint("UseRequireInsteadOfGet")
-    fun fragmentIntent(mFragment: Fragment?)
-    {
+    fun fragmentIntent(mFragment: Fragment?) {
         if (mFragment != null) {
             val fragmentManager = activity!!.supportFragmentManager
             fragmentManager.beginTransaction()
@@ -1975,12 +2292,16 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
 
     fun getBadgeApi() {
 
-        val call: Call<HomeBadgeResponse> = ApiClient.getClient.homebadge("Bearer "+PreferenceManager.getUserCode(mContext))
+        val call: Call<HomeBadgeResponse> =
+            ApiClient.getClient.homebadge("Bearer " + PreferenceManager.getUserCode(mContext))
         call.enqueue(object : Callback<HomeBadgeResponse> {
             override fun onFailure(call: Call<HomeBadgeResponse>, t: Throwable) {
             }
 
-            override fun onResponse(call: Call<HomeBadgeResponse>, response: Response<HomeBadgeResponse>) {
+            override fun onResponse(
+                call: Call<HomeBadgeResponse>,
+                response: Response<HomeBadgeResponse>
+            ) {
                 val responsedata = response.body()
                 if (responsedata != null) {
                     try {
@@ -2081,11 +2402,11 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                         } else if (response.body()!!.status == 116) {
 
 
-                           /* PreferenceManager.setUserCode(mContext, "")
-                            PreferenceManager.setUserEmail(mContext, "")
-                            val mIntent = Intent(activity, LoginActivity::class.java)
-                            mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            mContext.startActivity(mIntent)*/
+                            /* PreferenceManager.setUserCode(mContext, "")
+                             PreferenceManager.setUserEmail(mContext, "")
+                             val mIntent = Intent(activity, LoginActivity::class.java)
+                             mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                             mContext.startActivity(mIntent)*/
 
                         }
 
@@ -2098,8 +2419,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
         })
     }
 
-    fun showLogoutDialogue(context: Context)
-    {
+    fun showLogoutDialogue(context: Context) {
         val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -2108,21 +2428,19 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
         var btn_Ok = dialog.findViewById(R.id.btn_Ok) as Button
         var btn_Cancel = dialog.findViewById(R.id.btn_Cancel) as Button
         var progress = dialog.findViewById(R.id.progressDialog) as ProgressBar
-        progress.visibility=View.GONE
+        progress.visibility = View.GONE
         btn_Ok.setOnClickListener()
         {
-            if (PreferenceManager.getUserCode(context).equals(""))
-            {
+            if (PreferenceManager.getUserCode(context).equals("")) {
                 dialog.dismiss()
-                PreferenceManager.setUserCode(context,"")
-                PreferenceManager.setUserEmail(context,"")
+                PreferenceManager.setUserCode(context, "")
+                PreferenceManager.setUserEmail(context, "")
                 val mIntent = Intent(activity, LoginActivity::class.java)
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 mContext.startActivity(mIntent)
-            }
-            else{
-                progress.visibility=View.VISIBLE
-                callLogoutApi(context,dialog,progress)
+            } else {
+                progress.visibility = View.VISIBLE
+                callLogoutApi(context, dialog, progress)
             }
 
 
@@ -2133,9 +2451,10 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
         dialog.show()
     }
 
-    private fun callLogoutApi(context: Context,dialog: Dialog,progessbar:ProgressBar) {
+    private fun callLogoutApi(context: Context, dialog: Dialog, progessbar: ProgressBar) {
         progessbar.visibility = View.VISIBLE
-        val call: Call<LogoutResponseModel> = ApiClient.getClient.logout("Bearer "+ PreferenceManager.getUserCode(context))
+        val call: Call<LogoutResponseModel> =
+            ApiClient.getClient.logout("Bearer " + PreferenceManager.getUserCode(context))
         call.enqueue(object : Callback<LogoutResponseModel> {
             override fun onFailure(call: Call<LogoutResponseModel>, t: Throwable) {
                 progessbar.visibility = View.GONE
@@ -2210,14 +2529,27 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
         }
         dialog.show()
     }
+
     private fun checkpermissionStorage() {
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(mContext, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(
+                mContext,
+                Manifest.permission.READ_CALENDAR
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                mContext,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                mContext,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                mContext,
+                Manifest.permission.WRITE_CALENDAR
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this.requireActivity() ,
+                this.requireActivity(),
                 arrayOf(
                     Manifest.permission.READ_CALENDAR,
                     Manifest.permission.READ_EXTERNAL_STORAGE,

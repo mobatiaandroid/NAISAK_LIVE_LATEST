@@ -21,7 +21,7 @@
         <!-- 5 -->
         <item>Gallery</item>
         <!-- 6 -->
-        <item>ECA</item>
+<!--        <item>ECA</item>-->
         <!-- 7 -->
         <item>Payments</item>
         <!-- 8 -->
@@ -47,7 +47,7 @@
         <!-- 5 -->
         <item>Gallery</item>
         <!-- 6 -->
-        <item>ECA</item>
+        <!--        <item>ECA</item>-->
         <!-- 7 -->
         <item>Payments</item>
         <!-- 8 -->
@@ -74,7 +74,7 @@
         <!-- 5 -->
         <item>@drawable/gallery</item>
         <!-- 6 -->
-        <item>@drawable/ccas</item>
+        <!--        <item>@drawable/ccas</item>-->
         <!-- 7 -->
         <item>@drawable/payment</item>
         <!-- 8 -->
@@ -99,7 +99,7 @@
         <!-- 5 -->
         <item>@drawable/gallery</item>
         <!-- 6 -->
-        <item>@drawable/ccas</item>
+        <!--        <item>@drawable/ccas</item>-->
         <!-- 7 -->
         <item>@drawable/payment</item>
         <!-- 8 -->

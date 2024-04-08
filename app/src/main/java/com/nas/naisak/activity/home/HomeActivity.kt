@@ -14,7 +14,14 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.*
+import android.widget.AbsListView
+import android.widget.AdapterView
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ListView
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -29,16 +36,17 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.nas.naisak.R
 import com.nas.naisak.activity.home.adapter.HomeListAdapter
-import com.nas.naisak.activity.login.LoginActivity
-import com.nas.naisak.constants.*
+import com.nas.naisak.constants.ApiClient
+import com.nas.naisak.constants.AppController
+import com.nas.naisak.constants.CommonMethods
+import com.nas.naisak.constants.MyDragShadowBuilder
+import com.nas.naisak.constants.PreferenceManager
 import com.nas.naisak.fragment.aboutus.NordAngliaEductaionFragment
 import com.nas.naisak.fragment.calendar.CalendarFragment
-import com.nas.naisak.fragment.cca.CCAFragment
 import com.nas.naisak.fragment.communications.CommunicationFragment
 import com.nas.naisak.fragment.contactus.ContactUsFragment
 import com.nas.naisak.fragment.gallerynew.GalleryFragmentNew
 import com.nas.naisak.fragment.home.HomeScreenFragment
-import com.nas.naisak.fragment.home.mContext
 import com.nas.naisak.fragment.home.model.HomeBadgeResponse
 import com.nas.naisak.fragment.notification.NotificationFragment
 import com.nas.naisak.fragment.parents_meeting.ParentsMeetingFragment
@@ -243,57 +251,72 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
                     replaceFragmentsSelected(position)
                 }
                 //Gallery
-                else if(position == 5){
+                else if (position == 5) {
 //                    mFragment = GalleryFragment()
                     mFragment = GalleryFragmentNew()
                     replaceFragmentsSelected(position)
                 }
                 //CCA
+//                else if (position == 6) {
+//
+//                    mFragment = CCAFragment()
+//                    replaceFragmentsSelected(position)
+//                }
                 else if (position == 6) {
-
-                    mFragment = CCAFragment()
-                    replaceFragmentsSelected(position)
-                }
-                else if (position == 7) {
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                    {
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_CALENDAR
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.WRITE_CALENDAR
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         checkpermissionStorage()
 
 
-                    }
-                    else {
+                    } else {
                         mFragment = PaymentFragment()
                         replaceFragmentsSelected(position)
                     }
 
-                }
-
-                else if (position == 8) {
+                } else if (position == 7) {
 
                     mFragment = ParentsEssentialsFragment()
                     replaceFragmentsSelected(position)
-                }
-                else if (position == 9) {
+                } else if (position == 8) {
                     mFragment = NordAngliaEductaionFragment()
                     replaceFragmentsSelected(position)
-                }
-                else if (position == 10) {
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
-                    {
+                } else if (position == 9) {
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.CALL_PHONE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         checkpermission()
 
 
-                    }
-                    else {
+                    } else {
                         mFragment = ContactUsFragment()
                         replaceFragmentsSelected(position)
                     }
-                }else if (position == 11) {
+                } else if (position == 10) {
                     mFragment = SettingsFragment()
                     replaceFragmentsSelected(position)
                 }
