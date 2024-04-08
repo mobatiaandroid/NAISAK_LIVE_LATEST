@@ -50,6 +50,8 @@
     <color name="dark_grey1">#908C86</color>
     <color name="nas_green">#009933</color>
     <color name="blue">#0d98ba</color>
+    <color name="Grey_600">#757575</color>
+    <color name="orange_circle">#ff7d00</color>
 
 
 </resources>

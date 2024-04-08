@@ -51,8 +51,8 @@ import com.nas.naisak.fragment.home.model.HomeBadgeResponse
 import com.nas.naisak.fragment.notification.NotificationFragment
 import com.nas.naisak.fragment.parents_meeting.ParentsMeetingFragment
 import com.nas.naisak.fragment.parentsessentials.ParentsEssentialsFragment
-import com.nas.naisak.fragment.payment.PaymentFragment
 import com.nas.naisak.fragment.settings.SettingsFragment
+import com.nas.naisak.fragment.trips.TripsFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -284,7 +284,8 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
 
                     } else {
-                        mFragment = PaymentFragment()
+                        // changed from Payment to Trips
+                        mFragment = TripsFragment()
                         replaceFragmentsSelected(position)
                     }
 

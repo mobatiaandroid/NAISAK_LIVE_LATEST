@@ -35,7 +35,7 @@ import com.nas.naisak.fragment.home.model.LogoutResponseModel
 import com.nas.naisak.fragment.notification.NotificationFragment
 import com.nas.naisak.fragment.parents_meeting.ParentsMeetingFragment
 import com.nas.naisak.fragment.parentsessentials.ParentsEssentialsFragment
-import com.nas.naisak.fragment.payment.PaymentFragment
+import com.nas.naisak.fragment.trips.TripsFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -2160,8 +2160,9 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
 
                     } else {
                         Log.e("pay", "frag")
+                        // changed from Payment to Trips
                         PreferenceManager.setStudentID(mContext, 0)
-                        mFragment = PaymentFragment()
+                        mFragment = TripsFragment()
                         fragmentIntent(mFragment)
                     }
 
