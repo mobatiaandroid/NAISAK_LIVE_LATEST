@@ -29,7 +29,6 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.snackbar.Snackbar
 import com.nas.naisak.R
 import com.nas.naisak.activity.home.adapter.HomeListAdapter
-import com.nas.naisak.activity.login.LoginActivity
 import com.nas.naisak.constants.*
 import com.nas.naisak.fragment.aboutus.NordAngliaEductaionFragment
 import com.nas.naisak.fragment.calendar.CalendarFragment
@@ -38,13 +37,13 @@ import com.nas.naisak.fragment.communications.CommunicationFragment
 import com.nas.naisak.fragment.contactus.ContactUsFragment
 import com.nas.naisak.fragment.gallerynew.GalleryFragmentNew
 import com.nas.naisak.fragment.home.HomeScreenFragment
-import com.nas.naisak.fragment.home.mContext
 import com.nas.naisak.fragment.home.model.HomeBadgeResponse
 import com.nas.naisak.fragment.notification.NotificationFragment
 import com.nas.naisak.fragment.parents_meeting.ParentsMeetingFragment
 import com.nas.naisak.fragment.parentsessentials.ParentsEssentialsFragment
 import com.nas.naisak.fragment.payment.PaymentFragment
 import com.nas.naisak.fragment.settings.SettingsFragment
+import com.nas.naisak.fragment.trips.TripsFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -65,11 +64,12 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
     lateinit var toolbar: Toolbar
     lateinit var logoClickImgView: ImageView
     lateinit var homelist: ListView
-    lateinit var homeprogress:ProgressBar
+    lateinit var homeprogress: ProgressBar
     var mFragment: Fragment? = null
     var sPosition: Int = 0
     var previousTriggerTypeNew: Int = 0
     lateinit var requestLauncher: ActivityResultLauncher<String>
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,7 +115,7 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
         linear_layout.layoutParams = params
         if (PreferenceManager.getUserCode(context).equals("")) {
 
-        }else{
+        } else {
             getBadgeApi()
         }
 
@@ -128,9 +128,9 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
         ) { result ->
             if (result) {
                 // PERMISSION GRANTED
-                Log.e("Permission","Granted")
+                Log.e("Permission", "Granted")
             } else {
-                Log.e("Permission","Denied")
+                Log.e("Permission", "Denied")
                 // PERMISSION NOT GRANTED
                 val snackbar = Snackbar
                     .make(drawer_layout, "Notification Permission Denied", Snackbar.LENGTH_LONG)
@@ -162,48 +162,85 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
                 if (position == 0) {
                     mFragment = HomeScreenFragment()
                     replaceFragmentsSelected(position)
-                }
-                else if (position == 1) {
-                    CommonMethods.showDialogueWithOk(context,"This Feature is only available for registered users","Alert")
-                }
-                else if (position == 2) {
-                    CommonMethods.showDialogueWithOk(context,"This Feature is only available for registered users","Alert")
-                }
-                else if (position == 3 )
-                    {
-                        CommonMethods.showDialogueWithOk(context,"This Feature is only available for registered users","Alert")
-                }
-                else if (position == 4) {
-                    CommonMethods.showDialogueWithOk(context,"This Feature is only available for registered users","Alert")
-                }
-                else if (position == 5) {
-                    CommonMethods.showDialogueWithOk(context,"This Feature is only available for registered users","Alert")
-                }
-                else if (position == 6) {
-                    CommonMethods.showDialogueWithOk(context,"This Feature is only available for registered users","Alert")
+                } else if (position == 1) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                } else if (position == 2) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                } else if (position == 3) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                } else if (position == 4) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                } else if (position == 5) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                } else if (position == 6) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
                 } else if (position == 7) {
-                    CommonMethods.showDialogueWithOk(context,"This Feature is only available for registered users","Alert")
-                } else if (position == 8) {
-                    CommonMethods.showDialogueWithOk(context,"This Feature is only available for registered users","Alert")
-                }
-                else if (position == 9) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                }else if (position == 8) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                } else if (position == 9) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                } else if (position == 10) {
                     mFragment = NordAngliaEductaionFragment()
                     replaceFragmentsSelected(position)
-                }
-                else if (position == 10) {
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
-                    {
+                } else if (position == 11) {
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.CALL_PHONE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         checkpermission()
 
 
-                    }
-                    else {
+                    } else {
                         mFragment = ContactUsFragment()
                         replaceFragmentsSelected(position)
                     }
-                }else if (position == 11) {
+                } else if (position == 12) {
                     mFragment = SettingsFragment()
                     replaceFragmentsSelected(position)
                 }
@@ -211,39 +248,46 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
                 if (position == 0) {
                     mFragment = HomeScreenFragment()
                     replaceFragmentsSelected(position)
-                }
-                else if (position == 1) {
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                    {
+                } else if (position == 1) {
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_CALENDAR
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.WRITE_CALENDAR
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         checkpermissionStorage()
 
 
-                    }
-                    else {
+                    } else {
                         mFragment = CalendarFragment()
                         replaceFragmentsSelected(position)
                     }
 
-                }
-                else if (position == 2) {
+                } else if (position == 2) {
                     mFragment = NotificationFragment()
                     replaceFragmentsSelected(position)
-                }
-                else if (position == 3 )
-                {
+                } else if (position == 3) {
                     mFragment = CommunicationFragment()
                     replaceFragmentsSelected(position)
                 }
                 // Parents Meeting
-                else if(position == 4){
+                else if (position == 4) {
                     mFragment = ParentsMeetingFragment()
                     replaceFragmentsSelected(position)
                 }
                 //Gallery
-                else if(position == 5){
+                else if (position == 5) {
 //                    mFragment = GalleryFragment()
                     mFragment = GalleryFragmentNew()
                     replaceFragmentsSelected(position)
@@ -253,47 +297,87 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
                     mFragment = CCAFragment()
                     replaceFragmentsSelected(position)
-                }
-                else if (position == 7) {
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
-                    {
+                } else if (position == 7) {
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_CALENDAR
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.WRITE_CALENDAR
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         checkpermissionStorage()
 
 
-                    }
-                    else {
+                    } else {
                         mFragment = PaymentFragment()
                         replaceFragmentsSelected(position)
                     }
 
-                }
+                }else if (position == 8) {
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.READ_CALENDAR
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.WRITE_CALENDAR
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        checkpermissionStorage()
 
-                else if (position == 8) {
+
+                    } else {
+                        mFragment = TripsFragment()
+                        replaceFragmentsSelected(position)
+                    }
+
+                } else if (position == 9) {
 
                     mFragment = ParentsEssentialsFragment()
                     replaceFragmentsSelected(position)
-                }
-                else if (position == 9) {
+                } else if (position == 10) {
                     mFragment = NordAngliaEductaionFragment()
                     replaceFragmentsSelected(position)
-                }
-                else if (position == 10) {
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
-                    {
+                } else if (position == 11) {
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.CALL_PHONE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         checkpermission()
 
 
-                    }
-                    else {
+                    } else {
                         mFragment = ContactUsFragment()
                         replaceFragmentsSelected(position)
                     }
-                }else if (position == 11) {
+                } else if (position == 12) {
                     mFragment = SettingsFragment()
                     replaceFragmentsSelected(position)
                 }
@@ -460,11 +544,24 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
             )
         }
     }
+
     private fun checkpermissionStorage() {
-        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED
+        if (ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.READ_CALENDAR
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED ||
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.WRITE_CALENDAR
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
                 this,
@@ -489,40 +586,47 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
     fun getBadgeApi() {
 
-        val call: Call<HomeBadgeResponse> = ApiClient.getClient.homebadge("Bearer "+PreferenceManager.getUserCode(context))
+        val call: Call<HomeBadgeResponse> =
+            ApiClient.getClient.homebadge("Bearer " + PreferenceManager.getUserCode(context))
         call.enqueue(object : Callback<HomeBadgeResponse> {
             override fun onFailure(call: Call<HomeBadgeResponse>, t: Throwable) {
             }
 
-            override fun onResponse(call: Call<HomeBadgeResponse>, response: Response<HomeBadgeResponse>) {
+            override fun onResponse(
+                call: Call<HomeBadgeResponse>,
+                response: Response<HomeBadgeResponse>
+            ) {
                 val responsedata = response.body()
                 if (responsedata != null) {
                     try {
-                        if (response.body()!!.status==100)
-                        {
-                            val calendar_badge=response.body()!!.data.calendar_badge
-                            val calendar_edited_badge=response.body()!!.data.calendar_edited_badge
-                            val notification_badge=response.body()!!.data.notification_badge
-                            val notification_edited_badge=response.body()!!.data.notification_edited_badge
-                            val paymentitem_badge=response.body()!!.data.paymentitem_badge
-                            val paymentitem_edit_badge=response.body()!!.data.paymentitem_edit_badge
-                            PreferenceManager.setCalendarBadge(context,calendar_badge)
-                            PreferenceManager.setCalendarEditedBadge(context,calendar_edited_badge)
-                            PreferenceManager.setNotificationBadge(context,notification_badge)
-                            PreferenceManager.setNotificationEditedBadge(context,notification_edited_badge)
-                            PreferenceManager.setPaymentBadge(context,paymentitem_badge)
-                            PreferenceManager.setPaymentEditedBadge(context,paymentitem_edit_badge)
-                            val myListAdapter = HomeListAdapter(activity, mListItemArray, mListImgArray!!)
+                        if (response.body()!!.status == 100) {
+                            val calendar_badge = response.body()!!.data.calendar_badge
+                            val calendar_edited_badge = response.body()!!.data.calendar_edited_badge
+                            val notification_badge = response.body()!!.data.notification_badge
+                            val notification_edited_badge =
+                                response.body()!!.data.notification_edited_badge
+                            val paymentitem_badge = response.body()!!.data.paymentitem_badge
+                            val paymentitem_edit_badge =
+                                response.body()!!.data.paymentitem_edit_badge
+                            PreferenceManager.setCalendarBadge(context, calendar_badge)
+                            PreferenceManager.setCalendarEditedBadge(context, calendar_edited_badge)
+                            PreferenceManager.setNotificationBadge(context, notification_badge)
+                            PreferenceManager.setNotificationEditedBadge(
+                                context,
+                                notification_edited_badge
+                            )
+                            PreferenceManager.setPaymentBadge(context, paymentitem_badge)
+                            PreferenceManager.setPaymentEditedBadge(context, paymentitem_edit_badge)
+                            val myListAdapter =
+                                HomeListAdapter(activity, mListItemArray, mListImgArray!!)
                             homelist.adapter = myListAdapter
-                        }
-                        else if(response.body()!!.status==116)
-                        {
+                        } else if (response.body()!!.status == 116) {
 
-                           /* PreferenceManager.setUserCode(mContext,"")
-                            PreferenceManager.setUserEmail(mContext,"")
-                            val mIntent = Intent(activity, LoginActivity::class.java)
-                            mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            mContext.startActivity(mIntent)*/
+                            /* PreferenceManager.setUserCode(mContext,"")
+                             PreferenceManager.setUserEmail(mContext,"")
+                             val mIntent = Intent(activity, LoginActivity::class.java)
+                             mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                             mContext.startActivity(mIntent)*/
 
 
                         }
@@ -536,7 +640,7 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
         })
     }
 
-    private fun askForNotificationPermission(){
+    private fun askForNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED
@@ -553,7 +657,8 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
             }
         }
     }
-    private fun showErrorMessage(){
+
+    private fun showErrorMessage() {
         Toast.makeText(this, "Notification Permission Denied", Toast.LENGTH_SHORT).show()
     }
 }

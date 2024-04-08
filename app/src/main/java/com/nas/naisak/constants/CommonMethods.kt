@@ -18,7 +18,8 @@ import android.widget.Toast
 import com.nas.naisak.R
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class CommonMethods {
     companion object{
@@ -74,6 +75,19 @@ class CommonMethods {
 
             }
             dialog.show()
+        }
+        fun dateParsingyyyyMMddToDdMmmYyyy(date: String?): String? {
+            var strCurrentDate = ""
+            var format = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            var newDate: Date? = null
+            try {
+                newDate = format.parse(date)
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+            format = SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH)
+            strCurrentDate = format.format(newDate)
+            return strCurrentDate
         }
 
         fun showDialogueWithOk(context: Context, message: String, msgHead: String)

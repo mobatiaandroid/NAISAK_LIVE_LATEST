@@ -24,6 +24,8 @@
         <item>ECA</item>
         <!-- 7 -->
         <item>Payments</item>
+        <item>Trips</item>
+
         <!-- 8 -->
         <item>Parent Essentials</item>
 
@@ -50,6 +52,7 @@
         <item>ECA</item>
         <!-- 7 -->
         <item>Payments</item>
+        <item>Trips</item>
         <!-- 8 -->
         <item>Parent Essentials</item>
 
@@ -77,6 +80,7 @@
         <item>@drawable/ccas</item>
         <!-- 7 -->
         <item>@drawable/payment</item>
+        <item>@drawable/plane</item>
         <!-- 8 -->
         <item>@drawable/parent</item>
         <!-- 9 -->
@@ -102,6 +106,7 @@
         <item>@drawable/ccas</item>
         <!-- 7 -->
         <item>@drawable/payment</item>
+        <item>@drawable/plane</item>
         <!-- 8 -->
         <item>@drawable/parent</item>
         <!-- 9 -->

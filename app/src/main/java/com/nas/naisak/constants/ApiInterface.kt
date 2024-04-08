@@ -12,6 +12,8 @@ import com.nas.naisak.activity.parents_meeting.model.PostSlotRequestModel
 import com.nas.naisak.activity.parents_meeting.model.PostSlotResponseModel
 import com.nas.naisak.activity.parents_meeting.model.ReviewAppointmentsResponseModel
 import com.nas.naisak.activity.payment.payhere.model.*
+import com.nas.naisak.activity.trips.model.TripCategoriesResponseModel
+import com.nas.naisak.activity.trips.model.TripListResponseModel
 import com.nas.naisak.commonmodels.*
 import com.nas.naisak.fragment.aboutus.model.NAEResponseModel
 import com.nas.naisak.fragment.calendar.model.CalendarResponseModel
@@ -409,29 +411,29 @@ interface ApiInterface {
         @Header("Authorization") token: String
     ): Call<DeleteAccountresponseModel>
 
-    @GET("Api-V1/trip_categories")
+    @GET("api/v1/parent/trip_categories")
     @Headers("Content-Type: application/json")
     fun tripBanner(@Header("Authorization") token: String?): Call<ResponseBody?>?
 
-    @GET("Api-V1/trip_categories")
+    @GET("api/v1/parent/trip_categories")
     @Headers("Content-Type: application/json")
-    fun tripCategories(@Header("Authorization") token: String?): Call<ResponseBody?>?
+    fun tripCategories(@Header("Authorization") token: String?): Call<TripCategoriesResponseModel>
 
-    @POST("Api-V1/trip_items")
+    @POST("api/v1/parent/trip_items")
     @Headers("Content-Type: application/json")
     fun tripList(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
-    ): Call<ResponseBody?>?
+    ): Call<TripListResponseModel>
 
-    @POST("Api-V1/trip_items_detail")
+    @POST("api/v1/parent/trip_items_detail")
     @Headers("Content-Type: application/json")
     fun tripDetail(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
     ): Call<ResponseBody?>?
 
-    @POST("Api-V1/trip_intention_submit")
+    @POST("api/v1/parent/trip_intention_submit")
     @Headers("Content-Type: application/json")
     fun tripIntentSubmit(
         @Header("Authorization") token: String?,
@@ -439,7 +441,7 @@ interface ApiInterface {
     ): Call<ResponseBody?>?
 
     @Multipart
-    @POST("Api-V1/trip_document_submit")
+    @POST("api/v1/parent/trip_document_submit")
     fun uploadDocuments(
         @Header("Authorization") token: String?,
         @Part("action") action: RequestBody?,
@@ -451,7 +453,7 @@ interface ApiInterface {
     ): Call<ResponseBody?>?
 
     @Multipart
-    @POST("Api-V1/trip_document_submit")
+    @POST("api/v1/parent/trip_document_submit")
     fun uploadSingleDocument(
         @Header("Authorization") token: String?,
         @Part("action") action: RequestBody?,
@@ -462,7 +464,7 @@ interface ApiInterface {
     ): Call<ResponseBody?>?
 
     @Multipart
-    @POST("Api-V1/trip_document_submit")
+    @POST("api/v1/parent/trip_document_submit")
     fun uploadPermissionSlip(
         @Header("Authorization") token: String?,
         @Part("action") action: RequestBody?,
@@ -472,39 +474,30 @@ interface ApiInterface {
         @Part image: Part?
     ): Call<ResponseBody?>?
 
-    @POST("Api-V1/trip_history")
+    @POST("api/v1/parent/trip_history")
     @Headers("Content-Type: application/json")
     fun tripHistory(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
     ): Call<ResponseBody?>?
 
-    @POST("Api-V1/get_trip_consent")
+    @POST("api/v1/parent/get_trip_consent")
     @Headers("Content-Type: application/json")
     fun tripConsent(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
     ): Call<ResponseBody?>?
 
-    @POST("Api-V1/network_payment_gateway_access_token_for_fee_payment")
-    @Headers("Content-Type: application/json")
-    fun accessTokenTripPayment(@Header("Authorization") token: String?): Call<ResponseBody?>?
 
-    @POST("Api-V1/network_payment_gateway_creating_an_order_for_fee_payment")
-    @Headers("Content-Type: application/json")
-    fun createTripPayment(
-        @Header("Authorization") token: String?,
-        @Body json: JsonObject?
-    ): Call<ResponseBody?>?
 
-    @POST("Api-V1/trip_payment_submit")
+    @POST("api/v1/parent/trip_payment_submit")
     @Headers("Content-Type: application/json")
     fun paymentSubmit(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
     ): Call<ResponseBody?>?
 
-    @POST("Api-V1/trip_informations")
+    @POST("api/v1/parent/trip_informations")
     @Headers("Content-Type: application/json")
     fun tripInfo(@Header("Authorization") token: String?): Call<ResponseBody?>?
 

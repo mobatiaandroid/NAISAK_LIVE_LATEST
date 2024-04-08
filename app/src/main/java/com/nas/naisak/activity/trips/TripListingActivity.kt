@@ -1,0 +1,376 @@
+package com.nas.naisak.activity.trips
+
+import android.app.Dialog
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
+import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.view.Window
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.gson.JsonObject
+import com.nas.naisak.R
+import com.nas.naisak.activity.login.LoginActivity
+import com.nas.naisak.activity.trips.adapter.TripListAdapter
+import com.nas.naisak.activity.trips.model.TripListResponseModel
+import com.nas.naisak.commonadapters.StudentListAdapter
+import com.nas.naisak.commonmodels.StudentDataListResponse
+import com.nas.naisak.commonmodels.StudentListModel
+import com.nas.naisak.constants.ApiClient
+import com.nas.naisak.constants.CommonMethods
+import com.nas.naisak.constants.PreferenceManager
+import com.nas.naisak.constants.ProgressBarDialog
+import com.nas.naisak.constants.recyclermanager.ItemOffsetDecoration
+import com.nas.naisak.constants.recyclermanager.OnItemClickListener
+import com.nas.naisak.constants.recyclermanager.addOnItemClickListener
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+class TripListingActivity : AppCompatActivity() {
+    lateinit var context: Context
+    lateinit var extras: Bundle
+    lateinit var tab_type: String
+    private lateinit var progressDialogP: ProgressBarDialog
+    lateinit var relativeHeader: RelativeLayout
+//    lateinit var headermanager: HeaderManager
+    lateinit var bannerImageView: ImageView
+    lateinit var descriptionTextView: TextView
+    lateinit var sendEmailImageView: ImageView
+    lateinit var tripListRecycler: RecyclerView
+    lateinit var recyclerViewLayoutManager: GridLayoutManager
+    var categoryID = ""
+    var categoryName = ""
+    lateinit var mStudentSpinner: LinearLayout
+    var studentListArrayList = ArrayList<StudentDataListResponse>()
+    var studentName: String=""
+    var studentId: Int=0
+    var studentImg: String=""
+    var studentClass: String=""
+//    lateinit var categoriesList: ArrayList<TripListResponseModel.TripItem>
+    lateinit var tripsCategoryAdapter: TripListAdapter
+    var contactEmail = ""
+    lateinit var back: ImageView
+    lateinit var btn_history: ImageView
+    lateinit var home: ImageView
+    lateinit var studentNameTxt: TextView
+    lateinit var studImg: ImageView
+    lateinit var stud_id: String
+    var studClass = ""
+    var orderId = ""
+    lateinit var stud_img: String
+//    var studentsModelArrayList = ArrayList<StudentDataModel.DataItem>()
+    var studentList = ArrayList<String>()
+    private lateinit var logoClickImgView: ImageView
+    private lateinit var btn_left: ImageView
+    private lateinit var heading: TextView
+    var tripList : ArrayList<TripListResponseModel.TripItem> = ArrayList()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_trip_listing)
+        context = this
+        initialiseUI()
+        if (CommonMethods.isInternetAvailable(context)) {
+            callStudentListApi()
+        } else {
+            CommonMethods.showSuccessInternetAlert(context)
+        }
+    }
+
+    private fun initialiseUI() {
+        extras = intent.extras!!
+        if (extras != null) {
+            categoryID = extras.getString("trip_category_id")!!
+            categoryName = extras.getString("trip_category_name")!!
+        }
+        progressDialogP = ProgressBarDialog(context, R.drawable.spinner)
+        bannerImageView = findViewById(R.id.bannerImage)
+        descriptionTextView = findViewById(R.id.descriptionTextView)
+        sendEmailImageView = findViewById(R.id.sendEmailImageView)
+        relativeHeader = findViewById(R.id.relativeHeader)
+//        headermanager = HeaderManager(this@TripListingActivity, categoryName)
+//        headermanager.getHeader(relativeHeader, 6)
+//        back = headermanager.getLeftButton()
+//        btn_history = headermanager.getRightHistoryImage()
+        btn_history.visibility = View.INVISIBLE
+        tripListRecycler = findViewById(R.id.tripListRecycler)
+        tripListRecycler.setHasFixedSize(true)
+        val spacing = 5 // 50px
+
+        val itemDecoration = ItemOffsetDecoration(context, spacing)
+        recyclerViewLayoutManager = GridLayoutManager(context, 1)
+//        tripListRecycler.addItemDecoration(
+//            DividerItemDecoration(context.resources.getDrawable(R.drawable.list_divider))
+//        )
+        tripListRecycler.addItemDecoration(itemDecoration)
+        tripListRecycler.layoutManager = recyclerViewLayoutManager
+//        headermanager.setButtonLeftSelector(R.drawable.back, R.drawable.back)
+//        back.setOnClickListener {
+//            AppUtils.hideKeyBoard(context)
+//            finish()
+//        }
+//
+//        home = headermanager.getLogoButton()
+//        home.setOnClickListener {
+//            val `in` = Intent(context, HomeListAppCompatActivity::class.java)
+//            `in`.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//            startActivity(`in`)
+//        }
+        mStudentSpinner = findViewById(R.id.studentSpinner)
+        studentNameTxt = findViewById<TextView>(R.id.studentName)
+        studImg = findViewById<ImageView>(R.id.imagicon)
+
+
+        mStudentSpinner.setOnClickListener {
+            showStudentList(context,studentListArrayList)
+        }
+    }
+    fun showStudentList(context: Context, mStudentList: ArrayList<StudentDataListResponse>) {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialogue_student_list)
+        var iconImageView = dialog.findViewById(R.id.iconImageView) as ImageView
+        var btn_dismiss = dialog.findViewById(R.id.btn_dismiss) as Button
+        var studentListRecycler = dialog.findViewById(R.id.recycler_view_social_media) as RecyclerView
+        iconImageView.setImageResource(R.drawable.boy)
+        //if(mSocialMediaArray.get())
+        val sdk = Build.VERSION.SDK_INT
+        if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+            btn_dismiss.setBackgroundDrawable(
+                context.resources.getDrawable(R.drawable.button_new)
+            )
+        } else {
+            btn_dismiss.background = context.resources.getDrawable(R.drawable.button_new)
+        }
+
+
+        val llm = LinearLayoutManager(context)
+        llm.orientation = LinearLayoutManager.VERTICAL
+        studentListRecycler.layoutManager = llm
+        val studentAdapter = StudentListAdapter(context,mStudentList)
+        studentListRecycler.adapter = studentAdapter
+        btn_dismiss.setOnClickListener()
+        {
+            dialog.dismiss()
+        }
+
+
+
+        studentListRecycler.addOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                // Your logic
+                studentName = studentListArrayList[position].studentName
+                studentImg = studentListArrayList[position].photo
+                studentId = studentListArrayList[position].studentId
+                studentClass = studentListArrayList[position].section
+                PreferenceManager.setStudentID(context, studentId)
+                PreferenceManager.setStudentName(context, studentName)
+                PreferenceManager.setStudentPhoto(context, studentImg)
+                PreferenceManager.setStudentClass(context, studentClass)
+                studentNameTxt.text = studentName
+                if (studentImg != "") {
+                    Glide.with(context) //1
+                        .load(studentImg).fitCenter()
+
+                        .placeholder(R.drawable.boy)
+                        .error(R.drawable.boy)
+                        .skipMemoryCache(true) //2
+                        .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                        .transform(CircleCrop()) //4
+                        .into(studImg)
+                } else {
+                    studImg.setImageResource(R.drawable.boy)
+                }
+                if (CommonMethods.isInternetAvailable(context)) {
+                    callTripList()
+                }
+                else
+                {
+                    CommonMethods.showSuccessInternetAlert(context)
+                }
+                dialog.dismiss()
+            }
+        })
+        dialog.show()
+    }
+
+
+    private fun callTripList() {
+        progressDialogP.show()
+        var paramObject = JsonObject()
+        android.util.Log.e("student name", studentNameTxt.getText().toString())
+        paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
+        paramObject.addProperty("trip_category_id", categoryID)
+        paramObject.addProperty("limit", "100")
+        paramObject.addProperty("skip", "0")
+        val call: Call<TripListResponseModel> =
+            ApiClient.getClient.tripList("Bearer " + PreferenceManager.getUserCode(context), paramObject)
+        call.enqueue(object : Callback<TripListResponseModel> {
+            override fun onResponse(
+                call: Call<TripListResponseModel>,
+                response: Response<TripListResponseModel>
+            ) {
+                progressDialogP.dismiss()
+                tripList = java.util.ArrayList<TripListResponseModel.TripItem>()
+                assert(response.body() != null)
+                    if (response.body()!!.status.equals("100")) {
+                        if (response.body()!!.data.lists.size > 0) {
+                            tripList = response.body()!!.data.lists
+                            if (tripList.size > 0) {
+                                Log.e("Here", "Here")
+                                tripsCategoryAdapter = TripListAdapter(context, tripList)
+                                tripListRecycler.adapter = tripsCategoryAdapter
+                            } else {
+                                Log.e("Here", "not")
+                                tripList =
+                                    java.util.ArrayList<TripListResponseModel.TripItem>()
+                                tripsCategoryAdapter =
+                                    TripListAdapter(context, ArrayList())
+                                tripListRecycler.adapter = tripsCategoryAdapter
+                                Toast.makeText(
+                                    this@TripListingActivity,
+                                    "No trips available.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        } else {
+                            tripList = java.util.ArrayList<TripListResponseModel.TripItem>()
+                            tripsCategoryAdapter =
+                                TripListAdapter(context, ArrayList())
+                            tripListRecycler.adapter = tripsCategoryAdapter
+                            Toast.makeText(
+                                this@TripListingActivity,
+                                "No trips available.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                    }
+
+            }
+
+            override fun onFailure(call: Call<TripListResponseModel>, t: Throwable) {
+                progressDialogP.dismiss()
+            }
+        })
+
+
+
+
+
+
+    }
+
+
+    fun callStudentListApi() {
+        studentListArrayList=ArrayList()
+        val token = PreferenceManager.getUserCode(context)
+        val call: Call<StudentListModel> = ApiClient.getClient.studentList("Bearer " + token)
+        call.enqueue(object : Callback<StudentListModel> {
+            override fun onFailure(call: Call<StudentListModel>, t: Throwable) {
+                Log.e("Error", t.localizedMessage)
+            }
+
+            override fun onResponse(
+                call: Call<StudentListModel>,
+                response: Response<StudentListModel>
+            ) {
+                if (response.body()!!.status == 100)
+                {
+                    studentListArrayList=ArrayList()
+                    studentListArrayList.addAll(response.body()!!.dataArray.studentListArray)
+                    Log.e("studlistsize",studentListArrayList.size.toString())
+                    if (PreferenceManager.getStudentID(context)==0)
+                    {
+                        Log.e("Empty", "Empty")
+                        studentName = studentListArrayList.get(0).studentName
+                        studentImg = studentListArrayList.get(0).photo
+                        studentId = studentListArrayList.get(0).studentId
+                        studentClass = studentListArrayList.get(0).section
+                        PreferenceManager.setStudentID(context, studentId)
+                        PreferenceManager.setStudentName(context, studentName)
+                        PreferenceManager.setStudentPhoto(context, studentImg)
+                        PreferenceManager.setStudentClass(context, studentClass)
+                        studentNameTxt.text = studentName
+                        if (!studentImg.equals(""))
+                        {
+                            Glide.with(context) //1
+                                .load(studentImg).fitCenter()
+
+                                .placeholder(R.drawable.boy)
+                                .error(R.drawable.boy)
+                                .skipMemoryCache(true) //2
+                                .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                                .transform(CircleCrop()) //4
+                                .into(studImg)
+                        } else {
+                            studImg.setImageResource(R.drawable.boy)
+
+                        }
+
+                    } else {
+                        studentName = PreferenceManager.getStudentName(context)!!
+                        studentImg = PreferenceManager.getStudentPhoto(context)!!
+                        studentId = PreferenceManager.getStudentID(context)
+                        studentClass = PreferenceManager.getStudentClass(context)!!
+                        studentNameTxt.text = studentName
+                        if (studentImg != "") {
+                            Glide.with(context) //1
+                                .load(studentImg).fitCenter()
+
+                                .placeholder(R.drawable.boy)
+                                .error(R.drawable.boy)
+                                .skipMemoryCache(true) //2
+                                .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                                .transform(CircleCrop()) //4
+                                .into(studImg)
+                        } else {
+                            studImg.setImageResource(R.drawable.boy)
+                        }
+                    }
+
+                    if (CommonMethods.isInternetAvailable(context)) {
+                        callTripList()
+                    }
+                    else
+                    {
+                        CommonMethods.showSuccessInternetAlert(context)
+                    }
+                }
+                else if(response.body()!!.status==116)
+                {
+                    PreferenceManager.setUserCode(context,"")
+                    PreferenceManager.setUserEmail(context,"")
+                    val mIntent = Intent(this@TripListingActivity, LoginActivity::class.java)
+                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    context.startActivity(mIntent)
+
+                }
+
+                else
+                {
+
+                }
+            }
+        })
+    }
+
+}

@@ -16,5 +16,6 @@ class ClassNameConstants {
         var LOGOUT = "Logout"
         var CONTACT_US = "Contact us"
         var PAYMENT = "Payments"
+        var TRIPS = "Trips"
     }
 }

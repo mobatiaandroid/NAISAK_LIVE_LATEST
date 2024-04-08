@@ -13,7 +13,8 @@ android {
         minSdkVersion 26
         targetSdkVersion 33
         versionCode 5
-        versionName "1.4"
+        versionName "1.3"
+        // changed by Sanju - Latest version 1.4
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     configurations {
