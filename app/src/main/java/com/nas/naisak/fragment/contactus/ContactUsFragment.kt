@@ -274,16 +274,16 @@ class ContactUsFragment : Fragment(), LocationListener,
 
     }
 
-    override fun onMarkerDragEnd(p0: Marker?) {
+    override fun onMarkerDrag(p0: Marker) {
     }
 
-    override fun onMarkerDragStart(p0: Marker?) {
+    override fun onMarkerDragEnd(p0: Marker) {
     }
 
-    override fun onMarkerDrag(p0: Marker?) {
+    override fun onMarkerDragStart(p0: Marker) {
     }
 
-    override fun onMapLongClick(p0: LatLng?) {
+    override fun onMapLongClick(p0: LatLng) {
     }
 
 }
