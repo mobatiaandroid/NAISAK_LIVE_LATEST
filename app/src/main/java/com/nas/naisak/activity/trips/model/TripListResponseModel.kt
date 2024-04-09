@@ -3,22 +3,27 @@ package com.nas.naisak.activity.trips.model
 import com.google.gson.annotations.SerializedName
 
 
+
 data class TripListResponseModel(
     @SerializedName("status")
     val status: Int,
     @SerializedName("message")
     val message: String,
     @SerializedName("validation_errors")
-    val validationErrors: List<Any>,
+    val validationErrors: List<String>,
     @SerializedName("data")
-    val data: TripData
-){
-    data class TripData(
+    val data: Data
+) {
+    data class Data(
+        @SerializedName("choices_exceed")
+        val choicesExceed: String,
+        @SerializedName("no_of_trips_exceed")
+        val noOfTripsExceed: String,
         @SerializedName("lists")
-        val lists: ArrayList<TripItem>
+        val lists: ArrayList<Trip>
     )
 
-    data class TripItem(
+    data class Trip(
         @SerializedName("id")
         val id: Int,
         @SerializedName("trip_nam_en")

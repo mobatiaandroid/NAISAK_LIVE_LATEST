@@ -1,6 +1,8 @@
 package com.nas.naisak.constants
 
+import GeneralSubmitResponseModel
 import TripChoicePreferenceResponseModel
+import TripDetailsResponseModel
 import com.google.gson.JsonObject
 import com.nas.naisak.activity.cca.model.*
 import com.nas.naisak.activity.communication.model.SocialMediaResponse
@@ -13,6 +15,7 @@ import com.nas.naisak.activity.parents_meeting.model.PostSlotRequestModel
 import com.nas.naisak.activity.parents_meeting.model.PostSlotResponseModel
 import com.nas.naisak.activity.parents_meeting.model.ReviewAppointmentsResponseModel
 import com.nas.naisak.activity.payment.payhere.model.*
+import com.nas.naisak.activity.trips.model.SubmitDocResponseModel
 import com.nas.naisak.activity.trips.model.TripCategoriesResponseModel
 import com.nas.naisak.activity.trips.model.TripConsentResponseModel
 import com.nas.naisak.activity.trips.model.TripListResponseModel
@@ -433,14 +436,14 @@ interface ApiInterface {
     fun tripDetail(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
-    ): Call<ResponseBody?>?
+    ): Call<TripDetailsResponseModel>
 
     @POST("api/v1/parent/trip_intention_submit")
     @Headers("Content-Type: application/json")
     fun tripIntentSubmit(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
-    ): Call<ResponseBody?>?
+    ): Call<GeneralSubmitResponseModel>
 
     @Multipart
     @POST("api/v1/parent/trip_document_submit")
@@ -452,7 +455,7 @@ interface ApiInterface {
         @Part("card_number") cardNumber: RequestBody?,
         @Part image: Part?,
         @Part image2: Part?
-    ): Call<ResponseBody?>?
+    ): Call<SubmitDocResponseModel>
 
     @Multipart
     @POST("api/v1/parent/trip_document_submit")
@@ -463,7 +466,7 @@ interface ApiInterface {
         @Part("student_id") studentId: RequestBody?,
         @Part("card_number") cardNumber: RequestBody?,
         @Part image: Part?
-    ): Call<ResponseBody?>?
+    ): Call<SubmitDocResponseModel>
 
     @Multipart
     @POST("api/v1/parent/trip_document_submit")
@@ -474,7 +477,7 @@ interface ApiInterface {
         @Part("student_id") studentId: RequestBody?,
         @Part("card_number") cardNumber: RequestBody?,
         @Part image: Part?
-    ): Call<ResponseBody?>?
+    ): Call<SubmitDocResponseModel>
 
     @POST("api/v1/parent/trip_history")
     @Headers("Content-Type: application/json")
@@ -504,7 +507,14 @@ interface ApiInterface {
 
     @POST("api/v1/parent/trip_choices_count")
     @Headers("Content-Type: application/json")
-    fun tripChoicePreference(@Header("Authorization") token: String?): Call<TripChoicePreferenceResponseModel?>?
+    fun tripChoicePreference(@Header("Authorization") token: String?)
+            : Call<TripChoicePreferenceResponseModel>
 
+    @POST("Api-V1/trip_max_students_count_check")
+    @Headers("Content-Type: application/json")
+    fun tripCountCheck(
+        @Header("Authorization") token: String?,
+        @Body json: JsonObject?
+    ): Call<ResponseBody>
 
 }

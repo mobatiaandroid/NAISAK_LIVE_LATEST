@@ -22,7 +22,7 @@
             android:layout_centerHorizontal="true"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Trip Payment"
+            android:text="Select Payment Method"
             android:textColor="@android:color/darker_gray" />
 
         <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
@@ -113,7 +113,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/trip_textview_bg"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
 
         <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
@@ -172,7 +173,7 @@
 
         android:background="@drawable/trip_textview_bg"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/debitCardView"
@@ -258,7 +259,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/trip_textview_bg"
         android:orientation="horizontal"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <com.nas.naisak.customviews.textview.CustomFontTextViewBoldBlack
             android:id="@+id/paymini"

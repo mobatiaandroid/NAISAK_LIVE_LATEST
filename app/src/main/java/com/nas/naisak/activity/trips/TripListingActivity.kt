@@ -66,7 +66,7 @@ class TripListingActivity : AppCompatActivity() {
     lateinit var tripsCategoryAdapter: TripListAdapter
     var contactEmail = ""
     lateinit var back: ImageView
-    lateinit var btn_history: ImageView
+//    lateinit var btn_history: ImageView
     lateinit var home: ImageView
     lateinit var studentNameTxt: TextView
     lateinit var studImg: ImageView
@@ -79,7 +79,7 @@ class TripListingActivity : AppCompatActivity() {
     private lateinit var logoClickImgView: ImageView
     private lateinit var btn_left: ImageView
     private lateinit var heading: TextView
-    var tripList : ArrayList<TripListResponseModel.TripItem> = ArrayList()
+    var tripList: ArrayList<TripListResponseModel.Trip> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,20 +95,18 @@ class TripListingActivity : AppCompatActivity() {
 
     private fun initialiseUI() {
         extras = intent.extras!!
-        if (extras != null) {
-            categoryID = extras.getString("trip_category_id")!!
-            categoryName = extras.getString("trip_category_name")!!
-        }
+        categoryID = extras.getInt("trip_category_id", 0).toString()!!
+        categoryName = extras.getString("trip_category_name")!!
         progressDialogP = ProgressBarDialog(context, R.drawable.spinner)
-        bannerImageView = findViewById(R.id.bannerImage)
-        descriptionTextView = findViewById(R.id.descriptionTextView)
-        sendEmailImageView = findViewById(R.id.sendEmailImageView)
+//        bannerImageView = findViewById(R.id.bannerImage)
+//        descriptionTextView = findViewById(R.id.descriptionTextView)
+//        sendEmailImageView = findViewById(R.id.sendEmailImageView)
         relativeHeader = findViewById(R.id.relativeHeader)
 //        headermanager = HeaderManager(this@TripListingActivity, categoryName)
 //        headermanager.getHeader(relativeHeader, 6)
 //        back = headermanager.getLeftButton()
 //        btn_history = headermanager.getRightHistoryImage()
-        btn_history.visibility = View.INVISIBLE
+//        btn_history.visibility = View.INVISIBLE
         tripListRecycler = findViewById(R.id.tripListRecycler)
         tripListRecycler.setHasFixedSize(true)
         val spacing = 5 // 50px
@@ -229,19 +227,23 @@ class TripListingActivity : AppCompatActivity() {
                 response: Response<TripListResponseModel>
             ) {
                 progressDialogP.dismiss()
-                tripList = java.util.ArrayList<TripListResponseModel.TripItem>()
-                assert(response.body() != null)
-                    if (response.body()!!.status.equals("100")) {
-                        if (response.body()!!.data.lists.size > 0) {
-                            tripList = response.body()!!.data.lists
-                            if (tripList.size > 0) {
-                                Log.e("Here", "Here")
-                                tripsCategoryAdapter = TripListAdapter(context, tripList)
-                                tripListRecycler.adapter = tripsCategoryAdapter
-                            } else {
-                                Log.e("Here", "not")
-                                tripList =
-                                    java.util.ArrayList<TripListResponseModel.TripItem>()
+                tripList = ArrayList()
+                Log.e("statys", response.body()!!.data.lists.size.toString())
+//                assert(response.body() != null)
+                if (response.body()!!.status == 100) {
+                    if (response.body()!!.data.lists.size > 0) {
+                        Log.e("asd", response.body()!!.data.lists.size.toString())
+
+                        tripList = response.body()!!.data.lists
+                        Log.e("tripList", tripList.size.toString())
+                        if (tripList.size > 0) {
+                            Log.e("Here", "Here")
+                            tripsCategoryAdapter = TripListAdapter(context, tripList)
+                            tripListRecycler.adapter = tripsCategoryAdapter
+                        } else {
+                            Log.e("Here", "not")
+                            tripList =
+                                ArrayList<TripListResponseModel.Trip>()
                                 tripsCategoryAdapter =
                                     TripListAdapter(context, ArrayList())
                                 tripListRecycler.adapter = tripsCategoryAdapter
@@ -252,9 +254,9 @@ class TripListingActivity : AppCompatActivity() {
                                 ).show()
                             }
                         } else {
-                            tripList = java.util.ArrayList<TripListResponseModel.TripItem>()
-                            tripsCategoryAdapter =
-                                TripListAdapter(context, ArrayList())
+                        tripList = java.util.ArrayList<TripListResponseModel.Trip>()
+                        tripsCategoryAdapter =
+                            TripListAdapter(context, ArrayList())
                             tripListRecycler.adapter = tripsCategoryAdapter
                             Toast.makeText(
                                 this@TripListingActivity,
@@ -263,6 +265,7 @@ class TripListingActivity : AppCompatActivity() {
                             ).show()
                         }
                     } else {
+                    Log.e("here", "what is her")
                     }
 
             }

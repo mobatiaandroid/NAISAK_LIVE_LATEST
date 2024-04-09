@@ -1,26 +1,26 @@
 package com.nas.naisak.activity.trips.adapter
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nas.naisak.R
-import com.nas.naisak.activity.trips.TripDetailsActivity
 import com.nas.naisak.activity.trips.model.TripListResponseModel
 import com.nas.naisak.constants.CommonMethods
 
 
 class TripListAdapter(
-    mContext: Context, mListViewArray: ArrayList<TripListResponseModel.TripItem>
+    mContext: Context, mListViewArray: ArrayList<TripListResponseModel.Trip>
 ) : RecyclerView.Adapter<TripListAdapter.MyViewHolder>() {
     private val context: Context = mContext
-    private val tripList: java.util.ArrayList<TripListResponseModel.TripItem> = mListViewArray
+    private val tripList: java.util.ArrayList<TripListResponseModel.Trip> = mListViewArray
 
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -80,17 +80,20 @@ class TripListAdapter(
         }
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, TripDetailsActivity::class.java)
-            intent.putExtra("tripID", tripList[position].id)
-            intent.putExtra("tripName", tripList[position].tripNameEn)
-            context.startActivity(intent)
+//            val intent = Intent(context, TripDetailsActivity::class.java)
+//            intent.putExtra("tripID", tripList[position].id)
+//            intent.putExtra("tripName", tripList[position].tripNameEn)
+//            context.startActivity(intent)
+            showPaymentsPopUp(context)
+
             //                showIntentionPopUp();
         }
         holder.tripBookButton.setOnClickListener {
-            val intent = Intent(context, TripDetailsActivity::class.java)
-            intent.putExtra("tripID", tripList[position].id)
-            intent.putExtra("tripName", tripList[position].tripNameEn)
-            context.startActivity(intent)
+//            val intent = Intent(context, TripDetailsActivity::class.java)
+//            intent.putExtra("tripID", tripList[position].id)
+//            intent.putExtra("tripName", tripList[position].tripNameEn)
+//            context.startActivity(intent)
+            showPaymentsPopUp(context)
             //                showIntentionPopUp();
         }
         holder.tripPriceTextView.setText(tripList[position].totalPrice + " AED")
@@ -101,6 +104,55 @@ class TripListAdapter(
             )
         )
     }
+
+    private fun showPaymentsPopUp(activity: Context) {
+        var flag = false
+        val bottomSheetDialog = BottomSheetDialog(activity, R.style.BottomSheetDialogTheme)
+        val layout: View =
+            LayoutInflater.from(activity)
+                .inflate(R.layout.dialog_bottom_sheet_payment_credit_or_debit, null)
+        bottomSheetDialog.setContentView(layout)
+        bottomSheetDialog.setCancelable(false)
+        bottomSheetDialog.setCanceledOnTouchOutside(true)
+//        val payTotalView = bottomSheetDialog.findViewById<ConstraintLayout>(R.id.payTotalView)
+//        val payInstallmentView =
+//            bottomSheetDialog.findViewById<ConstraintLayout>(R.id.payInstallmentView)
+//        val selectPaymentMethodView =
+        bottomSheetDialog.findViewById<ConstraintLayout>(R.id.selectPaymentMethodView)
+//        val totalAmountTextView = bottomSheetDialog.findViewById<TextView>(R.id.totalAmountTextView)
+//        totalAmountTextView!!.text = "425 AED"
+
+//        if (multipleInstallmentsArray.size > 1) {
+//            payInstallmentView!!.visibility = View.VISIBLE
+//        } else {
+//            payInstallmentView!!.visibility = View.GONE
+//        }
+//        if (tripStatus.equals("6", ignoreCase = true)) {
+//            payInstallmentView.visibility = View.VISIBLE
+//            payTotalView!!.visibility = View.GONE
+//        }
+//        payInstallmentView.setOnClickListener {
+//            bottomSheetDialog.dismiss()
+//            val intent = Intent(context, TripInstallmentActivity::class.java)
+////            intent.putExtra("tripID", tripID)
+////            intent.putExtra("tripName", tripName)
+//            context.startActivity(intent)
+//        }
+//        payTotalView!!.setOnClickListener {
+////            bottomSheetDialog.dismiss()
+////            initialisePayment()
+//            if (!flag){
+//                flag = true
+//                selectPaymentMethodView!!.visibility = View.VISIBLE
+//            }else{
+//                flag = false
+//                selectPaymentMethodView!!.visibility = View.GONE
+//
+//            }
+//        }
+        bottomSheetDialog.show()
+    }
+
 
     override fun getItemCount(): Int {
         return tripList.size

@@ -2,6 +2,7 @@ package com.nas.naisak.activity.trips.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,6 +51,8 @@ class TripsCategoryAdapter(mContext: Context, mListViewArray: ArrayList<TripCate
         }
         holder.itemView.setOnClickListener {
             val intent = Intent(context, TripListingActivity::class.java)
+            Log.e("trip_category_id", tripCategoryArrayList[position].id.toString())
+            Log.e("trip_category_id", tripCategoryArrayList[position].tripCategoryEn.toString())
             intent.putExtra("trip_category_id", tripCategoryArrayList[position].id)
             intent.putExtra("trip_category_name", tripCategoryArrayList[position].tripCategoryEn)
             context.startActivity(intent)

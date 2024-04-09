@@ -1,6 +1,6 @@
 import com.google.gson.annotations.SerializedName
 
-data class TripChoicePreferenceResponseModel(
+data class GeneralSubmitResponseModel(
     @SerializedName("status")
     val status: Int,
     @SerializedName("message")
@@ -11,7 +11,3 @@ data class TripChoicePreferenceResponseModel(
     val data: Data
 )
 
-data class Data(
-    @SerializedName("choices")
-    val choices: ArrayList<String>
-)

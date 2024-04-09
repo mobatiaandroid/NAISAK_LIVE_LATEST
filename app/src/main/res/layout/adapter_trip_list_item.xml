@@ -70,9 +70,11 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginTop="5dp"
                 android:textColor="@color/white"
+
+                android:layout_weight="1.5"
                 android:textAllCaps="false"
                 android:background="@drawable/navy_blue_rectangle"
-                android:layout_weight="1.5"/>
+                android:gravity="center" />
         </LinearLayout>
     </LinearLayout>
 
