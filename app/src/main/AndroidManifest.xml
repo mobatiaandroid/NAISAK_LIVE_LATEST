@@ -28,11 +28,16 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup,android:icon, android:label, android:theme">
         <activity
-            android:name=".activity.trips.TripImagesViewActivity"
+            android:name=".activity.trips.TripInstallmentActivity"
             android:exported="false" />
-        <!--        <activity-->
-        <!--            android:name=".activity.trips.TripDetailsActivity"-->
-        <!--            android:exported="false" />-->
+        <activity
+            android:name=".activity.trips.TripInvoiceListingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.trips.TripImagesViewActivity"
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".activity.trips.TripDetailsActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".activity.trips.TripListingActivity"
             android:exported="false"

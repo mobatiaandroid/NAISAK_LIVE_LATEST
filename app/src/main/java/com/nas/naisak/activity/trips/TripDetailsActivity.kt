@@ -15,6 +15,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.provider.MediaStore
 import android.provider.Settings
 import android.text.Html
 import android.util.Log
@@ -46,6 +47,10 @@ import com.nas.naisak.R
 import com.nas.naisak.activity.trips.adapter.ImagePagerDrawableAdapter
 import com.nas.naisak.activity.trips.adapter.TripImageAdapter
 import com.nas.naisak.activity.trips.adapter.TripsCategoryAdapter
+import com.nas.naisak.activity.trips.model.ChoicePreferenceModel
+import com.nas.naisak.activity.trips.model.TripCategoriesResponseModel
+import com.nas.naisak.activity.trips.model.TripConsentResponseModel
+import com.nas.naisak.constants.ApiClient
 import com.nas.naisak.constants.CommonMethods
 import com.nas.naisak.constants.GridSpacingItemDecoration
 import com.nas.naisak.constants.PreferenceManager
@@ -93,7 +98,7 @@ class TripDetailsActivity : AppCompatActivity() {
     lateinit var sendEmailImageView: ImageView
     lateinit var recyclerViewLayoutManager: LinearLayoutManager
 
-    lateinit var categoriesList: ArrayList<TripCategoriesResponseModel.Data>
+    //    lateinit var categoriesList: ArrayList<TripCategoriesResponseModel.Data>
     lateinit var tripsCategoryAdapter: TripsCategoryAdapter
     lateinit var back: ImageView
     lateinit var btn_history: ImageView
@@ -171,7 +176,7 @@ class TripDetailsActivity : AppCompatActivity() {
     )
     lateinit var choicePreferenceArray: ArrayList<String>
 
-    //    lateinit var choicePreferenceSorted: ArrayList<ChoicePreferenceModel>
+    lateinit var choicePreferenceSorted: ArrayList<ChoicePreferenceModel>
     private var permissionFlag = true
     private var studentDetailsFLag = true
     private var passportDetailsFLag = true
@@ -473,6 +478,75 @@ class TripDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun getTripConsent() {
+        val paramObject = JsonObject()
+        Log.e("tripID name", tripID)
+        paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
+        paramObject.addProperty("trip_item_id", tripID)
+        val call: Call<TripConsentResponseModel> =
+            ApiClient.getClient.tripConsent(
+                "Bearer " + PreferenceManager.getUserCode(context),
+                paramObject
+            )
+        call.enqueue(object : Callback<TripConsentResponseModel> {
+            override fun onResponse(
+                call: Call<TripConsentResponseModel>,
+                response: Response<TripConsentResponseModel>
+            ) {
+                if (response.body()!!.status == 200) {
+
+                    permissionSlip = response.body()!!.data.lists.permissionContent
+
+                } else {
+                }
+            }
+
+            override fun onFailure(call: Call<TripConsentResponseModel>, t: Throwable) {
+            }
+
+        })
+
+    }
+
+    private fun showCoordinatorDetailsPopUp() {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_coordinator_details)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val coordinatorNameTextView = dialog.findViewById<TextView>(R.id.coordinatorNameTextView)
+        val phoneContactEditText = dialog.findViewById<EditText>(R.id.phoneContactEditText)
+        val emailContactEditText = dialog.findViewById<EditText>(R.id.emailContactEditText)
+        val whatsappContactEditText = dialog.findViewById<EditText>(R.id.whatsappContactEditText)
+        coordinatorNameTextView.text = coodName
+        phoneContactEditText.setText(coodPhone)
+        emailContactEditText.setText(coodEmail)
+        whatsappContactEditText.setText(coodWhatsapp)
+        emailContactEditText.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SENDTO)
+            intent.setData(Uri.parse("mailto:$coodEmail"))
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            }
+        }
+        phoneContactEditText.setOnClickListener {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.setData(Uri.parse("tel:$coodPhone"))
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            }
+        }
+        whatsappContactEditText.setOnClickListener {
+            val url = "https://wa.me/$coodWhatsapp"
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setData(Uri.parse(url))
+            if (intent.resolveActivity(packageManager) != null) {
+                startActivity(intent)
+            }
+        }
+        dialog.show()
+    }
+
+
     private fun showPaymentsPopUp(activity: Context) {
         val bottomSheetDialog = BottomSheetDialog(activity, R.style.BottomSheetDialogTheme)
         val layout: View =
@@ -515,13 +589,15 @@ class TripDetailsActivity : AppCompatActivity() {
         Log.e("tripID name", tripID)
         paramObject.addProperty("student_id", PreferenceManager.getTripStudentId(context))
         paramObject.addProperty("trip_id", tripID)
-        val service: APIInterface = APIClient.getRetrofitInstance().create(APIInterface::class.java)
-        val call: Call<TripDetailsResponseModel> =
-            service.tripDetail("Bearer " + PreferenceManager.getAccessToken(context), paramObject)
-        call.enqueue(object : Callback<TripDetailsResponseModel> {
+        val call: Call<TripCategoriesResponseModel> =
+            ApiClient.getClient.tripDetail(
+                "Bearer " + PreferenceManager.getUserCode(context),
+                paramObject
+            )
+        call.enqueue(object : Callback<TripCategoriesResponseModel> {
             override fun onResponse(
-                call: Call<TripDetailsResponseModel>,
-                response: Response<TripDetailsResponseModel>
+                call: Call<TripCategoriesResponseModel>,
+                response: Response<TripCategoriesResponseModel>
             ) {
                 progressDialogP.dismiss()
                 if (response.body().getResponseCode().equalsIgnoreCase("200")) {
@@ -693,19 +769,18 @@ class TripDetailsActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<TripDetailsResponseModel>, t: Throwable) {
+            override fun onFailure(call: Call<TripCategoriesResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
                 Log.e("error", t.localizedMessage)
                 CommonMethods.showDialogueWithOk(context, getString(R.string.common_error), "")
-                AppUtils.showDialogAlertDismiss(
+                CommonMethods.showDialogueWithOk(
                     context as Activity,
-                    "Alert",
                     getString(R.string.common_error),
-                    R.drawable.exclamationicon,
-                    R.drawable.round
+                    "Alert"
                 )
             }
         })
+
     }
 
 
@@ -720,7 +795,7 @@ class TripDetailsActivity : AppCompatActivity() {
         dial.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dial.setCancelable(false)
         dial.setContentView(R.layout.dialog_details_submit_new)
-        val nxt_btn = dial.findViewById<Button>(R.id.paymentbutton)
+//        val nxt_btn = dial.findViewById<Button>(R.id.paymentbutton)
         val permissionLinear = dial.findViewById<ConstraintLayout>(R.id.permissionDetailsConstraint)
         val passportLinear = dial.findViewById<LinearLayout>(R.id.passportConstraint)
         val visaDetailsLinear = dial.findViewById<LinearLayout>(R.id.visaConstraint)
@@ -924,7 +999,7 @@ class TripDetailsActivity : AppCompatActivity() {
         close_btn.setOnClickListener { dial.dismiss() }
         chooseFilePassportFront.setOnClickListener {
             currentPosition = 0
-            openGallery(TripDetailActivity.PICK_IMAGE_FRONT_PASSPORT)
+            openGallery(PICK_IMAGE_FRONT_PASSPORT)
         }
         rememeberMeImg.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
@@ -933,7 +1008,7 @@ class TripDetailsActivity : AppCompatActivity() {
         }
         chooseFilePassportBack.setOnClickListener {
             currentPosition = 1
-            openGallery(TripDetailActivity.PICK_IMAGE_BACK_PASSPORT)
+            openGallery(PICK_IMAGE_BACK_PASSPORT)
         }
         uploadPassportDetailsButton.setOnClickListener {
             Log.e("herer", "gesg")
@@ -960,11 +1035,11 @@ class TripDetailsActivity : AppCompatActivity() {
         }
         chooseFileVisaFront.setOnClickListener {
             currentPosition = 0
-            openGallery(TripDetailActivity.PICK_IMAGE_FRONT_VISA)
+            openGallery(PICK_IMAGE_FRONT_VISA)
         }
         chooseFileVisaBack.setOnClickListener {
             currentPosition = 1
-            openGallery(TripDetailActivity.PICK_IMAGE_BACK_VISA)
+            openGallery(PICK_IMAGE_BACK_VISA)
         }
         uploadVisaDetailsButton.setOnClickListener {
             Log.e("herer", visaURIArray[1].path!!)
@@ -987,11 +1062,11 @@ class TripDetailsActivity : AppCompatActivity() {
         }
         chooseFileEIDFront.setOnClickListener {
             currentPosition = 0
-            openGallery(TripDetailActivity.PICK_IMAGE_FRONT_EID)
+            openGallery(PICK_IMAGE_FRONT_EID)
         }
         choosefileEIDBack.setOnClickListener {
             currentPosition = 1
-            openGallery(TripDetailActivity.PICK_IMAGE_BACK_EID)
+            openGallery(PICK_IMAGE_BACK_EID)
         }
         uploadEIDDetailsButton.setOnClickListener {
             Log.e("herer", eIDURIArray[0].path!!)
@@ -1021,15 +1096,22 @@ class TripDetailsActivity : AppCompatActivity() {
         dial.show()
     }
 
+    private fun openGallery(requestCode: Int) {
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(galleryIntent, requestCode)
+    }
+
 
     private fun getChoicePreferenceArrayList() {
-        val service: APIInterface = APIClient.getRetrofitInstance().create(APIInterface::class.java)
-        val call: Call<TripChoicePreferenceResponseModel> =
-            service.tripChoicePreference("Bearer " + PreferenceManager.getAccessToken(context))
-        call.enqueue(object : Callback<TripChoicePreferenceResponseModel> {
+        val call: Call<TripCategoriesResponseModel> =
+            ApiClient.getClient.tripChoicePreference(
+                "Bearer " + PreferenceManager.getUserCode(context)
+            )
+        call.enqueue(object : Callback<TripCategoriesResponseModel> {
+
             override fun onResponse(
-                call: Call<TripChoicePreferenceResponseModel>,
-                response: Response<TripChoicePreferenceResponseModel>
+                call: Call<TripCategoriesResponseModel>,
+                response: Response<TripCategoriesResponseModel>
             ) {
                 choicePreferenceArray = response.body().getResponse().getChoices()
                 for (choice in choicePreferenceArray) {
@@ -1040,11 +1122,13 @@ class TripDetailsActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<TripChoicePreferenceResponseModel>, t: Throwable) {
-                Toast.makeText(this@TripDetailActivity, "Some error occurred.", Toast.LENGTH_SHORT)
+            override fun onFailure(call: Call<TripCategoriesResponseModel>, t: Throwable) {
+                Toast.makeText(this@TripDetailsActivity, "Some error occurred.", Toast.LENGTH_SHORT)
                     .show()
             }
+
         })
+
     }
 
 
@@ -1055,15 +1139,16 @@ class TripDetailsActivity : AppCompatActivity() {
         val paramObject = JsonObject()
         Log.e("tripID name", tripID!!)
         paramObject.addProperty("trip_id", tripID)
-        val service: APIInterface = APIClient.getRetrofitInstance().create(APIInterface::class.java)
-        val call: Call<TripCountResponseModel> = service.tripCountCheck(
-            "Bearer " + PreferenceManager.getAccessToken(context),
-            paramObject
-        )
-        call.enqueue(object : Callback<TripCountResponseModel?> {
+        val call: Call<TripCategoriesResponseModel> =
+            ApiClient.getClient.tripCountCheck(
+                "Bearer " + PreferenceManager.getUserCode(context),
+                paramObject
+            )
+        call.enqueue(object : Callback<TripCategoriesResponseModel> {
+
             override fun onResponse(
-                call: Call<TripCountResponseModel?>,
-                response: Response<TripCountResponseModel?>
+                call: Call<TripCategoriesResponseModel>,
+                response: Response<TripCategoriesResponseModel>
             ) {
                 val isTripCountEmpty =
                     response.isSuccessful() && response.body() != null && response.body()
@@ -1071,10 +1156,12 @@ class TripDetailsActivity : AppCompatActivity() {
                 callback.onTripCountChecked(isTripCountEmpty)
             }
 
-            override fun onFailure(call: Call<TripCountResponseModel?>, t: Throwable) {
+            override fun onFailure(call: Call<TripCategoriesResponseModel>, t: Throwable) {
                 callback.onTripCountChecked(false)
             }
+
         })
+
     }
 
 
@@ -1156,15 +1243,16 @@ class TripDetailsActivity : AppCompatActivity() {
         paramObject.addProperty("trip_item_id", tripID)
         paramObject.addProperty("status", intent)
         paramObject.addProperty("preference", preference)
-        val service: APIInterface = APIClient.getRetrofitInstance().create(APIInterface::class.java)
-        val call: Call<GeneralSubmitResponseModel> = service.tripIntentSubmit(
-            "Bearer " + PreferenceManager.getAccessToken(context),
-            paramObject
-        )
-        call.enqueue(object : Callback<GeneralSubmitResponseModel> {
+        val call: Call<TripCategoriesResponseModel> =
+            ApiClient.getClient.tripIntentSubmit(
+                "Bearer " + PreferenceManager.getUserCode(context),
+                paramObject
+            )
+        call.enqueue(object : Callback<TripCategoriesResponseModel> {
+
             override fun onResponse(
-                call: Call<GeneralSubmitResponseModel>,
-                response: Response<GeneralSubmitResponseModel>
+                call: Call<TripCategoriesResponseModel>,
+                response: Response<TripCategoriesResponseModel>
             ) {
                 dialog.dismiss()
                 if (response.body().getResponseCode().equalsIgnoreCase("200")) {
@@ -1202,7 +1290,7 @@ class TripDetailsActivity : AppCompatActivity() {
                 getTripDetails(tripID)
             }
 
-            override fun onFailure(call: Call<GeneralSubmitResponseModel>, t: Throwable) {
+            override fun onFailure(call: Call<TripCategoriesResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
                 Log.e("error", t.localizedMessage)
                 CommonMethods.showDialogueWithOk(
@@ -1230,27 +1318,25 @@ class TripDetailsActivity : AppCompatActivity() {
         val trip_item_id = RequestBody.create(parse.parse("text/plain"), tripID)
         val card_number = RequestBody.create(parse.parse("text/plain"), "")
         val frontImagePart: Part? = attachment1
-        val service: APIInterface = APIClient.getRetrofitInstance().create(APIInterface::class.java)
-        progressDialogP.show()
-        val call: Call<TripDocumentSubmitResponseModel> = service.uploadPermissionSlip(
-            "Bearer " + PreferenceManager.getAccessToken(context),
-            action,
-            trip_item_id,
-            student_id,
-            card_number,
-            frontImagePart
-        )
-        call.enqueue(object : Callback<TripDocumentSubmitResponseModel> {
+        val call: Call<TripCategoriesResponseModel> =
+            ApiClient.getClient.uploadPermissionSlip(
+                "Bearer " + PreferenceManager.getUserCode(context), action,
+                trip_item_id,
+                student_id,
+                card_number,
+                frontImagePart
+            )
+        call.enqueue(object : Callback<TripCategoriesResponseModel> {
             override fun onResponse(
-                call: Call<TripDocumentSubmitResponseModel>,
-                response: Response<TripDocumentSubmitResponseModel>
+                call: Call<TripCategoriesResponseModel>,
+                response: Response<TripCategoriesResponseModel>
             ) {
                 progressDialogP.dismiss()
                 if (response.body().getResponseCode().equalsIgnoreCase("200")) {
                     if (response.body().getResponseData().getStatusCode().equalsIgnoreCase("303")) {
                         dial.dismiss()
                         Toast.makeText(
-                            this@TripDetailActivity,
+                            this@TripDetailsActivity,
                             "Permission slip successfully submitted.",
                             Toast.LENGTH_SHORT
                         ).show()
@@ -1284,11 +1370,13 @@ class TripDetailsActivity : AppCompatActivity() {
                 ).show()
             }
 
-            override fun onFailure(call: Call<TripDocumentSubmitResponseModel>, t: Throwable) {
+            override fun onFailure(call: Call<TripCategoriesResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
                 Log.e("Response", t.localizedMessage)
             }
+
         })
+
     }
 
     private fun bitmapToFile(bitmap: Bitmap): File {
@@ -1347,20 +1435,19 @@ class TripDetailsActivity : AppCompatActivity() {
             create(parse.parse("text/plain"), PreferenceManager.getTripStudentId(context))
         val trip_item_id = RequestBody.create(parse.parse("text/plain"), tripID)
         val card_number = RequestBody.create(parse.parse("text/plain"), number)
-        val service: APIInterface = APIClient.getRetrofitInstance().create(APIInterface::class.java)
-        progressDialogP.show()
-        val call: Call<TripDocumentSubmitResponseModel> = service.uploadSingleDocument(
-            "Bearer " + PreferenceManager.getAccessToken(context),
-            action,
-            trip_item_id,
-            student_id,
-            card_number,
-            frontImagePart
-        )
-        call.enqueue(object : Callback<TripDocumentSubmitResponseModel> {
+        val call: Call<TripCategoriesResponseModel> =
+            ApiClient.getClient.uploadPermissionSlip(
+                "Bearer " + PreferenceManager.getUserCode(context),
+                action,
+                trip_item_id,
+                student_id,
+                card_number,
+                frontImagePart
+            )
+        call.enqueue(object : Callback<TripCategoriesResponseModel> {
             override fun onResponse(
-                call: Call<TripDocumentSubmitResponseModel>,
-                response: Response<TripDocumentSubmitResponseModel>
+                call: Call<TripCategoriesResponseModel>,
+                response: Response<TripCategoriesResponseModel>
             ) {
                 progressDialogP.dismiss()
                 if (response.body().getResponseCode().equalsIgnoreCase("200")) {
@@ -1400,10 +1487,11 @@ class TripDetailsActivity : AppCompatActivity() {
                 ).show()
             }
 
-            override fun onFailure(call: Call<TripDocumentSubmitResponseModel>, t: Throwable) {
+            override fun onFailure(call: Call<TripCategoriesResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
                 Log.e("Response", t.localizedMessage)
             }
+
         })
     }
 
@@ -1429,21 +1517,19 @@ class TripDetailsActivity : AppCompatActivity() {
             create(parse.parse("text/plain"), PreferenceManager.getTripStudentId(context))
         val trip_item_id = RequestBody.create(parse.parse("text/plain"), tripID)
         val card_number = RequestBody.create(parse.parse("text/plain"), number)
-        val service: APIInterface = APIClient.getRetrofitInstance().create(APIInterface::class.java)
-        progressDialogP.show()
-        val call: Call<TripDocumentSubmitResponseModel> = service.uploadDocuments(
-            "Bearer " + PreferenceManager.getAccessToken(context),
-            action,
-            trip_item_id,
-            student_id,
-            card_number,
-            frontImagePart,
-            backImagePart
-        )
-        call.enqueue(object : Callback<TripDocumentSubmitResponseModel> {
+        val call: Call<TripCategoriesResponseModel> =
+            ApiClient.getClient.uploadPermissionSlip(
+                "Bearer " + PreferenceManager.getUserCode(context), action,
+                trip_item_id,
+                student_id,
+                card_number,
+                frontImagePart,
+                backImagePart
+            )
+        call.enqueue(object : Callback<TripCategoriesResponseModel> {
             override fun onResponse(
-                call: Call<TripDocumentSubmitResponseModel>,
-                response: Response<TripDocumentSubmitResponseModel>
+                call: Call<TripCategoriesResponseModel>,
+                response: Response<TripCategoriesResponseModel>
             ) {
                 progressDialogP.dismiss()
                 if (response.body().getResponseCode().equalsIgnoreCase("200")) {
@@ -1483,10 +1569,11 @@ class TripDetailsActivity : AppCompatActivity() {
                 ).show()
             }
 
-            override fun onFailure(call: Call<TripDocumentSubmitResponseModel>, t: Throwable) {
+            override fun onFailure(call: Call<TripCategoriesResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
                 Log.e("Response", t.localizedMessage)
             }
+
         })
     }
 

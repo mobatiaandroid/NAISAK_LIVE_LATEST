@@ -1,5 +1,6 @@
 package com.nas.naisak.constants
 
+import TripChoicePreferenceResponseModel
 import com.google.gson.JsonObject
 import com.nas.naisak.activity.cca.model.*
 import com.nas.naisak.activity.communication.model.SocialMediaResponse
@@ -13,6 +14,7 @@ import com.nas.naisak.activity.parents_meeting.model.PostSlotResponseModel
 import com.nas.naisak.activity.parents_meeting.model.ReviewAppointmentsResponseModel
 import com.nas.naisak.activity.payment.payhere.model.*
 import com.nas.naisak.activity.trips.model.TripCategoriesResponseModel
+import com.nas.naisak.activity.trips.model.TripConsentResponseModel
 import com.nas.naisak.activity.trips.model.TripListResponseModel
 import com.nas.naisak.commonmodels.*
 import com.nas.naisak.fragment.aboutus.model.NAEResponseModel
@@ -486,8 +488,7 @@ interface ApiInterface {
     fun tripConsent(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
-    ): Call<ResponseBody?>?
-
+    ): Call<TripConsentResponseModel>
 
 
     @POST("api/v1/parent/trip_payment_submit")
@@ -500,6 +501,10 @@ interface ApiInterface {
     @POST("api/v1/parent/trip_informations")
     @Headers("Content-Type: application/json")
     fun tripInfo(@Header("Authorization") token: String?): Call<ResponseBody?>?
+
+    @POST("api/v1/parent/trip_choices_count")
+    @Headers("Content-Type: application/json")
+    fun tripChoicePreference(@Header("Authorization") token: String?): Call<TripChoicePreferenceResponseModel?>?
 
 
 }
