@@ -1,0 +1,22 @@
+<!-- res/drawable/radio_unchecked.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Unchecked state -->
+    <item android:state_checked="false">
+        <layer-list>
+            <!-- Outer circle -->
+            <item>
+                <shape android:shape="oval">
+                    <stroke android:width="2dp" android:color="@color/parents_slot_color" /> <!-- Stroke color and width for the outer circle -->
+                    <solid android:color="@android:color/transparent" /> <!-- Transparent color for the outer circle -->
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <!-- Default state -->
+    <item>
+        <shape android:shape="oval">
+            <stroke android:width="2dp" android:color="@color/parents_slot_color" /> <!-- Stroke color and width for the outer circle -->
+            <solid android:color="@android:color/transparent" /> <!-- Transparent color for the outer circle -->
+        </shape>
+    </item>
+</selector>

@@ -1,48 +1,78 @@
 package com.nas.naisak.activity.trips
 
 //import com.github.gcacace.signaturepad.views.SignaturePad
+import GeneralSubmitResponseModel
 import TripChoicePreferenceResponseModel
 import TripDetailsResponseModel
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.provider.Settings
+import android.text.Html
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.github.gcacace.signaturepad.views.SignaturePad
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
 import com.nas.naisak.R
+import com.nas.naisak.activity.trips.adapter.ChoicePreferenceAdapter
+import com.nas.naisak.activity.trips.adapter.ImagePagerDrawableAdapter
 import com.nas.naisak.activity.trips.adapter.TripImageAdapter
 import com.nas.naisak.activity.trips.adapter.TripsCategoryAdapter
 import com.nas.naisak.activity.trips.model.ChoicePreferenceModel
+import com.nas.naisak.activity.trips.model.TripChoicePaymentCountResponseModel
 import com.nas.naisak.activity.trips.model.TripConsentResponseModel
 import com.nas.naisak.constants.ApiClient
+import com.nas.naisak.constants.CommonMethods
+import com.nas.naisak.constants.GridSpacingItemDecoration
 import com.nas.naisak.constants.PreferenceManager
 import com.nas.naisak.constants.ProgressBarDialog
+import com.nas.naisak.constants.recyclermanager.RecyclerItemListener
+import com.nas.naisak.fragment.home.mContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.Part
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.util.Timer
+import java.util.TimerTask
 import kotlin.properties.Delegates
 
 class TripDetailsActivity : AppCompatActivity() {
@@ -85,7 +115,7 @@ class TripDetailsActivity : AppCompatActivity() {
     lateinit var studClass: String
     lateinit var orderId: String
 
-    //    lateinit var tripStatus: Int
+    var tripStatus by Delegates.notNull<Int>()
     lateinit var paymentToken: String
     lateinit var permissionSlip: String
     lateinit var studentList: ArrayList<String>
@@ -128,7 +158,7 @@ class TripDetailsActivity : AppCompatActivity() {
     lateinit var tripChoiceExceed: String
     lateinit var tripPaymentExceed: String
 
-    //    lateinit var invoiceArrayList: ArrayList<TripDetailsResponseModel.TripData.Invoice>
+    lateinit var invoiceArrayList: ArrayList<TripDetailsResponseModel.Invoice>
     var currentPosition: Int? = 0
     lateinit var passportURIArray: ArrayList<Uri>
     lateinit var visaURIArray: ArrayList<Uri>
@@ -177,298 +207,290 @@ class TripDetailsActivity : AppCompatActivity() {
         externalStoragePermissionStatus =
             context.getSharedPreferences("externalStoragePermissionStatus", MODE_PRIVATE)
 
-//        initialiseUI()
+        initialiseUI()
 
     }
 
-//    private fun initialiseUI() {
-//        extras = intent.extras!!
-//        if (extras != null) {
-//            tripID = extras.getString("tripID")!!
-//            tripName = extras.getString("tripName")!!
+    private fun initialiseUI() {
+        extras = intent.extras!!
+        if (extras != null) {
+            tripID = extras.getString("tripID")!!
+            tripName = extras.getString("tripName")!!
+        }
+        val fixedLength = 2
+        passportURIArray = java.util.ArrayList(fixedLength)
+        for (i in 0 until fixedLength) {
+            passportURIArray.add(Uri.EMPTY)
+        }
+        visaURIArray = java.util.ArrayList(fixedLength)
+        for (i in 0 until fixedLength) {
+            visaURIArray.add(Uri.EMPTY)
+        }
+        eIDURIArray = java.util.ArrayList(fixedLength)
+        for (i in 0 until fixedLength) {
+            eIDURIArray.add(Uri.EMPTY)
+        }
+        progressDialogP = ProgressBarDialog(context, R.drawable.spinner)
+        tripImageRecycler = findViewById<RecyclerView>(R.id.tripImageRecycler)
+        tripMainBanner = findViewById<ViewPager>(R.id.tripMainImage)
+        tripNameTextView = findViewById(R.id.tripNameTextView)
+        tripAmountTextView = findViewById<TextView>(R.id.tripAmountTextView)
+        dateTextView = findViewById(R.id.dateTextView)
+        tripImageRecycler = findViewById<RecyclerView>(R.id.tripImageRecycler)
+
+        coordinatorNameTextView = findViewById<TextView>(R.id.coordinatorNameTextView)
+        coordinatorDetails = findViewById<TextView>(R.id.coordinatorDetails)
+        tripDescriptionTextView = findViewById<TextView>(R.id.tripDescriptionTextView)
+        submitIntentionButton = findViewById<Button>(R.id.submitIntentionButton)
+        submitDetailsButton = findViewById<Button>(R.id.submitDetailsButton)
+        tripStatusTextView = findViewById<TextView>(R.id.tripStatusTextView)
+        viewInvoice = findViewById<Button>(R.id.viewInvoice)
+//        descriptionTextView = findViewById(R.id.tripDescriptionTextView);
+        //        descriptionTextView = findViewById(R.id.tripDescriptionTextView);
+        paymentButton = findViewById<Button>(R.id.paymentButton)
+        relativeHeader = findViewById(R.id.relativeHeader)
+//        headermanager = HeaderManager(this@TripDetailActivity, tripName)
+//        headermanager.getHeader(relativeHeader, 6)
+//        back = headermanager.getLeftButton()
+//        btn_history = headermanager.getRightHistoryImage()
+//        btn_history.visibility = View.INVISIBLE
+        tripImageRecycler.setHasFixedSize(true)
+        val spacing = 5 // 50px
+
+//        val itemDecoration = ItemOffsetDecoration(context, spacing)
+        recyclerViewLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+
+//        tripImageRecycler.addItemDecoration(DividerItemDecoration(context.resources.getDrawable(R.drawable.list_divider)))
+//        tripImageRecycler.addItemDecoration(itemDecoration)
+        tripImageRecycler.addOnItemTouchListener(
+            RecyclerItemListener(context,
+                tripImageRecycler,
+                object : RecyclerItemListener.RecyclerTouchListener {
+                    override fun onClickItem(v: View?, position: Int) {
+                        val intent = Intent(context, TripImagesViewActivity::class.java)
+                        intent.putExtra("photo_array", imagesArray)
+                        intent.putExtra("pos", position)
+                        startActivity(intent)
+                    }
+
+                    override fun onLongClickItem(v: View?, position: Int) {}
+                })
+        )
+        heading = findViewById(R.id.heading)
+        btn_left = findViewById(R.id.btn_left)
+        logoClickImgView = findViewById(R.id.logoClickImgView)
+        heading.text = tripName
+
+        getChoicePreferenceArrayList()
+        tripImageRecycler.layoutManager = recyclerViewLayoutManager
+//        headermanager.setButtonLeftSelector(R.drawable.back, R.drawable.back)
+//        back.setOnClickListener {
+//            AppUtils.hideKeyBoard(context)
+//            finish()
 //        }
-//        val fixedLength = 2
-//        passportURIArray = java.util.ArrayList(fixedLength)
-//        for (i in 0 until fixedLength) {
-//            passportURIArray.add(Uri.EMPTY)
+
+//        home = headermanager.getLogoButton()
+//        home.setOnClickListener {
+//            val `in` = Intent(context, HomeListAppCompatActivity::class.java)
+//            `in`.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//            startActivity(`in`)
 //        }
-//        visaURIArray = java.util.ArrayList(fixedLength)
-//        for (i in 0 until fixedLength) {
-//            visaURIArray.add(Uri.EMPTY)
-//        }
-//        eIDURIArray = java.util.ArrayList(fixedLength)
-//        for (i in 0 until fixedLength) {
-//            eIDURIArray.add(Uri.EMPTY)
-//        }
-//        progressDialogP = ProgressBarDialog(context, R.drawable.spinner)
-//        tripImageRecycler = findViewById<RecyclerView>(R.id.tripImageRecycler)
-//        tripMainBanner = findViewById<ViewPager>(R.id.tripMainImage)
-//        tripNameTextView = findViewById(R.id.tripNameTextView)
-//        tripAmountTextView = findViewById<TextView>(R.id.tripAmountTextView)
-//        dateTextView = findViewById(R.id.dateTextView)
-//        tripImageRecycler = findViewById<RecyclerView>(R.id.tripImageRecycler)
-//
-//        coordinatorNameTextView = findViewById<TextView>(R.id.coordinatorNameTextView)
-//        coordinatorDetails = findViewById<TextView>(R.id.coordinatorDetails)
-//        tripDescriptionTextView = findViewById<TextView>(R.id.tripDescriptionTextView)
-//        submitIntentionButton = findViewById<Button>(R.id.submitIntentionButton)
-//        submitDetailsButton = findViewById<Button>(R.id.submitDetailsButton)
-//        tripStatusTextView = findViewById<TextView>(R.id.tripStatusTextView)
-//        viewInvoice = findViewById<Button>(R.id.viewInvoice)
-////        descriptionTextView = findViewById(R.id.tripDescriptionTextView);
-//        //        descriptionTextView = findViewById(R.id.tripDescriptionTextView);
-//        paymentButton = findViewById<Button>(R.id.paymentButton)
-//        relativeHeader = findViewById(R.id.relativeHeader)
-////        headermanager = HeaderManager(this@TripDetailActivity, tripName)
-////        headermanager.getHeader(relativeHeader, 6)
-////        back = headermanager.getLeftButton()
-////        btn_history = headermanager.getRightHistoryImage()
-////        btn_history.visibility = View.INVISIBLE
-//        tripImageRecycler.setHasFixedSize(true)
-//        val spacing = 5 // 50px
-//
-////        val itemDecoration = ItemOffsetDecoration(context, spacing)
-//        recyclerViewLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//
-////        tripImageRecycler.addItemDecoration(DividerItemDecoration(context.resources.getDrawable(R.drawable.list_divider)))
-////        tripImageRecycler.addItemDecoration(itemDecoration)
-//        tripImageRecycler.addOnItemTouchListener(
-//            RecyclerItemListener(
-//                context,
-//                tripImageRecycler,
-//                object : RecyclerItemListener.RecyclerTouchListener {
-//                    override fun onClickItem(v: View?, position: Int) {
-//                        val intent = Intent(context, TripImagesViewActivity::class.java)
-//                        intent.putExtra("photo_array", imagesArray)
-//                        intent.putExtra("pos", position)
-//                        startActivity(intent)
-//                    }
-//
-//                    override fun onLongClickItem(v: View?, position: Int) {}
-//                })
-//        )
-//        heading = findViewById(R.id.heading)
-//        btn_left = findViewById(R.id.btn_left)
-//        logoClickImgView = findViewById(R.id.logoClickImgView)
-//        heading.text = tripName
-//
-//        getChoicePreferenceArrayList()
-//        tripImageRecycler.layoutManager = recyclerViewLayoutManager
-////        headermanager.setButtonLeftSelector(R.drawable.back, R.drawable.back)
-////        back.setOnClickListener {
-////            AppUtils.hideKeyBoard(context)
-////            finish()
-////        }
-//
-////        home = headermanager.getLogoButton()
-////        home.setOnClickListener {
-////            val `in` = Intent(context, HomeListAppCompatActivity::class.java)
-////            `in`.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-////            startActivity(`in`)
-////        }
-//        submitIntentionButton.setOnClickListener {
-//            if (tripChoiceExceed.equals("", ignoreCase = true)) {
-//                showIntentionPopUp()
-//            } else {
-//                CommonMethods.showDialogueWithOk(
-//                    context as Activity,
-//                    "Alert",
-//                    "You cannot submit any more intentions, as you have already reached your limit.",
-//                )
-//            }
-//        }
-//
-//        submitDetailsButton.setOnClickListener {
-//            checkTripCount(tripID, object : TripCountCheckCallback {
-//                override fun onTripCountChecked(isTripCountEmpty: Boolean) {
-//                    if (isTripCountEmpty) {
-//                        if (Build.VERSION.SDK_INT > 30) {
-//                            showDocumentSubmissionPopUp()
-//                        } else {
-//                            if (ActivityCompat.checkSelfPermission(
-//                                    context, permissionsRequiredExternalStorage[0]
-//                                ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
-//                                    context, permissionsRequiredExternalStorage[1]
-//                                ) != PackageManager.PERMISSION_GRANTED
-//                            ) {
-//                                if (ActivityCompat.shouldShowRequestPermissionRationale(
-//                                        (context as Activity),
-//                                        permissionsRequiredExternalStorage[0]
-//                                    ) || ActivityCompat.shouldShowRequestPermissionRationale(
-//                                        (context as Activity),
-//                                        permissionsRequiredExternalStorage[1]
-//                                    )
-//                                ) {
-//                                    //Show information about why you need the permission
-//                                    val builder = AlertDialog.Builder(context)
-//                                    builder.setTitle("Need Storage Permission")
-//                                    builder.setMessage("This module needs Storage permissions.")
-//                                    builder.setPositiveButton(
-//                                        "Grant"
-//                                    ) { dialog, which ->
-//                                        dialog.cancel()
-//                                        ActivityCompat.requestPermissions(
-//                                            (context as Activity),
-//                                            permissionsRequiredExternalStorage,
-//                                            PERMISSION_CALLBACK_CONSTANT_EXTERNAL_STORAGE
-//                                        )
-//                                    }
-//                                    builder.setNegativeButton(
-//                                        "Cancel"
-//                                    ) { dialog, which -> dialog.cancel() }
-//                                    builder.show()
-//                                } else if (externalStoragePermissionStatus.getBoolean(
-//                                        permissionsRequiredExternalStorage[0], false
-//                                    )
-//                                ) {
-//                                    //Previously Permission Request was cancelled with 'Dont Ask Again',
-//                                    // Redirect to Settings after showing information about why you need the permission
-//                                    val builder = AlertDialog.Builder(context)
-//                                    builder.setTitle("Need Storage Permission")
-//                                    builder.setMessage("This module needs Storage permissions.")
-//                                    builder.setPositiveButton(
-//                                        "Grant"
-//                                    ) { dialog, which ->
-//                                        dialog.cancel()
-//                                        externalStorageToSettings = true
-//                                        val intent =
-//                                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-//                                        val uri = Uri.fromParts(
-//                                            "package", context.packageName, null
-//                                        )
-//                                        intent.setData(uri)
-//                                        startActivityForResult(
-//                                            intent,
-//                                            REQUEST_PERMISSION_EXTERNAL_STORAGE
-//                                        )
-//                                        Toast.makeText(
-//                                            context,
-//                                            "Go to settings and grant access to storage",
-//                                            Toast.LENGTH_LONG
-//                                        ).show()
-//                                    }
-//                                    builder.setNegativeButton(
-//                                        "Cancel"
-//                                    ) { dialog, which ->
-//                                        dialog.cancel()
-//                                        externalStorageToSettings = false
-//                                    }
-//                                    builder.show()
-//                                } else if (externalStoragePermissionStatus.getBoolean(
-//                                        permissionsRequiredExternalStorage[1], false
-//                                    )
-//                                ) {
-//                                    //Previously Permission Request was cancelled with 'Dont Ask Again',
-//                                    // Redirect to Settings after showing information about why you need the permission
-//                                    val builder = AlertDialog.Builder(context)
-//                                    builder.setTitle("Need Storage Permission")
-//                                    builder.setMessage("This module needs Storage permissions.")
-//                                    builder.setCancelable(false)
-//                                    builder.setPositiveButton(
-//                                        "Grant"
-//                                    ) { dialog, which ->
-//                                        dialog.cancel()
-//                                        externalStorageToSettings = true
-//                                        val intent =
-//                                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-//                                        val uri = Uri.fromParts(
-//                                            "package", context.packageName, null
-//                                        )
-//                                        intent.setData(uri)
-//                                        startActivityForResult(
-//                                            intent,
-//                                            REQUEST_PERMISSION_EXTERNAL_STORAGE
-//                                        )
-//                                        Toast.makeText(
-//                                            context,
-//                                            "Go to settings and grant access to storage",
-//                                            Toast.LENGTH_LONG
-//                                        ).show()
-//                                    }
-//                                    builder.setNegativeButton(
-//                                        "Cancel"
-//                                    ) { dialog, which ->
-//                                        dialog.cancel()
-//                                        externalStorageToSettings = false
-//                                    }
-//                                    builder.show()
-//                                } else {
-//
-//                                    //just request the permission
-//                                    //                        ActivityCompat.requestPermissions(getActivity(), permissionsRequired, PERMISSION_CALLBACK_CONSTANT_CALENDAR);
-//                                    requestPermissions(
-//                                        permissionsRequiredExternalStorage,
-//                                        PERMISSION_CALLBACK_CONSTANT_EXTERNAL_STORAGE
-//                                    )
-//                                }
-//                                val editor = externalStoragePermissionStatus.edit()
-//                                editor.putBoolean(permissionsRequiredExternalStorage[0], true)
-//                                editor.commit()
-//                            } else {
-//                                showDocumentSubmissionPopUp()
-//                            }
-//                        }
-//                    } else {
-//                        CommonMethods.showDialogueWithOk(
-//                            context,
-//                            "You can no longer apply for this trip, as all the slots have been filled.",
-//                            "Alert"
-//                        )
-//
-//                    }
-//                }
-//            })
-//
-//
-//        }
-//        paymentButton.setOnClickListener {
-//            if (tripPaymentExceed.equals("", ignoreCase = true)) {
-//                showPaymentsPopUp(context)
-//            } else {
-//                if (tripStatus.equals("6", ignoreCase = true)) {
-//                    showPaymentsPopUp(context)
-//                } else CommonMethods.showDialogueWithOk(
-//                    context,
-//                    "You cannot submit any more payments, as you have already reached your trip limit.",
-//                    "Alert"
-//                )
-//            }
-//        }
-//        coordinatorDetails.setOnClickListener { showCoordinatorDetailsPopUp() }
-//        viewInvoice.setOnClickListener {
-//            val intent = Intent(context, TripInvoiceListingActivity::class.java)
-//            intent.putExtra("tripID", tripID)
-//            intent.putExtra("tripName", tripName)
-//            startActivity(intent)
-//        }
-//
-//        if (CommonMethods.isInternetAvailable(context)) {
-//            getTripDetails(tripID)
-//            getTripConsent()
-//        } else {
-//            CommonMethods.showDialogueWithOk(
-//                context,
-//                "Network error occurred. Please check your internet connection and try again later",
-//                "Network Error"
-//            )
-//
-//        }
-//    }
+        submitIntentionButton.setOnClickListener {
+            if (tripChoiceExceed.equals("", ignoreCase = true)) {
+                showIntentionPopUp()
+            } else {
+                CommonMethods.showDialogueWithOk(
+                    context as Activity,
+                    "Alert",
+                    "You cannot submit any more intentions, as you have already reached your limit.",
+                )
+            }
+        }
+
+        submitDetailsButton.setOnClickListener {
+            checkTripCount(tripID, object : TripCountCheckCallback {
+                override fun onTripCountChecked(isTripCountEmpty: Boolean) {
+                    if (isTripCountEmpty) {
+                        if (Build.VERSION.SDK_INT > 30) {
+                            showDocumentSubmissionPopUp()
+                        } else {
+                            if (ActivityCompat.checkSelfPermission(
+                                    context, permissionsRequiredExternalStorage[0]
+                                ) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+                                    context, permissionsRequiredExternalStorage[1]
+                                ) != PackageManager.PERMISSION_GRANTED
+                            ) {
+                                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                                        (context as Activity), permissionsRequiredExternalStorage[0]
+                                    ) || ActivityCompat.shouldShowRequestPermissionRationale(
+                                        (context as Activity), permissionsRequiredExternalStorage[1]
+                                    )
+                                ) {
+                                    //Show information about why you need the permission
+                                    val builder = AlertDialog.Builder(context)
+                                    builder.setTitle("Need Storage Permission")
+                                    builder.setMessage("This module needs Storage permissions.")
+                                    builder.setPositiveButton(
+                                        "Grant"
+                                    ) { dialog, which ->
+                                        dialog.cancel()
+                                        ActivityCompat.requestPermissions(
+                                            (context as Activity),
+                                            permissionsRequiredExternalStorage,
+                                            PERMISSION_CALLBACK_CONSTANT_EXTERNAL_STORAGE
+                                        )
+                                    }
+                                    builder.setNegativeButton(
+                                        "Cancel"
+                                    ) { dialog, which -> dialog.cancel() }
+                                    builder.show()
+                                } else if (externalStoragePermissionStatus.getBoolean(
+                                        permissionsRequiredExternalStorage[0], false
+                                    )
+                                ) {
+                                    //Previously Permission Request was cancelled with 'Dont Ask Again',
+                                    // Redirect to Settings after showing information about why you need the permission
+                                    val builder = AlertDialog.Builder(context)
+                                    builder.setTitle("Need Storage Permission")
+                                    builder.setMessage("This module needs Storage permissions.")
+                                    builder.setPositiveButton(
+                                        "Grant"
+                                    ) { dialog, which ->
+                                        dialog.cancel()
+                                        externalStorageToSettings = true
+                                        val intent =
+                                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                        val uri = Uri.fromParts(
+                                            "package", context.packageName, null
+                                        )
+                                        intent.setData(uri)
+                                        startActivityForResult(
+                                            intent, REQUEST_PERMISSION_EXTERNAL_STORAGE
+                                        )
+                                        Toast.makeText(
+                                            context,
+                                            "Go to settings and grant access to storage",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                    builder.setNegativeButton(
+                                        "Cancel"
+                                    ) { dialog, which ->
+                                        dialog.cancel()
+                                        externalStorageToSettings = false
+                                    }
+                                    builder.show()
+                                } else if (externalStoragePermissionStatus.getBoolean(
+                                        permissionsRequiredExternalStorage[1], false
+                                    )
+                                ) {
+                                    //Previously Permission Request was cancelled with 'Dont Ask Again',
+                                    // Redirect to Settings after showing information about why you need the permission
+                                    val builder = AlertDialog.Builder(context)
+                                    builder.setTitle("Need Storage Permission")
+                                    builder.setMessage("This module needs Storage permissions.")
+                                    builder.setCancelable(false)
+                                    builder.setPositiveButton(
+                                        "Grant"
+                                    ) { dialog, which ->
+                                        dialog.cancel()
+                                        externalStorageToSettings = true
+                                        val intent =
+                                            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                        val uri = Uri.fromParts(
+                                            "package", context.packageName, null
+                                        )
+                                        intent.setData(uri)
+                                        startActivityForResult(
+                                            intent, REQUEST_PERMISSION_EXTERNAL_STORAGE
+                                        )
+                                        Toast.makeText(
+                                            context,
+                                            "Go to settings and grant access to storage",
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                    builder.setNegativeButton(
+                                        "Cancel"
+                                    ) { dialog, which ->
+                                        dialog.cancel()
+                                        externalStorageToSettings = false
+                                    }
+                                    builder.show()
+                                } else {
+
+                                    //just request the permission
+                                    //                        ActivityCompat.requestPermissions(getActivity(), permissionsRequired, PERMISSION_CALLBACK_CONSTANT_CALENDAR);
+                                    requestPermissions(
+                                        permissionsRequiredExternalStorage,
+                                        PERMISSION_CALLBACK_CONSTANT_EXTERNAL_STORAGE
+                                    )
+                                }
+                                val editor = externalStoragePermissionStatus.edit()
+                                editor.putBoolean(permissionsRequiredExternalStorage[0], true)
+                                editor.commit()
+                            } else {
+                                showDocumentSubmissionPopUp()
+                            }
+                        }
+                    } else {
+                        CommonMethods.showDialogueWithOk(
+                            context,
+                            "You can no longer apply for this trip, as all the slots have been filled.",
+                            "Alert"
+                        )
+
+                    }
+                }
+            })
+
+
+        }
+        paymentButton.setOnClickListener {
+            if (tripPaymentExceed.equals("", ignoreCase = true)) {
+                showPaymentsPopUp(context)
+            } else {
+                if (tripStatus == 6) {
+                    showPaymentsPopUp(context)
+                } else CommonMethods.showDialogueWithOk(
+                    context,
+                    "You cannot submit any more payments, as you have already reached your trip limit.",
+                    "Alert"
+                )
+            }
+        }
+        coordinatorDetails.setOnClickListener { showCoordinatorDetailsPopUp() }
+        viewInvoice.setOnClickListener {
+            val intent = Intent(context, TripInvoiceListingActivity::class.java)
+            intent.putExtra("tripID", tripID)
+            intent.putExtra("tripName", tripName)
+            startActivity(intent)
+        }
+
+        if (CommonMethods.isInternetAvailable(context)) {
+            getTripDetails(tripID)
+            getTripConsent()
+        } else {
+            CommonMethods.showDialogueWithOk(
+                context,
+                "Network error occurred. Please check your internet connection and try again later",
+                "Network Error"
+            )
+
+        }
+    }
 
     private fun getTripConsent() {
         val paramObject = JsonObject()
         Log.e("tripID name", tripID)
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
         paramObject.addProperty("trip_item_id", tripID)
-        val call: Call<TripConsentResponseModel> =
-            ApiClient.getClient.tripConsent(
-                "Bearer " + PreferenceManager.getUserCode(context),
-                paramObject
-            )
+        val call: Call<TripConsentResponseModel> = ApiClient.getClient.tripConsent(
+            "Bearer " + PreferenceManager.getUserCode(context), paramObject
+        )
         call.enqueue(object : Callback<TripConsentResponseModel> {
             override fun onResponse(
-                call: Call<TripConsentResponseModel>,
-                response: Response<TripConsentResponseModel>
+                call: Call<TripConsentResponseModel>, response: Response<TripConsentResponseModel>
             ) {
                 if (response.body()!!.status == 200) {
 
@@ -524,227 +546,207 @@ class TripDetailsActivity : AppCompatActivity() {
     }
 
 
-//    private fun showPaymentsPopUp(activity: Context) {
-//        val bottomSheetDialog = BottomSheetDialog(activity, R.style.BottomSheetDialogTheme)
-//        val layout: View =
-//            LayoutInflater.from(activity).inflate(R.layout.dialog_bottom_sheet_payment, null)
-//        bottomSheetDialog.setContentView(layout)
-//        bottomSheetDialog.setCancelable(false)
-//        bottomSheetDialog.setCanceledOnTouchOutside(true)
-//        val payTotalView = bottomSheetDialog.findViewById<ConstraintLayout>(R.id.payTotalView)
-//        val payInstallmentView =
-//            bottomSheetDialog.findViewById<ConstraintLayout>(R.id.payInstallmentView)
-//        val totalAmountTextView = bottomSheetDialog.findViewById<TextView>(R.id.totalAmountTextView)
-//        totalAmountTextView!!.text = "$singleInstallmentAmount AED"
-//        if (multipleInstallmentsArray.size > 1) {
-//            payInstallmentView!!.visibility = View.VISIBLE
-//        } else {
-//            payInstallmentView!!.visibility = View.GONE
-//        }
-//        if (tripStatus.equals("6", ignoreCase = true)) {
-//            payInstallmentView.visibility = View.VISIBLE
-//            payTotalView!!.visibility = View.GONE
-//        }
-//        payInstallmentView.setOnClickListener {
-//            bottomSheetDialog.dismiss()
-//            val intent = Intent(context, TripInstallmentActivity::class.java)
-//            intent.putExtra("tripID", tripID)
-//            intent.putExtra("tripName", tripName)
-//            context.startActivity(intent)
-//        }
-//        payTotalView!!.setOnClickListener {
-//            bottomSheetDialog.dismiss()
+    private fun showPaymentsPopUp(activity: Context) {
+        val bottomSheetDialog = BottomSheetDialog(activity, R.style.BottomSheetDialogTheme)
+        val layout: View =
+            LayoutInflater.from(activity).inflate(R.layout.dialog_bottom_sheet_payment, null)
+        bottomSheetDialog.setContentView(layout)
+        bottomSheetDialog.setCancelable(false)
+        bottomSheetDialog.setCanceledOnTouchOutside(true)
+        val payTotalView = bottomSheetDialog.findViewById<ConstraintLayout>(R.id.payTotalView)
+        val payInstallmentView =
+            bottomSheetDialog.findViewById<ConstraintLayout>(R.id.payInstallmentView)
+        val totalAmountTextView = bottomSheetDialog.findViewById<TextView>(R.id.totalAmountTextView)
+        totalAmountTextView!!.text = "$singleInstallmentAmount AED"
+        if (multipleInstallmentsArray.size > 1) {
+            payInstallmentView!!.visibility = View.VISIBLE
+        } else {
+            payInstallmentView!!.visibility = View.GONE
+        }
+        if (tripStatus == 6) {
+            payInstallmentView.visibility = View.VISIBLE
+            payTotalView!!.visibility = View.GONE
+        }
+        payInstallmentView.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            val intent = Intent(context, TripInstallmentActivity::class.java)
+            intent.putExtra("tripID", tripID)
+            intent.putExtra("tripName", tripName)
+            context.startActivity(intent)
+        }
+        payTotalView!!.setOnClickListener {
+            bottomSheetDialog.dismiss()
 //            initialisePayment()
-//        }
-//        bottomSheetDialog.show()
-//    }
+        }
+        bottomSheetDialog.show()
+    }
 
 
-//    private fun getTripDetails(tripID: String) {
-//        progressDialogP.show()
-//        val paramObject = JsonObject()
-//        Log.e("tripID name", tripID)
-//        paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
-//        paramObject.addProperty("trip_id", tripID)
-//        val call: Call<TripDetailsResponseModel> =
-//            ApiClient.getClient.tripDetail(
-//                "Bearer " + PreferenceManager.getUserCode(context),
-//                paramObject
-//            )
-//        call.enqueue(object : Callback<TripDetailsResponseModel> {
-//            override fun onResponse(
-//                call: Call<TripDetailsResponseModel>,
-//                response: Response<TripDetailsResponseModel>
-//            ) {
-//                progressDialogP.dismiss()
-//                    imagesArray = java.util.ArrayList()
-//                    if (response.body()!!.status == 303) {
-//                        if (response.body()!!.data.lists.tripImage.size > 1) {
-////                            Glide.with(context).load(AppUtils.replace(response.body().getResponse().getData().getTripImage().get(0))).placeholder(R.drawable.default_banner).into(tripMainBanner);
-//                            for (i in 1 until response.body()!!.data.lists.tripImage.size) {
-//                                imagesArray.add(
-//                                    response.body()!!.data.lists.tripImage.get(i)
-//                                )
+    private fun getTripDetails(tripID: String) {
+        progressDialogP.show()
+        val paramObject = JsonObject()
+        Log.e("tripID name", tripID)
+        paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
+        paramObject.addProperty("trip_id", tripID)
+        val call: Call<TripDetailsResponseModel> = ApiClient.getClient.tripDetail(
+            "Bearer " + PreferenceManager.getUserCode(context), paramObject
+        )
+        call.enqueue(object : Callback<TripDetailsResponseModel> {
+            override fun onResponse(
+                call: Call<TripDetailsResponseModel>, response: Response<TripDetailsResponseModel>
+            ) {
+                progressDialogP.dismiss()
+                imagesArray = java.util.ArrayList()
+                if (response.body()!!.status == 303) {
+                    if (response.body()!!.data.lists.tripImage.size > 1) {
+//                            Glide.with(context).load(AppUtils.replace(response.body().getResponse().getData().getTripImage().get(0))).placeholder(R.drawable.default_banner).into(tripMainBanner);
+                        for (i in 1 until response.body()!!.data.lists.tripImage.size) {
+                            imagesArray.add(
+                                response.body()!!.data.lists.tripImage.get(i)
+                            )
+                        }
+                        tripMainBanner.adapter = ImagePagerDrawableAdapter(imagesArray, context)
+                        tripImageAdapter = TripImageAdapter(context, imagesArray)
+                        tripImageRecycler.adapter = tripImageAdapter
+                    } else {
+//                            if (response.body().getResponse().getData().getTripImage().size() > 0) {
+//                                Glide.with(cofntext).load(AppUtils.replace(response.body().getResponse().getData().getTripImage().get(0))).placeholder(R.drawable.default_banner).into(tripMainBanner);
+//
 //                            }
-//                            tripMainBanner.adapter = ImagePagerDrawableAdapter(imagesArray, context)
-//                            tripImageAdapter = TripImageAdapter(context, imagesArray)
-//                            tripImageRecycler.adapter = tripImageAdapter
-//                        } else {
-////                            if (response.body().getResponse().getData().getTripImage().size() > 0) {
-////                                Glide.with(cofntext).load(AppUtils.replace(response.body().getResponse().getData().getTripImage().get(0))).placeholder(R.drawable.default_banner).into(tripMainBanner);
-////
-////                            }
-//                        }
-//                        passportRequired =
-//                            response.body()!!.data.lists.documentsRequired.passportDoc
-//                        visaRequired =
-//                            response.body()!!.data.lists.documentsRequired.visaDoc
-//                        eIDRequired =
-//                            response.body()!!.data.lists.documentsRequired.emiratesDoc
-//                        consentRequired =
-//                            response.body()!!.data.lists.documentsRequired.consentDoc
-//                        tripChoiceExceed = response.body().getResponse().getTrip_exceed()
-//                        tripPaymentExceed = response.body().getResponse().getNo_of_trips_exceed()
-//                        if (imagesArray != null) {
-//                            val handler = Handler()
-//                            val Update = Runnable {
-//                                if (currentPage == imagesArray.size) {
-//                                    currentPage = 0
-//                                    tripMainBanner.setCurrentItem(currentPage, false)
-//                                } else {
-//                                    tripMainBanner.setCurrentItem(currentPage++, true)
-//                                }
-//                            }
-//                            val swipeTimer = Timer()
-//                            swipeTimer.schedule(object : TimerTask() {
-//                                override fun run() {
-//                                    handler.post(Update)
-//                                }
-//                            }, 100, 3000)
-//                        }
-//                        if (imagesArray.size > 0) {
-//                            tripMainBanner.adapter = ImagePagerDrawableAdapter(imagesArray, context)
-//                        } else {
-//                            //CustomStatusDialog();
-////											bannerImagePager.setBackgroundResource(R.drawable.banner);
-//                            tripMainBanner.setBackgroundResource(R.drawable.default_banner)
-//                            //											Toast.makeText(mContext, "Failure", Toast.LENGTH_SHORT).show();
-//                        }
-//                        //                        tripQuestion = response.body().getResponse().getData().q
-//                        tripNameTextView.setText(response.body()!!.data.lists.tripNameEn)
-//                        tripAmountTextView.text = "Trip Amount : " + response.body()!! + " AED"
-//                        dateTextView.text = "Trip Date : " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(response.body()!!.data.lists.tripStartDate) + " To " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(response.body()!!.data.lists.tripEndDate)
-//                        coordinatorNameTextView.setText(
-//                            response.body()!!.data.lists.coordinatorName
+                    }
+                    passportRequired = response.body()!!.data.lists.documentsRequired.passportDoc
+                    visaRequired = response.body()!!.data.lists.documentsRequired.visaDoc
+                    eIDRequired = response.body()!!.data.lists.documentsRequired.emiratesDoc
+                    consentRequired = response.body()!!.data.lists.documentsRequired.consentDoc
+                    tripChoiceExceed = response.body()!!.data.choices_exceed
+                    tripPaymentExceed = response.body()!!.data.no_of_trips_exceed
+                    if (imagesArray != null) {
+                        val handler = android.os.Handler()
+                        val Update = Runnable {
+                            if (currentPage == imagesArray.size) {
+                                currentPage = 0
+                                tripMainBanner.setCurrentItem(currentPage, false)
+                            } else {
+                                tripMainBanner.setCurrentItem(currentPage++, true)
+                            }
+                        }
+                        val swipeTimer = Timer()
+                        swipeTimer.schedule(object : TimerTask() {
+                            override fun run() {
+                                handler.post(Update)
+                            }
+                        }, 100, 3000)
+                    }
+                    if (imagesArray.size > 0) {
+                        tripMainBanner.adapter = ImagePagerDrawableAdapter(imagesArray, context)
+                    } else {
+                        //CustomStatusDialog();
+//											bannerImagePager.setBackgroundResource(R.drawable.banner);
+                        tripMainBanner.setBackgroundResource(R.drawable.default_banner)
+                        //											Toast.makeText(mContext, "Failure", Toast.LENGTH_SHORT).show();
+                    }
+                    //                        tripQuestion = response.body().getResponse().getData().q
+                    tripNameTextView.setText(response.body()!!.data.lists.tripNameEn)
+                    tripAmountTextView.text = "Trip Amount : " + response.body()!! + " AED"
+                    dateTextView.text =
+                        "Trip Date : " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(response.body()!!.data.lists.tripStartDate) + " To " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(
+                            response.body()!!.data.lists.tripEndDate
+                        )
+                    coordinatorNameTextView.setText(
+                        response.body()!!.data.lists.coordinatorName
+                    )
+                    coodName = response.body()!!.data.lists.coordinatorName
+                    coodPhone = response.body()!!.data.lists.coordinatorPhone
+                    coodEmail = response.body()!!.data.lists.coordinatorEmail
+                    coodWhatsapp = response.body()!!.data.lists.coordinatorWp
+                    passportStatus =
+                        response.body()!!.data.lists.documentUploadStatus.passportStatus
+                    visaStatus = response.body()!!.data.lists.documentUploadStatus.visaStatus
+                    eIDStatus = response.body()!!.data.lists.documentUploadStatus.emiratesStatus
+                    permissionStatus =
+                        response.body()!!.data.lists.documentUploadStatus.consentStatus
+                    //                        coordinatorDetails.setText(response.body().getResponse().getData().getCoordinatorEmail());
+//                        coordinatorPhoneTextView.setText(response.body().getResponse().getData().getCoordinatorPhone());
+//                        tripDescriptionTextView.setText(response.body().getResponse().getData().getDescription());
+                    tripDescriptionTextView.text =
+                        Html.fromHtml(response.body()!!.data.lists.description)
+//                        headermanager = HeaderManager(
+//                            this@TripDetailsActivity,
+//                            response.body().getResponse().getData().getTripName()
 //                        )
-//                        coodName = response.body()!!.data.lists.coordinatorName
-//                        coodPhone = response.body()!!.data.lists.coordinatorPhone
-//                        coodEmail = response.body()!!.data.lists.coordinatorEmail
-//                        coodWhatsapp =
-//                            response.body()!!.data.lists.coordinatorWp
-//                        passportStatus =
-//                            response.body()!!.data.lists
-//                                .documentUploadStatus.passportStatus
-//                        visaStatus =
-//                            response.body()!!.data.lists
-//                                .documentUploadStatus
-//                                .visaStatus
-//                        eIDStatus =
-//                            response.body()!!.data.lists
-//                                .documentUploadStatus
-//                                .emiratesStatus
-//                        permissionStatus =
-//                            response.body()!!.data.lists
-//                                .documentUploadStatus.
-//                                consentStatus
-//                        //                        coordinatorDetails.setText(response.body().getResponse().getData().getCoordinatorEmail());
-////                        coordinatorPhoneTextView.setText(response.body().getResponse().getData().getCoordinatorPhone());
-////                        tripDescriptionTextView.setText(response.body().getResponse().getData().getDescription());
-//                        tripDescriptionTextView.text =
-//                            Html.fromHtml(response.body()!!.data.lists.description)
-////                        headermanager = HeaderManager(
-////                            this@TripDetailsActivity,
-////                            response.body().getResponse().getData().getTripName()
-////                        )
-//                        if (response.body()!!.data.lists.installmentDetails
-//                                .size > 0
-//                        ) {
-//                            multipleInstallmentsArray =
-//                                response.body()!!.data.lists.installmentDetails
-//                        }
-//                        singleInstallmentAmount =
-//                            response.body()!!.data.lists.totalPrice
-//                        if (response.body()!!.data.lists.invoices.size > 0) {
-//                            invoiceArrayList = response.body()!!.data.lists.invoices.size
-//                        }
-//                        tripStatus = response.body()!!.data.lists.tripStatus
-//                        if (tripStatus.equals("0", ignoreCase = true)) {
-//                            submitIntentionButton.visibility = View.VISIBLE
-//                            submitDetailsButton.visibility = View.GONE
-//                            paymentButton.visibility = View.GONE
-//                            tripStatusTextView.visibility = View.GONE
-//                        } else if (tripStatus.equals("1", ignoreCase = true)) {
-//                            submitIntentionButton.visibility = View.GONE
-//                            submitDetailsButton.visibility = View.GONE
-//                            paymentButton.visibility = View.GONE
-//                            tripStatusTextView.visibility = View.VISIBLE
-//                            tripStatusTextView.text = "Waiting for approval"
-//                        } else if (tripStatus.equals("2", ignoreCase = true)) {
-//                            submitIntentionButton.visibility = View.GONE
-//                            submitDetailsButton.visibility = View.GONE
-//                            paymentButton.visibility = View.GONE
-//                            tripStatusTextView.visibility = View.GONE
-//                        } else if (tripStatus.equals("3", ignoreCase = true)) {
-//                            submitIntentionButton.visibility = View.GONE
-//                            submitDetailsButton.visibility = View.VISIBLE
-//                            paymentButton.visibility = View.GONE
-//                            tripStatusTextView.visibility = View.GONE
-//                        } else if (tripStatus.equals("4", ignoreCase = true)) {
-//                            submitIntentionButton.visibility = View.GONE
-//                            submitDetailsButton.visibility = View.GONE
-//                            paymentButton.visibility = View.GONE
-//                            tripStatusTextView.visibility = View.VISIBLE
-//                            tripStatusTextView.text = "Trip Canceled"
-//                        } else if (tripStatus.equals("5", ignoreCase = true)) {
-//                            submitIntentionButton.visibility = View.GONE
-//                            submitDetailsButton.visibility = View.GONE
-//                            paymentButton.visibility = View.VISIBLE
-//                            tripStatusTextView.visibility = View.GONE
-//                        } else if (tripStatus.equals("6", ignoreCase = true)) {
-//                            submitIntentionButton.visibility = View.GONE
-//                            submitDetailsButton.visibility = View.GONE
-//                            paymentButton.visibility = View.VISIBLE
-//                            tripStatusTextView.visibility = View.GONE
-//                        } else if (tripStatus.equals("7", ignoreCase = true)) {
-//                            submitIntentionButton.visibility = View.GONE
-//                            submitDetailsButton.visibility = View.GONE
-//                            paymentButton.visibility = View.GONE
-//                            viewInvoice.visibility = View.VISIBLE
-//                            tripStatusTextView.visibility = View.GONE
-//                        } else {
-//                            submitIntentionButton.visibility = View.GONE
-//                            submitDetailsButton.visibility = View.GONE
-//                            paymentButton.visibility = View.GONE
-//                            tripStatusTextView.visibility = View.GONE
-//                        }
-//                    } else {
-//                    }
-//
-//            }
-//
-//            override fun onFailure(call: Call<TripDetailsResponseModel>, t: Throwable) {
-//                progressDialogP.dismiss()
-//                Log.e("error", t.localizedMessage)
-//                CommonMethods.showDialogueWithOk(context, getString(R.string.common_error), "")
-//                CommonMethods.showDialogueWithOk(
-//                    context as Activity,
-//                    getString(R.string.common_error),
-//                    "Alert"
-//                )
-//            }
-//        })
-//
-//    }
+                    if (response.body()!!.data.lists.installmentDetails.size > 0) {
+                        multipleInstallmentsArray = response.body()!!.data.lists.installmentDetails
+                    }
+                    singleInstallmentAmount = response.body()!!.data.lists.totalPrice
+                    if (response.body()!!.data.lists.invoices.size > 0) {
+                        invoiceArrayList = response.body()!!.data.lists.invoices
+                    }
+                    tripStatus = response.body()!!.data.lists.tripStatus
+                    if (tripStatus == 0) {
+                        submitIntentionButton.visibility = View.VISIBLE
+                        submitDetailsButton.visibility = View.GONE
+                        paymentButton.visibility = View.GONE
+                        tripStatusTextView.visibility = View.GONE
+                    } else if (tripStatus == 1) {
+                        submitIntentionButton.visibility = View.GONE
+                        submitDetailsButton.visibility = View.GONE
+                        paymentButton.visibility = View.GONE
+                        tripStatusTextView.visibility = View.VISIBLE
+                        tripStatusTextView.text = "Waiting for approval"
+                    } else if (tripStatus == 2) {
+                        submitIntentionButton.visibility = View.GONE
+                        submitDetailsButton.visibility = View.GONE
+                        paymentButton.visibility = View.GONE
+                        tripStatusTextView.visibility = View.GONE
+                    } else if (tripStatus == 3) {
+                        submitIntentionButton.visibility = View.GONE
+                        submitDetailsButton.visibility = View.VISIBLE
+                        paymentButton.visibility = View.GONE
+                        tripStatusTextView.visibility = View.GONE
+                    } else if (tripStatus == 4) {
+                        submitIntentionButton.visibility = View.GONE
+                        submitDetailsButton.visibility = View.GONE
+                        paymentButton.visibility = View.GONE
+                        tripStatusTextView.visibility = View.VISIBLE
+                        tripStatusTextView.text = "Trip Canceled"
+                    } else if (tripStatus == 5) {
+                        submitIntentionButton.visibility = View.GONE
+                        submitDetailsButton.visibility = View.GONE
+                        paymentButton.visibility = View.VISIBLE
+                        tripStatusTextView.visibility = View.GONE
+                    } else if (tripStatus == 6) {
+                        submitIntentionButton.visibility = View.GONE
+                        submitDetailsButton.visibility = View.GONE
+                        paymentButton.visibility = View.VISIBLE
+                        tripStatusTextView.visibility = View.GONE
+                    } else if (tripStatus == 7) {
+                        submitIntentionButton.visibility = View.GONE
+                        submitDetailsButton.visibility = View.GONE
+                        paymentButton.visibility = View.GONE
+                        viewInvoice.visibility = View.VISIBLE
+                        tripStatusTextView.visibility = View.GONE
+                    } else {
+                        submitIntentionButton.visibility = View.GONE
+                        submitDetailsButton.visibility = View.GONE
+                        paymentButton.visibility = View.GONE
+                        tripStatusTextView.visibility = View.GONE
+                    }
+                } else {
+                }
+
+            }
+
+            override fun onFailure(call: Call<TripDetailsResponseModel>, t: Throwable) {
+                progressDialogP.dismiss()
+                Log.e("error", t.localizedMessage)
+                CommonMethods.showDialogueWithOk(context, getString(R.string.common_error), "")
+                CommonMethods.showDialogueWithOk(
+                    context as Activity, getString(R.string.common_error), "Alert"
+                )
+            }
+        })
+
+    }
 
 
     interface TripCountCheckCallback {
@@ -752,312 +754,293 @@ class TripDetailsActivity : AppCompatActivity() {
     }
 
 
-//    private fun showDocumentSubmissionPopUp() {
-//        val dial = Dialog(context)
-//        dial.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        dial.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        dial.setCancelable(false)
-//        dial.setContentView(R.layout.dialog_details_submit_new)
-////        val nxt_btn = dial.findViewById<Button>(R.id.paymentbutton)
-//        val permissionLinear = dial.findViewById<ConstraintLayout>(R.id.permissionDetailsConstraint)
-//        val passportLinear = dial.findViewById<LinearLayout>(R.id.passportConstraint)
-//        val visaDetailsLinear = dial.findViewById<LinearLayout>(R.id.visaConstraint)
-//        val eIDDetailsLinear = dial.findViewById<LinearLayout>(R.id.emirateIDConstraint)
-//        val payButtonConstraint = dial.findViewById<ConstraintLayout>(R.id.payNowButtonConstraint)
-//        val chooseFilePassportFront = dial.findViewById<Button>(R.id.chooseFilePassportFront)
-//        val passportNumberEditText = dial.findViewById<EditText>(R.id.passportNumberEditText)
-//        val chooseFilePassportBack = dial.findViewById<Button>(R.id.chooseFilePassportBack)
-//        val uploadPassportDetailsButton =
-//            dial.findViewById<Button>(R.id.uploadPassportDetailsButton)
-//        val visaEditText = dial.findViewById<EditText>(R.id.visaEditText)
-//        val permissionSlipTextView = dial.findViewById<TextView>(R.id.permissionSlipTextView)
-//        val chooseFileVisaFront = dial.findViewById<Button>(R.id.chooseFileVisaFront)
-//        val chooseFileVisaBack = dial.findViewById<Button>(R.id.choosefileVisaBack)
-//        val uploadVisaDetailsButton = dial.findViewById<Button>(R.id.uploadVisaDetailsButton)
-//        permissionSlipTextView.text = Html.fromHtml(permissionSlip)
-//        val eIDEditText = dial.findViewById<EditText>(R.id.eIDEditText)
-//        val studtitle = dial.findViewById<TextView>(R.id.studtitle)
-//        val passportTitleTV = dial.findViewById<TextView>(R.id.passportTitleTV)
-//        val visaTitleTV = dial.findViewById<TextView>(R.id.visaTitleTV)
-//        val emiratedIDTV = dial.findViewById<TextView>(R.id.emiratedIDTV)
-//        val permissiontitle = dial.findViewById<TextView>(R.id.permissiontitle)
-//        val chooseFileEIDFront = dial.findViewById<Button>(R.id.chooseFileEIDFront)
-//        val choosefileEIDBack = dial.findViewById<Button>(R.id.choosefileEIDBack)
-//        val uploadEIDDetailsButton = dial.findViewById<Button>(R.id.uploadEIDDetailsButton)
-//        val submitConsentButton = dial.findViewById<Button>(R.id.submitConsentButton)
-//        val payNowButtonText = dial.findViewById<TextView>(R.id.payNowButton)
-//        payNowButtonText.text = "PAY $singleInstallmentAmount AED"
-//        val close_btn = dial.findViewById<ImageView>(R.id.close_btn)
-//        val studentAdd = dial.findViewById<ImageView>(R.id.studentAdd)
-//        val passportAdd = dial.findViewById<ImageView>(R.id.passportAdd)
-//        val visaAdd = dial.findViewById<ImageView>(R.id.visaAdd)
-//        val emiratesAdd = dial.findViewById<ImageView>(R.id.emiratesAdd)
-//        val permissionAdd = dial.findViewById<ImageView>(R.id.permissionAdd)
-//        //        if (tripType.equalsIgnoreCase("1")) {
-////            studentAdd.setVisibility(View.GONE);
-////            studtitle.setVisibility(View.GONE);
-////            passportAdd.setVisibility(View.GONE);
-////            passportTitleTV.setVisibility(View.GONE);
-////            passportLinear.setVisibility(View.GONE);
-////            visaDetailsLinear.setVisibility(View.GONE);
-////            eIDDetailsLinear.setVisibility(View.GONE);
-////            visaTitleTV.setVisibility(View.GONE);
-////            visaAdd.setVisibility(View.GONE);
-////            emiratedIDTV.setVisibility(View.GONE);
-////            emiratesAdd.setVisibility(View.GONE);
-////            permissiontitle.setVisibility(View.GONE);
-////        }
-//        if (passportRequired.equals("0", ignoreCase = true)) {
-//            passportTitleTV.visibility = View.GONE
-//            passportAdd.visibility = View.GONE
-//            passportLinear.visibility = View.GONE
-//        } else {
-//            passportTitleTV.visibility = View.VISIBLE
-//            passportAdd.visibility = View.VISIBLE
-//            passportLinear.visibility = View.VISIBLE
+    private fun showDocumentSubmissionPopUp() {
+        val dial = Dialog(context)
+        dial.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dial.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dial.setCancelable(false)
+        dial.setContentView(R.layout.dialog_details_submit_new)
+//        val nxt_btn = dial.findViewById<Button>(R.id.paymentbutton)
+        val permissionLinear = dial.findViewById<ConstraintLayout>(R.id.permissionDetailsConstraint)
+        val passportLinear = dial.findViewById<LinearLayout>(R.id.passportConstraint)
+        val visaDetailsLinear = dial.findViewById<LinearLayout>(R.id.visaConstraint)
+        val eIDDetailsLinear = dial.findViewById<LinearLayout>(R.id.emirateIDConstraint)
+        val payButtonConstraint = dial.findViewById<ConstraintLayout>(R.id.payNowButtonConstraint)
+        val chooseFilePassportFront = dial.findViewById<Button>(R.id.chooseFilePassportFront)
+        val passportNumberEditText = dial.findViewById<EditText>(R.id.passportNumberEditText)
+        val chooseFilePassportBack = dial.findViewById<Button>(R.id.chooseFilePassportBack)
+        val uploadPassportDetailsButton =
+            dial.findViewById<Button>(R.id.uploadPassportDetailsButton)
+        val visaEditText = dial.findViewById<EditText>(R.id.visaEditText)
+        val permissionSlipTextView = dial.findViewById<TextView>(R.id.permissionSlipTextView)
+        val chooseFileVisaFront = dial.findViewById<Button>(R.id.chooseFileVisaFront)
+        val chooseFileVisaBack = dial.findViewById<Button>(R.id.choosefileVisaBack)
+        val uploadVisaDetailsButton = dial.findViewById<Button>(R.id.uploadVisaDetailsButton)
+        permissionSlipTextView.text = Html.fromHtml(permissionSlip)
+        val eIDEditText = dial.findViewById<EditText>(R.id.eIDEditText)
+        val studtitle = dial.findViewById<TextView>(R.id.studtitle)
+        val passportTitleTV = dial.findViewById<TextView>(R.id.passportTitleTV)
+        val visaTitleTV = dial.findViewById<TextView>(R.id.visaTitleTV)
+        val emiratedIDTV = dial.findViewById<TextView>(R.id.emiratedIDTV)
+        val permissiontitle = dial.findViewById<TextView>(R.id.permissiontitle)
+        val chooseFileEIDFront = dial.findViewById<Button>(R.id.chooseFileEIDFront)
+        val choosefileEIDBack = dial.findViewById<Button>(R.id.choosefileEIDBack)
+        val uploadEIDDetailsButton = dial.findViewById<Button>(R.id.uploadEIDDetailsButton)
+        val submitConsentButton = dial.findViewById<Button>(R.id.submitConsentButton)
+        val payNowButtonText = dial.findViewById<TextView>(R.id.payNowButton)
+        payNowButtonText.text = "PAY $singleInstallmentAmount AED"
+        val close_btn = dial.findViewById<ImageView>(R.id.close_btn)
+        val studentAdd = dial.findViewById<ImageView>(R.id.studentAdd)
+        val passportAdd = dial.findViewById<ImageView>(R.id.passportAdd)
+        val visaAdd = dial.findViewById<ImageView>(R.id.visaAdd)
+        val emiratesAdd = dial.findViewById<ImageView>(R.id.emiratesAdd)
+        val permissionAdd = dial.findViewById<ImageView>(R.id.permissionAdd)
+        //        if (tripType.equalsIgnoreCase("1")) {
+//            studentAdd.setVisibility(View.GONE);
+//            studtitle.setVisibility(View.GONE);
+//            passportAdd.setVisibility(View.GONE);
+//            passportTitleTV.setVisibility(View.GONE);
+//            passportLinear.setVisibility(View.GONE);
+//            visaDetailsLinear.setVisibility(View.GONE);
+//            eIDDetailsLinear.setVisibility(View.GONE);
+//            visaTitleTV.setVisibility(View.GONE);
+//            visaAdd.setVisibility(View.GONE);
+//            emiratedIDTV.setVisibility(View.GONE);
+//            emiratesAdd.setVisibility(View.GONE);
+//            permissiontitle.setVisibility(View.GONE);
 //        }
-//        if (visaRequired.equals("0", ignoreCase = true)) {
-//            visaTitleTV.visibility = View.GONE
-//            visaAdd.visibility = View.GONE
-//            visaDetailsLinear.visibility = View.GONE
-//        } else {
-//            visaTitleTV.visibility = View.VISIBLE
-//            visaAdd.visibility = View.VISIBLE
-//            visaDetailsLinear.visibility = View.VISIBLE
-//        }
-//        if (eIDRequired.equals("0", ignoreCase = true)) {
-//            emiratedIDTV.visibility = View.GONE
-//            emiratesAdd.visibility = View.GONE
-//            eIDDetailsLinear.visibility = View.GONE
-//        } else {
-//            emiratedIDTV.visibility = View.VISIBLE
-//            emiratesAdd.visibility = View.VISIBLE
-//            eIDDetailsLinear.visibility = View.VISIBLE
-//        }
-//        if (consentRequired.equals("0", ignoreCase = true)) {
-//            permissiontitle.visibility = View.GONE
-//            permissionAdd.visibility = View.GONE
-//            permissionLinear.visibility = View.GONE
-//        } else {
-//            permissiontitle.visibility = View.VISIBLE
-//            permissionAdd.visibility = View.VISIBLE
-//            permissionLinear.visibility = View.VISIBLE
-//        }
-//        val rememeberMeImg = dial.findViewById<CheckBox>(R.id.rememeberMeImg)
-//        val signature_pad: SignaturePad = dial.findViewById(R.id.signature_pad)
-//        if (passportStatus == 1) {
-//            if (passportRequired === "1") {
-//                passportLinear.visibility = View.GONE
-//                passportAdd.setImageResource(R.drawable.participatingsmallicon_new)
-//            } else {
-//                passportLinear.visibility = View.GONE
-//                passportAdd.visibility = View.GONE
-//                passportTitleTV.visibility = View.GONE
-//            }
-//        }
-//        if (visaStatus == 1) {
-//            if (visaRequired === "1") {
-//                visaDetailsLinear.visibility = View.GONE
-//                visaAdd.setImageResource(R.drawable.participatingsmallicon_new)
-//            } else {
-//                visaDetailsLinear.visibility = View.GONE
-//                visaAdd.visibility = View.GONE
-//                visaTitleTV.visibility = View.GONE
-//            }
-//        }
-//        if (eIDStatus == 1) {
-//            if (eIDRequired === "1") {
-//                eIDDetailsLinear.visibility = View.GONE
-//                emiratesAdd.setImageResource(R.drawable.participatingsmallicon_new)
-//            } else {
-//                eIDDetailsLinear.visibility = View.GONE
-//                emiratesAdd.visibility = View.GONE
-//                emiratedIDTV.visibility = View.GONE
-//            }
-//        }
-//        if (permissionStatus == 1) {
-//            if (consentRequired === "1") {
-//                permissionLinear.visibility = View.GONE
-//                permissionAdd.setImageResource(R.drawable.participatingsmallicon_new)
-//            } else {
-//                permissionLinear.visibility = View.GONE
-//                permissionAdd.visibility = View.GONE
-//                permissiontitle.visibility = View.GONE
-//            }
-//        }
-//        payButtonConstraint.setOnClickListener {
-//            if (passportStatus == 1 && visaStatus == 1 && eIDStatus == 1 && permissionStatus == 1) {
-//                showPaymentsPopUp(context)
-//            } else Toast.makeText(context, "Please upload all documents.", Toast.LENGTH_SHORT)
-//                .show()
-//        }
-//        studentAdd.setOnClickListener {
-//            if (studentDetailsFLag) {
-//                passportLinear.visibility = View.GONE
-//                visaDetailsLinear.visibility = View.GONE
-//                eIDDetailsLinear.visibility = View.GONE
-//            } else {
-//                if (passportStatus != 1) {
-//                    passportLinear.visibility = View.VISIBLE
-//                }
-//                if (visaStatus != 1) {
-//                    visaDetailsLinear.visibility = View.VISIBLE
-//                }
-//                if (eIDStatus != 1) {
-//                    eIDDetailsLinear.visibility = View.VISIBLE
-//                }
-//            }
-//            studentDetailsFLag = !studentDetailsFLag
-//        }
-//        passportAdd.setOnClickListener {
-//            if (passportDetailsFLag) {
-//                passportLinear.visibility = View.GONE
-//            } else {
-//                passportLinear.visibility = View.VISIBLE
-//            }
-//            passportDetailsFLag = !passportDetailsFLag
-//        }
-//        visaAdd.setOnClickListener {
-//            if (visaDetailFlag) {
-//                visaDetailsLinear.visibility = View.GONE
-//            } else {
-//                visaDetailsLinear.visibility = View.VISIBLE
-//            }
-//            visaDetailFlag = !visaDetailFlag
-//        }
-//        emiratesAdd.setOnClickListener {
-//            if (eIDDetailFLag) {
-//                eIDDetailsLinear.visibility = View.GONE
-//            } else {
-//                eIDDetailsLinear.visibility = View.VISIBLE
-//            }
-//            eIDDetailFLag = !eIDDetailFLag
-//        }
-//        permissionAdd.setOnClickListener {
-//            if (permissionFlag) {
-//                permissionLinear.visibility = View.GONE
-//            } else {
-//                permissionLinear.visibility = View.VISIBLE
-//            }
-//            permissionFlag = !permissionFlag
-//        }
-//        submitConsentButton.setOnClickListener {
-//            if (signature_pad.isEmpty()) {
-//                // Prompt the user to enter a signature
-//                Toast.makeText(context, "Please enter your signature", Toast.LENGTH_SHORT)
-//                    .show()
-//            } else if (!rememeberMeImg.isChecked) {
-//                Toast.makeText(
-//                    context,
-//                    "Please agree to terms and conditions",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            } else {
-//                val signatureBitmap: Bitmap =
-//                    signature_pad.getSignatureBitmap()
-//                val signatureFile: File = bitmapToFile(signatureBitmap)
-//                uploadConsentAPICall(dial, signatureFile)
-//            }
-//        }
-//        close_btn.setOnClickListener { dial.dismiss() }
-//        chooseFilePassportFront.setOnClickListener {
-//            currentPosition = 0
-//            openGallery(PICK_IMAGE_FRONT_PASSPORT)
-//        }
-//        rememeberMeImg.setOnCheckedChangeListener { compoundButton, b ->
-//            if (b) {
-//                signature_pad.setVisibility(View.VISIBLE)
-//            } else signature_pad.setVisibility(View.GONE)
-//        }
-//        chooseFilePassportBack.setOnClickListener {
-//            currentPosition = 1
-//            openGallery(PICK_IMAGE_BACK_PASSPORT)
-//        }
-//        uploadPassportDetailsButton.setOnClickListener {
-//            Log.e("herer", "gesg")
-//            if (!passportURIArray[0].path.equals(
-//                    "",
-//                    ignoreCase = true
-//                ) && !passportURIArray[1].path.equals(
-//                    "",
-//                    ignoreCase = true
-//                ) && !passportNumberEditText.text.toString().equals("", ignoreCase = true)
-//            ) {
-//                uploadDocumentsAPICall(
-//                    dial,
-//                    passportURIArray,
-//                    passportNumberEditText.text.toString(),
-//                    "passport"
-//                )
-//            } else if (passportNumberEditText.text.toString().equals("", ignoreCase = true)) {
-//                Toast.makeText(context, "Please enter passport number.", Toast.LENGTH_SHORT)
-//                    .show()
-//            } else {
-//                Toast.makeText(context, "Please upload both images.", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//        chooseFileVisaFront.setOnClickListener {
-//            currentPosition = 0
-//            openGallery(PICK_IMAGE_FRONT_VISA)
-//        }
-//        chooseFileVisaBack.setOnClickListener {
-//            currentPosition = 1
-//            openGallery(PICK_IMAGE_BACK_VISA)
-//        }
-//        uploadVisaDetailsButton.setOnClickListener {
-//            Log.e("herer", visaURIArray[1].path!!)
-//            if (!visaURIArray[0].path.equals(
-//                    "",
-//                    ignoreCase = true
-//                ) && !visaEditText.text.toString().equals("", ignoreCase = true)
-//            ) {
-//                uploadSingleDocumentsAPICall(
-//                    dial,
-//                    visaURIArray[0],
-//                    visaEditText.text.toString(),
-//                    "visa"
-//                )
-//            } else if (visaEditText.text.toString().equals("", ignoreCase = true)) {
-//                Toast.makeText(context, "Please enter Visa number.", Toast.LENGTH_SHORT).show()
-//            } else {
-//                Toast.makeText(context, "Please upload both images.", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//        chooseFileEIDFront.setOnClickListener {
-//            currentPosition = 0
-//            openGallery(PICK_IMAGE_FRONT_EID)
-//        }
-//        choosefileEIDBack.setOnClickListener {
-//            currentPosition = 1
-//            openGallery(PICK_IMAGE_BACK_EID)
-//        }
-//        uploadEIDDetailsButton.setOnClickListener {
-//            Log.e("herer", eIDURIArray[0].path!!)
-//            Log.e("front", eIDURIArray[0].path!!)
-//            Log.e("back", eIDURIArray[1].path!!)
-//            if (!eIDURIArray[0].path.equals(
-//                    "",
-//                    ignoreCase = true
-//                ) && !eIDURIArray[1].path.equals(
-//                    "",
-//                    ignoreCase = true
-//                ) && !eIDEditText.text.toString().equals("", ignoreCase = true)
-//            ) {
-//                uploadDocumentsAPICall(
-//                    dial,
-//                    eIDURIArray,
-//                    eIDEditText.text.toString(),
-//                    "emirates"
-//                )
-//            } else if (eIDEditText.text.toString().equals("", ignoreCase = true)) {
-//                Toast.makeText(context, "Please enter Emirates ID number.", Toast.LENGTH_SHORT)
-//                    .show()
-//            } else {
-//                Toast.makeText(context, "Please upload both images.", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//        dial.show()
-//    }
+        if (passportRequired == 0) {
+            passportTitleTV.visibility = View.GONE
+            passportAdd.visibility = View.GONE
+            passportLinear.visibility = View.GONE
+        } else {
+            passportTitleTV.visibility = View.VISIBLE
+            passportAdd.visibility = View.VISIBLE
+            passportLinear.visibility = View.VISIBLE
+        }
+        if (visaRequired == 0) {
+            visaTitleTV.visibility = View.GONE
+            visaAdd.visibility = View.GONE
+            visaDetailsLinear.visibility = View.GONE
+        } else {
+            visaTitleTV.visibility = View.VISIBLE
+            visaAdd.visibility = View.VISIBLE
+            visaDetailsLinear.visibility = View.VISIBLE
+        }
+        if (eIDRequired == 0) {
+            emiratedIDTV.visibility = View.GONE
+            emiratesAdd.visibility = View.GONE
+            eIDDetailsLinear.visibility = View.GONE
+        } else {
+            emiratedIDTV.visibility = View.VISIBLE
+            emiratesAdd.visibility = View.VISIBLE
+            eIDDetailsLinear.visibility = View.VISIBLE
+        }
+        if (consentRequired == 0) {
+            permissiontitle.visibility = View.GONE
+            permissionAdd.visibility = View.GONE
+            permissionLinear.visibility = View.GONE
+        } else {
+            permissiontitle.visibility = View.VISIBLE
+            permissionAdd.visibility = View.VISIBLE
+            permissionLinear.visibility = View.VISIBLE
+        }
+        val rememeberMeImg = dial.findViewById<CheckBox>(R.id.rememeberMeImg)
+        val signature_pad: SignaturePad = dial.findViewById(R.id.signature_pad)
+        if (passportStatus == 1) {
+            if (passportRequired == 1) {
+                passportLinear.visibility = View.GONE
+                passportAdd.setImageResource(R.drawable.participatingsmallicon_new)
+            } else {
+                passportLinear.visibility = View.GONE
+                passportAdd.visibility = View.GONE
+                passportTitleTV.visibility = View.GONE
+            }
+        }
+        if (visaStatus == 1) {
+            if (visaRequired == 1) {
+                visaDetailsLinear.visibility = View.GONE
+                visaAdd.setImageResource(R.drawable.participatingsmallicon_new)
+            } else {
+                visaDetailsLinear.visibility = View.GONE
+                visaAdd.visibility = View.GONE
+                visaTitleTV.visibility = View.GONE
+            }
+        }
+        if (eIDStatus == 1) {
+            if (eIDRequired == 1) {
+                eIDDetailsLinear.visibility = View.GONE
+                emiratesAdd.setImageResource(R.drawable.participatingsmallicon_new)
+            } else {
+                eIDDetailsLinear.visibility = View.GONE
+                emiratesAdd.visibility = View.GONE
+                emiratedIDTV.visibility = View.GONE
+            }
+        }
+        if (permissionStatus == 1) {
+            if (consentRequired == 1) {
+                permissionLinear.visibility = View.GONE
+                permissionAdd.setImageResource(R.drawable.participatingsmallicon_new)
+            } else {
+                permissionLinear.visibility = View.GONE
+                permissionAdd.visibility = View.GONE
+                permissiontitle.visibility = View.GONE
+            }
+        }
+        payButtonConstraint.setOnClickListener {
+            if (passportStatus == 1 && visaStatus == 1 && eIDStatus == 1 && permissionStatus == 1) {
+                showPaymentsPopUp(context)
+            } else Toast.makeText(context, "Please upload all documents.", Toast.LENGTH_SHORT)
+                .show()
+        }
+        studentAdd.setOnClickListener {
+            if (studentDetailsFLag) {
+                passportLinear.visibility = View.GONE
+                visaDetailsLinear.visibility = View.GONE
+                eIDDetailsLinear.visibility = View.GONE
+            } else {
+                if (passportStatus != 1) {
+                    passportLinear.visibility = View.VISIBLE
+                }
+                if (visaStatus != 1) {
+                    visaDetailsLinear.visibility = View.VISIBLE
+                }
+                if (eIDStatus != 1) {
+                    eIDDetailsLinear.visibility = View.VISIBLE
+                }
+            }
+            studentDetailsFLag = !studentDetailsFLag
+        }
+        passportAdd.setOnClickListener {
+            if (passportDetailsFLag) {
+                passportLinear.visibility = View.GONE
+            } else {
+                passportLinear.visibility = View.VISIBLE
+            }
+            passportDetailsFLag = !passportDetailsFLag
+        }
+        visaAdd.setOnClickListener {
+            if (visaDetailFlag) {
+                visaDetailsLinear.visibility = View.GONE
+            } else {
+                visaDetailsLinear.visibility = View.VISIBLE
+            }
+            visaDetailFlag = !visaDetailFlag
+        }
+        emiratesAdd.setOnClickListener {
+            if (eIDDetailFLag) {
+                eIDDetailsLinear.visibility = View.GONE
+            } else {
+                eIDDetailsLinear.visibility = View.VISIBLE
+            }
+            eIDDetailFLag = !eIDDetailFLag
+        }
+        permissionAdd.setOnClickListener {
+            if (permissionFlag) {
+                permissionLinear.visibility = View.GONE
+            } else {
+                permissionLinear.visibility = View.VISIBLE
+            }
+            permissionFlag = !permissionFlag
+        }
+        submitConsentButton.setOnClickListener {
+            if (signature_pad.isEmpty()) {
+                // Prompt the user to enter a signature
+                Toast.makeText(context, "Please enter your signature", Toast.LENGTH_SHORT).show()
+            } else if (!rememeberMeImg.isChecked) {
+                Toast.makeText(
+                    context, "Please agree to terms and conditions", Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                val signatureBitmap: Bitmap = signature_pad.getSignatureBitmap()
+                val signatureFile: File = bitmapToFile(signatureBitmap)
+                uploadConsentAPICall(dial, signatureFile)
+            }
+        }
+        close_btn.setOnClickListener { dial.dismiss() }
+        chooseFilePassportFront.setOnClickListener {
+            currentPosition = 0
+            openGallery(PICK_IMAGE_FRONT_PASSPORT)
+        }
+        rememeberMeImg.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                signature_pad.setVisibility(View.VISIBLE)
+            } else signature_pad.setVisibility(View.GONE)
+        }
+        chooseFilePassportBack.setOnClickListener {
+            currentPosition = 1
+            openGallery(PICK_IMAGE_BACK_PASSPORT)
+        }
+        uploadPassportDetailsButton.setOnClickListener {
+            Log.e("herer", "gesg")
+            if (!passportURIArray[0].path.equals(
+                    "", ignoreCase = true
+                ) && !passportURIArray[1].path.equals(
+                    "", ignoreCase = true
+                ) && !passportNumberEditText.text.toString().equals("", ignoreCase = true)
+            ) {
+                uploadDocumentsAPICall(
+                    dial, passportURIArray, passportNumberEditText.text.toString(), "passport"
+                )
+            } else if (passportNumberEditText.text.toString().equals("", ignoreCase = true)) {
+                Toast.makeText(context, "Please enter passport number.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Please upload both images.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        chooseFileVisaFront.setOnClickListener {
+            currentPosition = 0
+            openGallery(PICK_IMAGE_FRONT_VISA)
+        }
+        chooseFileVisaBack.setOnClickListener {
+            currentPosition = 1
+            openGallery(PICK_IMAGE_BACK_VISA)
+        }
+        uploadVisaDetailsButton.setOnClickListener {
+            Log.e("herer", visaURIArray[1].path!!)
+            if (!visaURIArray[0].path.equals(
+                    "", ignoreCase = true
+                ) && !visaEditText.text.toString().equals("", ignoreCase = true)
+            ) {
+                uploadSingleDocumentsAPICall(
+                    dial, visaURIArray[0], visaEditText.text.toString(), "visa"
+                )
+            } else if (visaEditText.text.toString().equals("", ignoreCase = true)) {
+                Toast.makeText(context, "Please enter Visa number.", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Please upload both images.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        chooseFileEIDFront.setOnClickListener {
+            currentPosition = 0
+            openGallery(PICK_IMAGE_FRONT_EID)
+        }
+        choosefileEIDBack.setOnClickListener {
+            currentPosition = 1
+            openGallery(PICK_IMAGE_BACK_EID)
+        }
+        uploadEIDDetailsButton.setOnClickListener {
+            Log.e("herer", eIDURIArray[0].path!!)
+            Log.e("front", eIDURIArray[0].path!!)
+            Log.e("back", eIDURIArray[1].path!!)
+            if (!eIDURIArray[0].path.equals(
+                    "", ignoreCase = true
+                ) && !eIDURIArray[1].path.equals(
+                    "", ignoreCase = true
+                ) && !eIDEditText.text.toString().equals("", ignoreCase = true)
+            ) {
+                uploadDocumentsAPICall(
+                    dial, eIDURIArray, eIDEditText.text.toString(), "emirates"
+                )
+            } else if (eIDEditText.text.toString().equals("", ignoreCase = true)) {
+                Toast.makeText(context, "Please enter Emirates ID number.", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                Toast.makeText(context, "Please upload both images.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        dial.show()
+    }
 
     private fun openGallery(requestCode: Int) {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -1095,220 +1078,175 @@ class TripDetailsActivity : AppCompatActivity() {
     }
 
 
-//    fun checkTripCount(
-//        tripID: String?,
-//        callback: TripCountCheckCallback
-//    ) {
-//        val paramObject = JsonObject()
-//        Log.e("tripID name", tripID!!)
-//        paramObject.addProperty("trip_id", tripID)
-//        val call: Call<SubmitDocResponseModel> =
-//            ApiClient.getClient.tripCountCheck(
-//                "Bearer " + PreferenceManager.getUserCode(context),
-//                paramObject
-//            )
-//        call.enqueue(object : Callback<SubmitDocResponseModel> {
-//
-//            override fun onResponse(
-//                call: Call<SubmitDocResponseModel>,
-//                response: Response<SubmitDocResponseModel>
-//            ) {
-//                val isTripCountEmpty =
-//                    response.isSuccessful() && response.body() != null && response.body()!!.data.documentStatus
-//                callback.onTripCountChecked(isTripCountEmpty)
-//            }
-//
-//            override fun onFailure(call: Call<SubmitDocResponseModel>, t: Throwable) {
-//                callback.onTripCountChecked(false)
-//            }
-//
-//        })
-//
-//    }
+    fun checkTripCount(
+        tripID: String?, callback: TripCountCheckCallback
+    ) {
+        val paramObject = JsonObject()
+        Log.e("tripID name", tripID!!)
+        paramObject.addProperty("trip_id", tripID)
+        val call: Call<TripChoicePaymentCountResponseModel> = ApiClient.getClient.tripCountCheck(
+            "Bearer " + PreferenceManager.getUserCode(context), paramObject
+        )
+        call.enqueue(object : Callback<TripChoicePaymentCountResponseModel> {
+
+            override fun onResponse(
+                call: Call<TripChoicePaymentCountResponseModel>,
+                response: Response<TripChoicePaymentCountResponseModel>
+            ) {
+                val isTripCountEmpty =
+                    response.isSuccessful && response.body() != null && response.body()!!.data.tripMaxStudents.isEmpty()
+                callback.onTripCountChecked(isTripCountEmpty)
+            }
+
+            override fun onFailure(call: Call<TripChoicePaymentCountResponseModel>, t: Throwable) {
+                callback.onTripCountChecked(false)
+            }
+
+        })
+
+    }
 
 
-//    private fun showIntentionPopUp() {
-//        val dialog = Dialog(context)
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-//        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-//        dialog.setCancelable(true)
-//        dialog.setContentView(R.layout.dialog_intention_pop_up)
-//        val yesNoRadioGroup = dialog.findViewById<RadioGroup>(R.id.yesNoRadioGroup)
-//        val yesButton = dialog.findViewById<RadioButton>(R.id.yesRadio)
-//        val tripIntentionQuestion = dialog.findViewById<TextView>(R.id.tripIntentionQuestion)
-//        val studentNameTextView = dialog.findViewById<TextView>(R.id.studentNameTextView)
-//        studentNameTextView.setText(PreferenceManager.getStudentName(context))
-//        val noButton = dialog.findViewById<RadioButton>(R.id.noRadio)
-//        val preferenceLayout = dialog.findViewById<ConstraintLayout>(R.id.preferenceLayout)
-//        val submitIntentionButton = dialog.findViewById<Button>(R.id.submitIntentionButton)
-//        val closeImageView = dialog.findViewById<ImageView>(R.id.close_img)
-//        val choicePreferenceQuestion = dialog.findViewById<TextView>(R.id.choicePreferenceQuestion)
-//        val choicePreferenceListView =
-//            dialog.findViewById<RecyclerView>(R.id.choicePreferenceRecycler)
-//        preferenceLayout.visibility = View.GONE // Initially hidden
-//        yesNoRadioGroup.orientation = LinearLayout.HORIZONTAL
-//        val adapter = ChoicePreferenceAdapter(
-//            context, choicePreferenceSorted, this as ChoicePreferenceAdapter.OnItemSelectedListener
-//        ) // Replace yourDataList with your list of data
-//        choicePreferenceListView.adapter = adapter
-//        val layoutManager = GridLayoutManager(context, 3)
-//        choicePreferenceListView.layoutManager = layoutManager
-//        val spacing = resources.getDimensionPixelSize(R.dimen.grid_spacing)
-//        val itemDecoration = GridSpacingItemDecoration(3, spacing, true)
-//        choicePreferenceListView.addItemDecoration(itemDecoration)
-//        choicePreferenceListView.addOnItemTouchListener(
-//            RecyclerItemListener(context,
-//                choicePreferenceListView,
-//                object : RecyclerItemListener.RecyclerTouchListener {
-//                    override fun onClickItem(v: View?, position: Int) {
-////                submitIntent("1",dialog,choicePreferenceArray.get(position));
-//                    }
-//
-//                    override fun onLongClickItem(v: View?, position: Int) {
-////                submitIntent("1",dialog,choicePreferenceArray.get(position));
-//                    }
-//                })
-//        )
-//        submitIntentionButton.setOnClickListener {
-//            if (yesButton.isChecked && selectedChoice == "") {
-//                Toast.makeText(context, "Please select your choice!", Toast.LENGTH_SHORT).show()
-//            } else if (yesButton.isChecked && selectedChoice != "") {
-//                submitIntent("1", dialog, selectedChoice)
-//            } else if (noButton.isChecked) {
-//                submitIntent("2", dialog, "")
-//            } else Toast.makeText(context, "Please provide your intention!", Toast.LENGTH_SHORT)
-//                .show()
-//        }
-//        yesButton.setOnCheckedChangeListener { compoundButton, b ->
-//            if (b) {
-//                preferenceLayout.visibility = View.VISIBLE
-//                //                    submitIntentionButton.setVisibility(View.GONE);
-//            }
-//        }
-//        noButton.setOnCheckedChangeListener { compoundButton, b ->
-//            if (b) {
-//                preferenceLayout.visibility = View.GONE
-//                submitIntentionButton.visibility = View.VISIBLE
-//            }
-//        }
-//        closeImageView.setOnClickListener { dialog.dismiss() }
-//
-//        closeImageView.setOnClickListener { dialog.dismiss() }
-//        dialog.show()
-//    }
+    private fun showIntentionPopUp() {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(true)
+        dialog.setContentView(R.layout.dialog_intention_pop_up)
+        val yesNoRadioGroup = dialog.findViewById<RadioGroup>(R.id.yesNoRadioGroup)
+        val yesButton = dialog.findViewById<RadioButton>(R.id.yesRadio)
+        val tripIntentionQuestion = dialog.findViewById<TextView>(R.id.tripIntentionQuestion)
+        val studentNameTextView = dialog.findViewById<TextView>(R.id.studentNameTextView)
+        studentNameTextView.text = PreferenceManager.getStudentName(context)
+        val noButton = dialog.findViewById<RadioButton>(R.id.noRadio)
+        val preferenceLayout = dialog.findViewById<ConstraintLayout>(R.id.preferenceLayout)
+        val submitIntentionButton = dialog.findViewById<Button>(R.id.submitIntentionButton)
+        val closeImageView = dialog.findViewById<ImageView>(R.id.close_img)
+        val choicePreferenceQuestion = dialog.findViewById<TextView>(R.id.choicePreferenceQuestion)
+        val choicePreferenceListView =
+            dialog.findViewById<RecyclerView>(R.id.choicePreferenceRecycler)
+        preferenceLayout.visibility = View.GONE // Initially hidden
+        yesNoRadioGroup.orientation = LinearLayout.HORIZONTAL
+        val adapter = ChoicePreferenceAdapter(
+            context, choicePreferenceSorted, this as ChoicePreferenceAdapter.OnItemSelectedListener
+        ) // Replace yourDataList with your list of data
+        choicePreferenceListView.adapter = adapter
+        val layoutManager = GridLayoutManager(context, 3)
+        choicePreferenceListView.layoutManager = layoutManager
+        val spacing = resources.getDimensionPixelSize(R.dimen.grid_spacing)
+        val itemDecoration = GridSpacingItemDecoration(3, spacing, true)
+        choicePreferenceListView.addItemDecoration(itemDecoration)
+        choicePreferenceListView.addOnItemTouchListener(
+            RecyclerItemListener(context,
+                choicePreferenceListView,
+                object : RecyclerItemListener.RecyclerTouchListener {
+                    override fun onClickItem(v: View?, position: Int) {
+//                submitIntent("1",dialog,choicePreferenceArray.get(position));
+                    }
 
-//    private fun submitIntent(intent: String, dialog: Dialog, preference: String) {
-//        progressDialogP.show()
-//        val paramObject = JsonObject()
-//        Log.e("tripID name", tripID)
-//        paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
-//        paramObject.addProperty("trip_item_id", tripID)
-//        paramObject.addProperty("status", intent)
-//        paramObject.addProperty("preference", preference)
-//        val call: Call<GeneralSubmitResponseModel> =
-//            ApiClient.getClient.tripIntentSubmit(
-//                "Bearer " + PreferenceManager.getUserCode(context),
-//                paramObject
-//            )
-//        call.enqueue(object : Callback<GeneralSubmitResponseModel> {
-//
-//            override fun onResponse(
-//                call: Call<GeneralSubmitResponseModel>,
-//                response: Response<GeneralSubmitResponseModel>
-//            ) {
-//                dialog.dismiss()
-//                    if (response.body()!!.status == 100) {
-//                        Toast.makeText(
-//                            this@TripDetailsActivity,
-//                            "Intention successfully submitted.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    } else if (response.body()!!.status == (313)
-//                    ) {
-//                        Toast.makeText(
-//                            this@TripDetailsActivity,
-//                            "Intention already submitted.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    } else if (response.body()!!.status == 314)
-//                     {
-//                        Toast.makeText(
-//                            this@TripDetailsActivity,
-//                            "Intention already submitted for this choice. Select any other choice.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    } else {
-//                        Toast.makeText(
-//                            this@TripDetailsActivity,
-//                            "Intention Submission Failed.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//
-//                getTripDetails(tripID)
-//            }
-//
-//            override fun onFailure(call: Call<GeneralSubmitResponseModel>, t: Throwable) {
-//                progressDialogP.dismiss()
-//                Log.e("error", t.localizedMessage)
-//                CommonMethods.showDialogueWithOk(
-//                    context as Activity,
-//                    getString(R.string.common_error), "Alert"
-//
-//                )
-//            }
-//        })
-//    }
+                    override fun onLongClickItem(v: View?, position: Int) {
+//                submitIntent("1",dialog,choicePreferenceArray.get(position));
+                    }
+                })
+        )
+        submitIntentionButton.setOnClickListener {
+            if (yesButton.isChecked && selectedChoice == "") {
+                Toast.makeText(context, "Please select your choice!", Toast.LENGTH_SHORT).show()
+            } else if (yesButton.isChecked && selectedChoice != "") {
+                submitIntent("1", dialog, selectedChoice)
+            } else if (noButton.isChecked) {
+                submitIntent("2", dialog, "")
+            } else Toast.makeText(context, "Please provide your intention!", Toast.LENGTH_SHORT)
+                .show()
+        }
+        yesButton.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                preferenceLayout.visibility = View.VISIBLE
+                //                    submitIntentionButton.setVisibility(View.GONE);
+            }
+        }
+        noButton.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                preferenceLayout.visibility = View.GONE
+                submitIntentionButton.visibility = View.VISIBLE
+            }
+        }
+        closeImageView.setOnClickListener { dialog.dismiss() }
+
+        closeImageView.setOnClickListener { dialog.dismiss() }
+        dialog.show()
+    }
+
+    private fun submitIntent(intent: String, dialog: Dialog, preference: String) {
+        progressDialogP.show()
+        val paramObject = JsonObject()
+        Log.e("tripID name", tripID)
+        paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
+        paramObject.addProperty("trip_item_id", tripID)
+        paramObject.addProperty("status", intent)
+        paramObject.addProperty("preference", preference)
+        val call: Call<GeneralSubmitResponseModel> = ApiClient.getClient.tripIntentSubmit(
+            "Bearer " + PreferenceManager.getUserCode(context), paramObject
+        )
+        call.enqueue(object : Callback<GeneralSubmitResponseModel> {
+
+            override fun onResponse(
+                call: Call<GeneralSubmitResponseModel>,
+                response: Response<GeneralSubmitResponseModel>
+            ) {
+                dialog.dismiss()
+                if (response.body()!!.status == 100) {
+                    Toast.makeText(
+                        this@TripDetailsActivity,
+                        "Intention successfully submitted.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else if (response.body()!!.status == (313)) {
+                    Toast.makeText(
+                        this@TripDetailsActivity, "Intention already submitted.", Toast.LENGTH_SHORT
+                    ).show()
+                } else if (response.body()!!.status == 314) {
+                    Toast.makeText(
+                        this@TripDetailsActivity,
+                        "Intention already submitted for this choice. Select any other choice.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this@TripDetailsActivity, "Intention Submission Failed.", Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                getTripDetails(tripID)
+            }
+
+            override fun onFailure(call: Call<GeneralSubmitResponseModel>, t: Throwable) {
+                progressDialogP.dismiss()
+                Log.e("error", t.localizedMessage)
+                CommonMethods.showDialogueWithOk(
+                    context as Activity, getString(R.string.common_error), "Alert"
+
+                )
+            }
+        })
+    }
 
     private fun uploadConsentAPICall(dial: Dialog, signatureFile: File) {
-//        val requestFile1: RequestBody
-//        var requestFile2: RequestBody
-//        var attachment1: Part? = null
-//        val attachment2: Part? = null
-//        if (signatureFile.length() > 0) {
-//            requestFile1 = RequestBody.create(parse.parse("multipart/form-data"), signatureFile)
-//            attachment1 =
-//                createFormData.createFormData("attachment1", signatureFile.name, requestFile1)
-//        }
-//        val action = RequestBody.create(parse.parse("text/plain"), "consent")
-//        val student_id: RequestBody =
-//            create(parse.parse("text/plain"), PreferenceManager.getTripStudentId(context))
-//        val trip_item_id = RequestBody.create(parse.parse("text/plain"), tripID)
-//        val card_number = RequestBody.create(parse.parse("text/plain"), "")
-//        val frontImagePart: Part? = attachment1
-//        val call: Call<TripCategoriesResponseModel> =
-//            ApiClient.getClient.uploadPermissionSlip(
-//                "Bearer " + PreferenceManager.getUserCode(context), action,
-//                trip_item_id,
-//                student_id,
-//                card_number,
-//                frontImagePart
-//            )
-//        call.enqueue(object : Callback<TripCategoriesResponseModel> {
-//            override fun onResponse(
-//                call: Call<TripCategoriesResponseModel>,
-//                response: Response<TripCategoriesResponseModel>
-//            ) {
+
 //                progressDialogP.dismiss()
-//                if (response.body().getResponseCode().equalsIgnoreCase("200")) {
-//                    if (response.body().getResponseData().getStatusCode().equalsIgnoreCase("303")) {
+//                    if (response.body()!!.status == 100) {
 //                        dial.dismiss()
 //                        Toast.makeText(
 //                            this@TripDetailsActivity,
 //                            "Permission slip successfully submitted.",
 //                            Toast.LENGTH_SHORT
 //                        ).show()
-//                        passportStatus = response.body().getResponseData().getDocumentStatus()
-//                            .getPassportStatus()
-//                        visaStatus =
-//                            response.body().getResponseData().getDocumentStatus().getVisaStatus()
-//                        eIDStatus = response.body().getResponseData().getDocumentStatus()
-//                            .getEmiratesStatus()
-//                        permissionStatus =
-//                            response.body().getResponseData().getDocumentStatus().getConsentStatus()
+//                        passportStatus = response.body()!!.data.documentStatus.passportStatus
+//                        visaStatus = response.body()!!.data.documentStatus.visaStatus
+//                        eIDStatus = response.body()!!.data.documentStatus.emiratesStatus
+//                        permissionStatus = response.body()!!.data.documentStatus.consentStatus
 //                        dial.dismiss()
-//                        if (response.body().getResponseData().getDocumentStatus()
-//                                .getDocumentCompletionStatus() === 1
+//                        if (response.body()!!.data.documentStatus.documentCompletionStatus == 1
 //                        ) {
 //                            getTripDetails(tripID)
 //                        } else {
@@ -1321,24 +1259,12 @@ class TripDetailsActivity : AppCompatActivity() {
 //                            Toast.LENGTH_SHORT
 //                        ).show()
 //                    }
-//                } else Toast.makeText(
-//                    this@TripDetailsActivity,
-//                    "Permission slip submit failed.",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//
-//            override fun onFailure(call: Call<TripCategoriesResponseModel>, t: Throwable) {
-//                progressDialogP.dismiss()
-//                Log.e("Response", t.localizedMessage)
-//            }
-//
-//        })
+
 
     }
 
     private fun bitmapToFile(bitmap: Bitmap): File {
-        val signatureFile = File(externalCacheDir, "signature.png")
+        val signatureFile = File(mContext.externalCacheDir, "signature.png")
         try {
             // Write the bitmap to the file
             val fos = FileOutputStream(signatureFile)
@@ -1351,189 +1277,98 @@ class TripDetailsActivity : AppCompatActivity() {
         return signatureFile
     }
 
-    private fun prepareImagePart(uri: Uri, partName: String): Part? {
-//        return try {
-//            val file = File(uri.path)
-//            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
-//            val stream = ByteArrayOutputStream()
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream) // Adjust quality as needed
-//            val byteArray = stream.toByteArray()
-//            val currentTimeMillis = System.currentTimeMillis().toString()
-//            val compressedFile = File(
-//                context.cacheDir,
-//                "compressed_image$currentTimeMillis.jpg"
-//            )
-//            val fos = FileOutputStream(compressedFile)
-//            fos.write(byteArray)
-//            fos.flush()
-//            fos.close()
-//            val requestFile = RequestBody.create(parse.parse("multipart/form-data"), compressedFile)
-//            createFormData.createFormData(partName, compressedFile.name, requestFile)
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//            null
-//        }
-        return null
+    private fun prepareImagePart(uri: Uri, partName: String): MultipartBody.Part? {
+        return try {
+            val file = File(uri.path)
+            val bitmap = BitmapFactory.decodeFile(file.absolutePath)
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream)
+            val byteArray = stream.toByteArray()
+            val currentTimeMillis = System.currentTimeMillis().toString()
+            val compressedFile = File(
+                mContext.cacheDir, "compressed_image$currentTimeMillis.jpg"
+            )
+            val fos = FileOutputStream(compressedFile)
+            fos.write(byteArray)
+            fos.flush()
+            fos.close()
+            val requestFile =
+                compressedFile.asRequestBody("multipart/form-data".toMediaTypeOrNull())
+            MultipartBody.Part.createFormData(partName, compressedFile.name, requestFile)
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
     }
 
     private fun uploadSingleDocumentsAPICall(
-        dial: Dialog,
-        uriArray: Uri,
-        number: String,
-        documentType: String
+        dial: Dialog, uriArray: Uri, number: String, documentType: String
     ) {
-//        var requestFile1: RequestBody
-//        var requestFile2: RequestBody
-//        val attachment1: Part? = null
-//        val attachment2: Part? = null
-//        val file1 = File(uriArray.path)
-//        val frontImagePart: Part? = prepareImagePart(uriArray, "attachment1")
-//        Log.e("path", uriArray.path!!)
-//        val action = RequestBody.create(parse.parse("text/plain"), documentType)
-//        val student_id: RequestBody =
-//            create(parse.parse("text/plain"), PreferenceManager.getTripStudentId(context))
-//        val trip_item_id = RequestBody.create(parse.parse("text/plain"), tripID)
-//        val card_number = RequestBody.create(parse.parse("text/plain"), number)
-//        val call: Call<TripCategoriesResponseModel> =
-//            ApiClient.getClient.uploadPermissionSlip(
-//                "Bearer " + PreferenceManager.getUserCode(context),
-//                action,
-//                trip_item_id,
-//                student_id,
-//                card_number,
-//                frontImagePart
-//            )
-//        call.enqueue(object : Callback<TripCategoriesResponseModel> {
-//            override fun onResponse(
-//                call: Call<TripCategoriesResponseModel>,
-//                response: Response<TripCategoriesResponseModel>
-//            ) {
+
 //                progressDialogP.dismiss()
-//                if (response.body().getResponseCode().equalsIgnoreCase("200")) {
-//                    if (response.body().getResponseData().getStatusCode().equalsIgnoreCase("303")) {
-//                        Toast.makeText(
-//                            this@TripDetailsActivity,
-//                            "Documents successfully submitted.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        dial.dismiss()
-//                        passportStatus = response.body().getResponseData().getDocumentStatus()
-//                            .getPassportStatus()
-//                        visaStatus =
-//                            response.body().getResponseData().getDocumentStatus().getVisaStatus()
-//                        eIDStatus = response.body().getResponseData().getDocumentStatus()
-//                            .getEmiratesStatus()
-//                        permissionStatus =
-//                            response.body().getResponseData().getDocumentStatus().getConsentStatus()
-//                        if (response.body().getResponseData().getDocumentStatus()
-//                                .getDocumentCompletionStatus() === 1
-//                        ) {
-//                            getTripDetails(tripID)
-//                        } else {
-//                            showDocumentSubmissionPopUp()
-//                        }
+//                if (response.body()!!.status == 100) {
+//                    dial.dismiss()
+//                    Toast.makeText(
+//                        this@TripDetailsActivity,
+//                        "Document successfully submitted.",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    passportStatus = response.body()!!.data.documentStatus.passportStatus
+//                    visaStatus = response.body()!!.data.documentStatus.visaStatus
+//                    eIDStatus = response.body()!!.data.documentStatus.emiratesStatus
+//                    permissionStatus = response.body()!!.data.documentStatus.consentStatus
+//                    dial.dismiss()
+//                    if (response.body()!!.data.documentStatus.documentCompletionStatus == 1
+//                    ) {
+//                        getTripDetails(tripID)
 //                    } else {
-//                        Toast.makeText(
-//                            this@TripDetailsActivity,
-//                            "Documents submit failed.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
+//                        showDocumentSubmissionPopUp()
 //                    }
-//                } else Toast.makeText(
-//                    this@TripDetailsActivity,
-//                    "Documents submit failed.",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
+//                } else {
+//                    Toast.makeText(
+//                        this@TripDetailsActivity,
+//                        "Document submit failed.",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
 //
-//            override fun onFailure(call: Call<TripCategoriesResponseModel>, t: Throwable) {
-//                progressDialogP.dismiss()
-//                Log.e("Response", t.localizedMessage)
-//            }
-//
-//        })
+
+
     }
 
 
     private fun uploadDocumentsAPICall(
-        dial: Dialog,
-        uriArray: java.util.ArrayList<Uri>,
-        number: String,
-        documentType: String
+        dial: Dialog, uriArray: java.util.ArrayList<Uri>, number: String, documentType: String
     ) {
-//        var requestFile1: RequestBody
-//        var requestFile2: RequestBody
-//        val attachment1: Part? = null
-//        val attachment2: Part? = null
-//        val file1 = File(uriArray[0].path)
-//        val file2 = File(uriArray[1].path)
-//        val frontImagePart: Part? = prepareImagePart(uriArray[0], "attachment1")
-//        val backImagePart: Part? = prepareImagePart(uriArray[1], "attachment2")
-//        Log.e("path", uriArray[0].path!!)
-//        Log.e("path", uriArray[1].path!!)
-//        val action = RequestBody.create(parse.parse("text/plain"), documentType)
-//        val student_id: RequestBody =
-//            create(parse.parse("text/plain"), PreferenceManager.getTripStudentId(context))
-//        val trip_item_id = RequestBody.create(parse.parse("text/plain"), tripID)
-//        val card_number = RequestBody.create(parse.parse("text/plain"), number)
-//        val call: Call<TripCategoriesResponseModel> =
-//            ApiClient.getClient.uploadPermissionSlip(
-//                "Bearer " + PreferenceManager.getUserCode(context), action,
-//                trip_item_id,
-//                student_id,
-//                card_number,
-//                frontImagePart,
-//                backImagePart
-//            )
-//        call.enqueue(object : Callback<TripCategoriesResponseModel> {
-//            override fun onResponse(
-//                call: Call<TripCategoriesResponseModel>,
-//                response: Response<TripCategoriesResponseModel>
-//            ) {
 //                progressDialogP.dismiss()
-//                if (response.body().getResponseCode().equalsIgnoreCase("200")) {
-//                    if (response.body().getResponseData().getStatusCode().equalsIgnoreCase("303")) {
-//                        dial.dismiss()
-//                        Toast.makeText(
-//                            this@TripDetailsActivity,
-//                            "Documents successfully submitted.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        passportStatus = response.body().getResponseData().getDocumentStatus()
-//                            .getPassportStatus()
-//                        visaStatus =
-//                            response.body().getResponseData().getDocumentStatus().getVisaStatus()
-//                        eIDStatus = response.body().getResponseData().getDocumentStatus()
-//                            .getEmiratesStatus()
-//                        permissionStatus =
-//                            response.body().getResponseData().getDocumentStatus().getConsentStatus()
-//                        if (response.body().getResponseData().getDocumentStatus()
-//                                .getDocumentCompletionStatus() === 1
-//                        ) {
-//                            getTripDetails(tripID)
-//                        } else {
-//                            showDocumentSubmissionPopUp()
-//                        }
+//                if (response.body()!!.status == 100) {
+//                    dial.dismiss()
+//                    Toast.makeText(
+//                        this@TripDetailsActivity,
+//                        "Document successfully submitted.",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                    passportStatus = response.body()!!.data.documentStatus.passportStatus
+//                    visaStatus = response.body()!!.data.documentStatus.visaStatus
+//                    eIDStatus = response.body()!!.data.documentStatus.emiratesStatus
+//                    permissionStatus = response.body()!!.data.documentStatus.consentStatus
+//                    dial.dismiss()
+//                    if (response.body()!!.data.documentStatus.documentCompletionStatus == 1
+//                    ) {
+//                        getTripDetails(tripID)
 //                    } else {
-//                        Toast.makeText(
-//                            this@TripDetailsActivity,
-//                            "Documents submit failed.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
+//                        showDocumentSubmissionPopUp()
 //                    }
-//                } else Toast.makeText(
-//                    this@TripDetailsActivity,
-//                    "Documents submit failed.",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//
-//            override fun onFailure(call: Call<TripCategoriesResponseModel>, t: Throwable) {
-//                progressDialogP.dismiss()
-//                Log.e("Response", t.localizedMessage)
-//            }
-//
-//        })
+//                } else {
+//                    Toast.makeText(
+//                        this@TripDetailsActivity,
+//                        "Document submit failed.",
+//                        Toast.LENGTH_SHORT
+//                    ).show()
+//                }
     }
 
 }
+
+
+

@@ -1,0 +1,27 @@
+<!-- res/drawable/radio_checked.xml -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Checked state -->
+    <item android:state_checked="true">
+        <layer-list>
+            <!-- Outer circle -->
+            <item>
+                <shape android:shape="oval">
+                    <solid android:color="@color/white" /> <!-- Color of the outer circle when checked -->
+                </shape>
+            </item>
+            <!-- Inner dot (represents the check) -->
+            <item android:gravity="center">
+                <shape android:shape="oval">
+                    <size android:width="12dp" android:height="12dp" /> <!-- Size of the inner dot -->
+                    <solid android:color="@color/white" /> <!-- Color of the inner dot -->
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+    <!-- Default state -->
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="@android:color/transparent" /> <!-- Transparent color when unchecked -->
+        </shape>
+    </item>
+</selector>

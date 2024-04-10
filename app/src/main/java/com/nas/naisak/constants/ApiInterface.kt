@@ -17,6 +17,7 @@ import com.nas.naisak.activity.parents_meeting.model.ReviewAppointmentsResponseM
 import com.nas.naisak.activity.payment.payhere.model.*
 import com.nas.naisak.activity.trips.model.SubmitDocResponseModel
 import com.nas.naisak.activity.trips.model.TripCategoriesResponseModel
+import com.nas.naisak.activity.trips.model.TripChoicePaymentCountResponseModel
 import com.nas.naisak.activity.trips.model.TripConsentResponseModel
 import com.nas.naisak.activity.trips.model.TripListResponseModel
 import com.nas.naisak.commonmodels.*
@@ -42,6 +43,7 @@ import com.nas.naisak.fragment.payment.model.PaymentBannerResponse
 import com.nas.naisak.fragment.payment.model.PaymentResponseModel
 import com.nas.naisak.fragment.settings.model.ChangePasswordApiModel
 import com.nas.naisak.fragment.settings.model.TermsOfServiceModel
+import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -465,7 +467,7 @@ interface ApiInterface {
         @Part("trip_item_id") tripItemId: RequestBody?,
         @Part("student_id") studentId: RequestBody?,
         @Part("card_number") cardNumber: RequestBody?,
-        @Part image: Part?
+        @Part image: MultipartBody.Part?
     ): Call<SubmitDocResponseModel>
 
     @Multipart
@@ -476,7 +478,7 @@ interface ApiInterface {
         @Part("trip_item_id") tripItemId: RequestBody?,
         @Part("student_id") studentId: RequestBody?,
         @Part("card_number") cardNumber: RequestBody?,
-        @Part image: Part?
+        @Part image: MultipartBody.Part?
     ): Call<SubmitDocResponseModel>
 
     @POST("api/v1/parent/trip_history")
@@ -515,6 +517,6 @@ interface ApiInterface {
     fun tripCountCheck(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
-    ): Call<ResponseBody>
+    ): Call<TripChoicePaymentCountResponseModel>
 
 }

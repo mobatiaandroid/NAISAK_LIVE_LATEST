@@ -12,7 +12,11 @@ data class TripDetailsResponseModel(
 ) {
     data class Data(
         @SerializedName("lists")
-        val lists: Lists
+        val lists: Lists,
+        @SerializedName("choices_exceed")
+        val choices_exceed: String,
+        @SerializedName("no_of_trips_exceed")
+        val no_of_trips_exceed: String
     )
 
     data class Lists(

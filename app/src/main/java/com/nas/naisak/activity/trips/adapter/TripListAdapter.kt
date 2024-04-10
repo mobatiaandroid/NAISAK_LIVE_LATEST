@@ -1,6 +1,7 @@
 package com.nas.naisak.activity.trips.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nas.naisak.R
+import com.nas.naisak.activity.trips.TripDetailsActivity
 import com.nas.naisak.activity.trips.model.TripListResponseModel
 import com.nas.naisak.constants.CommonMethods
 
@@ -20,7 +22,7 @@ class TripListAdapter(
     mContext: Context, mListViewArray: ArrayList<TripListResponseModel.Trip>
 ) : RecyclerView.Adapter<TripListAdapter.MyViewHolder>() {
     private val context: Context = mContext
-    private val tripList: java.util.ArrayList<TripListResponseModel.Trip> = mListViewArray
+    private val tripList: ArrayList<TripListResponseModel.Trip> = mListViewArray
 
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -80,20 +82,20 @@ class TripListAdapter(
         }
 
         holder.itemView.setOnClickListener {
-//            val intent = Intent(context, TripDetailsActivity::class.java)
-//            intent.putExtra("tripID", tripList[position].id)
-//            intent.putExtra("tripName", tripList[position].tripNameEn)
-//            context.startActivity(intent)
-            showPaymentsPopUp(context)
+            val intent = Intent(context, TripDetailsActivity::class.java)
+            intent.putExtra("tripID", tripList[position].id)
+            intent.putExtra("tripName", tripList[position].tripNameEn)
+            context.startActivity(intent)
+//            showPaymentsPopUp(context)
 
             //                showIntentionPopUp();
         }
         holder.tripBookButton.setOnClickListener {
-//            val intent = Intent(context, TripDetailsActivity::class.java)
-//            intent.putExtra("tripID", tripList[position].id)
-//            intent.putExtra("tripName", tripList[position].tripNameEn)
-//            context.startActivity(intent)
-            showPaymentsPopUp(context)
+            val intent = Intent(context, TripDetailsActivity::class.java)
+            intent.putExtra("tripID", tripList[position].id)
+            intent.putExtra("tripName", tripList[position].tripNameEn)
+            context.startActivity(intent)
+//            showPaymentsPopUp(context)
             //                showIntentionPopUp();
         }
         holder.tripPriceTextView.setText(tripList[position].totalPrice + " AED")
