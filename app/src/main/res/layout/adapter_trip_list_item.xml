@@ -72,7 +72,6 @@
                 android:textColor="@color/white"
 
                 android:layout_weight="1.5"
-                android:textAllCaps="false"
                 android:background="@drawable/navy_blue_rectangle"
                 android:gravity="center" />
         </LinearLayout>

@@ -512,7 +512,7 @@ interface ApiInterface {
     fun tripChoicePreference(@Header("Authorization") token: String?)
             : Call<TripChoicePreferenceResponseModel>
 
-    @POST("Api-V1/trip_max_students_count_check")
+    @POST("api/v1/parent/trip_max_students_count_check")
     @Headers("Content-Type: application/json")
     fun tripCountCheck(
         @Header("Authorization") token: String?,

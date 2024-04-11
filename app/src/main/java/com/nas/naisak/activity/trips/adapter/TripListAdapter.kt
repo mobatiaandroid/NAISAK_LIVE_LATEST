@@ -2,6 +2,7 @@ package com.nas.naisak.activity.trips.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,6 +62,7 @@ class TripListAdapter(
                     .fitCenter().placeholder(R.drawable.default_banner).into(holder.tripImageView)
             }
         }
+        holder.tripBookButton.setTextColor(Color.WHITE)
         if (tripList[position].tripStatus === 0) {
             holder.tripBookButton.text = "Book your Trip"
         } else if (tripList[position].tripStatus === 1) {

@@ -183,7 +183,7 @@ class TripDetailsActivity : AppCompatActivity() {
     )
     lateinit var choicePreferenceArray: ArrayList<String>
 
-    lateinit var choicePreferenceSorted: ArrayList<ChoicePreferenceModel>
+    var choicePreferenceSorted: ArrayList<ChoicePreferenceModel> = ArrayList()
     private var permissionFlag = true
     private var studentDetailsFLag = true
     private var passportDetailsFLag = true
@@ -204,6 +204,7 @@ class TripDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trip_details)
+        context = this
         externalStoragePermissionStatus =
             context.getSharedPreferences("externalStoragePermissionStatus", MODE_PRIVATE)
 
@@ -214,8 +215,8 @@ class TripDetailsActivity : AppCompatActivity() {
     private fun initialiseUI() {
         extras = intent.extras!!
         if (extras != null) {
-            tripID = extras.getString("tripID")!!
-            tripName = extras.getString("tripName")!!
+            tripID = extras.getInt("tripID").toString()!!
+            tripName = extras.getString("tripName").toString()!!
         }
         val fixedLength = 2
         passportURIArray = java.util.ArrayList(fixedLength)
@@ -301,8 +302,8 @@ class TripDetailsActivity : AppCompatActivity() {
             } else {
                 CommonMethods.showDialogueWithOk(
                     context as Activity,
-                    "Alert",
                     "You cannot submit any more intentions, as you have already reached your limit.",
+                    "Alert",
                 )
             }
         }
@@ -597,12 +598,12 @@ class TripDetailsActivity : AppCompatActivity() {
             ) {
                 progressDialogP.dismiss()
                 imagesArray = java.util.ArrayList()
-                if (response.body()!!.status == 303) {
+                if (response.body()!!.status == 100) {
                     if (response.body()!!.data.lists.tripImage.size > 1) {
 //                            Glide.with(context).load(AppUtils.replace(response.body().getResponse().getData().getTripImage().get(0))).placeholder(R.drawable.default_banner).into(tripMainBanner);
                         for (i in 1 until response.body()!!.data.lists.tripImage.size) {
                             imagesArray.add(
-                                response.body()!!.data.lists.tripImage.get(i)
+                                response.body()!!.data.lists.tripImage[i]
                             )
                         }
                         tripMainBanner.adapter = ImagePagerDrawableAdapter(imagesArray, context)
@@ -647,7 +648,8 @@ class TripDetailsActivity : AppCompatActivity() {
                     }
                     //                        tripQuestion = response.body().getResponse().getData().q
                     tripNameTextView.setText(response.body()!!.data.lists.tripNameEn)
-                    tripAmountTextView.text = "Trip Amount : " + response.body()!! + " AED"
+                    tripAmountTextView.text =
+                        "Trip Amount : " + response.body()!!.data.lists.totalPrice + " AED"
                     dateTextView.text =
                         "Trip Date : " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(response.body()!!.data.lists.tripStartDate) + " To " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(
                             response.body()!!.data.lists.tripEndDate
