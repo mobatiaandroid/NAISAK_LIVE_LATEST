@@ -30,6 +30,10 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.nas.naisak.R
 import com.nas.naisak.activity.absence_and_early_pick_up.AbsenceDetailActivity
 import com.nas.naisak.activity.absence_and_early_pick_up.EarlyPickUpDetailActivity
+import com.nas.naisak.activity.absence_and_early_pick_up.RequestAbsenceActivity
+import com.nas.naisak.activity.absence_and_early_pick_up.RequestEarlyPickUpActivity
+import com.nas.naisak.activity.absence_and_early_pick_up.model.AbsenceListResponseModel
+import com.nas.naisak.activity.absence_and_early_pick_up.model.EarlyPickUpListResponseModel
 import com.nas.naisak.activity.login.LoginActivity
 import com.nas.naisak.commonadapters.StudentListAdapter
 import com.nas.naisak.commonmodels.StudentDataListResponse
@@ -72,10 +76,10 @@ class AbsenceEarlyPickUpFragment : Fragment() {
     lateinit var newRequestPickup: TextView
     lateinit var mAbsenceListView: RecyclerView
     lateinit var mPickupListView: RecyclerView
-    lateinit var pickup_list: ArrayList<EarlyPickupListArray>
-    lateinit var pickupListSort: ArrayList<EarlyPickupListArray>
-    lateinit var studentAbsenceCopy: ArrayList<AbsenceRequestListModel>
-    var studentAbsenceArrayList = ArrayList<AbsenceRequestListModel>()
+    lateinit var pickup_list: ArrayList<EarlyPickUpListResponseModel.EarlyPickup>
+    lateinit var pickupListSort: ArrayList<EarlyPickUpListResponseModel.EarlyPickup>
+    lateinit var studentAbsenceCopy: ArrayList<AbsenceListResponseModel.Request>
+    var studentAbsenceArrayList = ArrayList<AbsenceListResponseModel.Request>()
 
     lateinit var absence_btn: TextView
     lateinit var pickup_btn: TextView
@@ -149,7 +153,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
             mPickupListView.adapter = pickuplistAdapter
         }
         newRequestPickup.setOnClickListener {
-            val intent = Intent(activity, RequestearlypickupActivity::class.java)
+            val intent = Intent(activity, RequestEarlyPickUpActivity::class.java)
             activity?.startActivity(intent)
         }
     }
@@ -239,7 +243,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
     }
 
     private fun callStudentLeaveInfo() {
-        studentAbsenceCopy = ArrayList<AbsenceRequestListModel>()
+        studentAbsenceCopy = ArrayList<AbsenceListResponseModel.Request>()
         studentAbsenceArrayList.clear()
         mAbsenceListView.visibility = View.GONE
         progressDialogAdd.visibility = View.VISIBLE
@@ -248,18 +252,18 @@ class AbsenceEarlyPickUpFragment : Fragment() {
         val token = PreferenceManager.getaccesstoken(mContext)
         val pickupSuccessBody =
             ListAbsenceApiModel(PreferenceManager.getStudentID(mContext).toString(), 0, 20)
-        val call: Call<AbsenceListModel> =
+        val call: Call<AbsenceListResponseModel> =
             ApiClient.getClient.absencelist(pickupSuccessBody, "Bearer " + token)
-        call.enqueue(object : Callback<AbsenceListModel> {
-            override fun onFailure(call: Call<AbsenceListModel>, t: Throwable) {
+        call.enqueue(object : Callback<AbsenceListResponseModel> {
+            override fun onFailure(call: Call<AbsenceListResponseModel>, t: Throwable) {
                 Log.e("Failed", t.localizedMessage)
                 progressDialogAdd.visibility = View.GONE
                 //mProgressRelLayout.visibility=View.INVISIBLE
             }
 
             override fun onResponse(
-                call: Call<AbsenceListModel>,
-                response: Response<AbsenceListModel>
+                call: Call<AbsenceListResponseModel>,
+                response: Response<AbsenceListResponseModel>
             ) {
                 val responsedata = response.body()
                 //progressDialog.visibility = View.GONE
@@ -269,7 +273,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
                     try {
 
                         if (response.body()!!.status == 100) {
-                            studentAbsenceCopy.addAll(response.body()!!.responseArray.request)
+                            studentAbsenceCopy.addAll(response.body()!!.data.request)
                             studentAbsenceArrayList = studentAbsenceCopy
 
                             if (studentAbsenceArrayList.size > 0) {
@@ -316,18 +320,21 @@ class AbsenceEarlyPickUpFragment : Fragment() {
         val token = PreferenceManager.getaccesstoken(mContext)
         val pickupSuccessBody =
             ListPickupApiModel(PreferenceManager.getStudentID(mContext).toString(), "0", "20")
-        val call: Call<PickupListModel> =
+        val call: Call<EarlyPickUpListResponseModel.EarlyPickup> =
             ApiClient.getClient.pickUplist(pickupSuccessBody, "Bearer " + token)
-        call.enqueue(object : Callback<PickupListModel> {
-            override fun onFailure(call: Call<PickupListModel>, t: Throwable) {
+        call.enqueue(object : Callback<EarlyPickUpListResponseModel.EarlyPickup> {
+            override fun onFailure(
+                call: Call<EarlyPickUpListResponseModel.EarlyPickup>,
+                t: Throwable
+            ) {
                 Log.e("Failed", t.localizedMessage)
                 progressDialogAdd.visibility = View.GONE
                 //mProgressRelLayout.visibility=View.INVISIBLE
             }
 
             override fun onResponse(
-                call: Call<PickupListModel>,
-                response: Response<PickupListModel>
+                call: Call<EarlyPickUpListResponseModel.EarlyPickup>,
+                response: Response<EarlyPickUpListResponseModel.EarlyPickup>
             ) {
                 val responsedata = response.body()
                 //progressDialog.visibility = View.GONE
@@ -460,7 +467,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
         btn_Ok.setOnClickListener()
         {
             dialog.dismiss()
-            val intent = Intent(activity, RequestabsenceActivity::class.java)
+            val intent = Intent(activity, RequestAbsenceActivity::class.java)
             activity?.startActivity(intent)
         }
         btn_Cancel.setOnClickListener {
