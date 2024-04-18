@@ -32,6 +32,7 @@ import com.nas.naisak.activity.absence_and_early_pick_up.AbsenceDetailActivity
 import com.nas.naisak.activity.absence_and_early_pick_up.EarlyPickUpDetailActivity
 import com.nas.naisak.activity.absence_and_early_pick_up.RequestAbsenceActivity
 import com.nas.naisak.activity.absence_and_early_pick_up.RequestEarlyPickUpActivity
+import com.nas.naisak.activity.absence_and_early_pick_up.adapter.PickuplistAdapter
 import com.nas.naisak.activity.absence_and_early_pick_up.model.AbsenceListResponseModel
 import com.nas.naisak.activity.absence_and_early_pick_up.model.EarlyPickUpListResponseModel
 import com.nas.naisak.activity.login.LoginActivity
@@ -243,13 +244,13 @@ class AbsenceEarlyPickUpFragment : Fragment() {
     }
 
     private fun callStudentLeaveInfo() {
-        studentAbsenceCopy = ArrayList<AbsenceListResponseModel.Request>()
+        studentAbsenceCopy = ArrayList()
         studentAbsenceArrayList.clear()
         mAbsenceListView.visibility = View.GONE
         progressDialogAdd.visibility = View.VISIBLE
         val studentInfoAdapter = RequestAbsenceRecyclerAdapter(studentAbsenceArrayList)
         mAbsenceListView.adapter = studentInfoAdapter
-        val token = PreferenceManager.getaccesstoken(mContext)
+        val token = PreferenceManager.getUserCode(mContext)
         val pickupSuccessBody =
             ListAbsenceApiModel(PreferenceManager.getStudentID(mContext).toString(), 0, 20)
         val call: Call<AbsenceListResponseModel> =
@@ -317,7 +318,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
         pickupListSort = ArrayList()
         pickup_list = ArrayList()
         progressDialogAdd.visibility = View.VISIBLE
-        val token = PreferenceManager.getaccesstoken(mContext)
+        val token = PreferenceManager.getUserCode(mContext)
         val pickupSuccessBody =
             ListPickupApiModel(PreferenceManager.getStudentID(mContext).toString(), "0", "20")
         val call: Call<EarlyPickUpListResponseModel.EarlyPickup> =
@@ -435,7 +436,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
                 intent.putExtra("status", pickup_list.get(position).status)
                 intent.putExtra(
                     "reason_for_rejection",
-                    pickup_list.get(position).reason_for_rejection
+                    pickup_list[position].reason_for_rejection
                 )
                 activity?.startActivity(intent)
             }
