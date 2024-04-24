@@ -33,6 +33,7 @@ import com.nas.naisak.activity.absence_and_early_pick_up.EarlyPickUpDetailActivi
 import com.nas.naisak.activity.absence_and_early_pick_up.RequestAbsenceActivity
 import com.nas.naisak.activity.absence_and_early_pick_up.RequestEarlyPickUpActivity
 import com.nas.naisak.activity.absence_and_early_pick_up.adapter.PickuplistAdapter
+import com.nas.naisak.activity.absence_and_early_pick_up.adapter.RequestAbsenceRecyclerAdapter
 import com.nas.naisak.activity.absence_and_early_pick_up.model.AbsenceListResponseModel
 import com.nas.naisak.activity.absence_and_early_pick_up.model.EarlyPickUpListResponseModel
 import com.nas.naisak.activity.login.LoginActivity

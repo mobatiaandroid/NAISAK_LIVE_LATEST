@@ -7,11 +7,12 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.nas.naisak.R
+import com.nas.naisak.activity.absence_and_early_pick_up.model.AbsenceListResponseModel
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 
-internal class RequestAbsenceRecyclerAdapter(private var studentInfoList: List<AbsenceRequestListModel>) :
+internal class RequestAbsenceRecyclerAdapter(private var studentInfoList: List<AbsenceListResponseModel.Request>) :
     RecyclerView.Adapter<RequestAbsenceRecyclerAdapter.MyViewHolder>() {
     internal inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var listDate: TextView = view.findViewById(R.id.listDate)

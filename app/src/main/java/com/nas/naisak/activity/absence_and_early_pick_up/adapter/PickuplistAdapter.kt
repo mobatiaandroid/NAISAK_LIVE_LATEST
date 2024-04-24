@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
+import com.nas.naisak.R
+import com.nas.naisak.activity.absence_and_early_pick_up.model.EarlyPickUpListResponseModel
 
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -14,7 +16,7 @@ import java.util.Date
 
 internal class PickuplistAdapter(
     private var Context: Context,
-    var pickup_list: ArrayList<EarlyPickupListArray>
+    var pickup_list: ArrayList<EarlyPickUpListResponseModel.EarlyPickup>
 ) :
     RecyclerView.Adapter<PickuplistAdapter.MyViewHolder>() {
     internal inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
