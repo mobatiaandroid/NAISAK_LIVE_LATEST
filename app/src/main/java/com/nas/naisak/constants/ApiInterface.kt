@@ -519,4 +519,11 @@ interface ApiInterface {
         @Body json: JsonObject?
     ): Call<TripChoicePaymentCountResponseModel>
 
+    @POST("api/v1/parent/init_trip_dc_payment")
+    @Headers("Content-Type: application/json")
+    fun tripDCPaymentInitiate(
+        @Header("Authorization") token: String?,
+        @Body json: JsonObject?
+    ): Call<PaymentGatewayCreditInitiateResponseModel>
+
 }

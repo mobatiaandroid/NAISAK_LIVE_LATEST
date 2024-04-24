@@ -46,7 +46,12 @@ import androidx.viewpager.widget.ViewPager
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
+import com.nas.naisak.BuildConfig
 import com.nas.naisak.R
+import com.nas.naisak.activity.login.LoginActivity
+import com.nas.naisak.activity.payment.payhere.PaymentPayActivity
+import com.nas.naisak.activity.payment.payhere.adapter.PaymentOptionAdapter
+import com.nas.naisak.activity.payment.payhere.model.PaymentGatewayCreditInitiateResponseModel
 import com.nas.naisak.activity.trips.adapter.ChoicePreferenceAdapter
 import com.nas.naisak.activity.trips.adapter.ImagePagerDrawableAdapter
 import com.nas.naisak.activity.trips.adapter.TripImageAdapter
@@ -59,7 +64,9 @@ import com.nas.naisak.constants.CommonMethods
 import com.nas.naisak.constants.GridSpacingItemDecoration
 import com.nas.naisak.constants.PreferenceManager
 import com.nas.naisak.constants.ProgressBarDialog
+import com.nas.naisak.constants.recyclermanager.OnItemClickListener
 import com.nas.naisak.constants.recyclermanager.RecyclerItemListener
+import com.nas.naisak.constants.recyclermanager.addOnItemClickListener
 import com.nas.naisak.fragment.home.mContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -577,9 +584,197 @@ class TripDetailsActivity : AppCompatActivity() {
         }
         payTotalView!!.setOnClickListener {
             bottomSheetDialog.dismiss()
+            callOptionDialog(mContext)
 //            initialisePayment()
         }
         bottomSheetDialog.show()
+    }
+
+    fun callOptionDialog(context: Context) {
+        val dialog = Dialog(context)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_credit_debit)
+        var btn_Ok = dialog.findViewById(R.id.btn_dismiss) as Button
+        lateinit var mPaymentOptionArrayList: ArrayList<String>
+        var studentListRecycler =
+            dialog.findViewById(R.id.recycler_view_social_media) as RecyclerView
+        val llm = LinearLayoutManager(mContext)
+        llm.orientation = LinearLayoutManager.VERTICAL
+        studentListRecycler.layoutManager = llm
+        mPaymentOptionArrayList = ArrayList()
+        mPaymentOptionArrayList.add("Credit")
+        mPaymentOptionArrayList.add("Debit")
+        val settingsAdapter = PaymentOptionAdapter(mPaymentOptionArrayList)
+        studentListRecycler.adapter = settingsAdapter
+
+        btn_Ok.setOnClickListener()
+        {
+
+            dialog.dismiss()
+        }
+
+        studentListRecycler.addOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                // Your logic
+                if (CommonMethods.isInternetAvailable(mContext)) {
+                    var method: String = ""
+                    if (position == 0) {
+                        method = "1"
+//                        mProgressRelLayout.visibility= View.VISIBLE
+//                        callCreditInitApi(method)
+                    } else if (position == 1) {
+                        method = "2"
+                        callDebitInitApi(method)
+                        // CommonMethods.showDialogueWithOkPay(context,"Currently not supported this type of payment","Alert")
+
+                    } else {
+                        method = "3"
+                        CommonMethods.showDialogueWithOkPay(
+                            context,
+                            "Currently not supported this type of payment",
+                            "Alert"
+                        )
+                    }
+//                    mProgressRelLayout.visibility= View.VISIBLE
+//                    callGatewayLink(method)
+                } else {
+                    CommonMethods.showSuccessInternetAlert(mContext)
+                }
+                dialog.dismiss()
+            }
+        })
+
+        dialog.show()
+    }
+//    fun callCreditInitApi(paymentMethod:String)
+//    {
+//        val manufacturer = Build.MANUFACTURER
+//        val model = Build.MODEL
+//        var device=manufacturer+model
+//        val versionName: String = BuildConfig.VERSION_NAME
+//        val token = PreferenceManager.getUserCode(mContext)
+//        val paymentID = PaymentGatewayApiModel(
+//            PaymentID.toString(), current, invoice_no, PreferenceManager.getUserEmail(
+//                mContext
+//            )!!, paymentMethod, "2", device, versionName
+//        )
+//        val call: Call<PaymentGatewayCreditInitiateResponseModel> =
+//            ApiClient.getClient.paymentCreditInitiate(paymentID, "Bearer " + token)
+//        call.enqueue(object : Callback<PaymentGatewayCreditInitiateResponseModel> {
+//            override fun onFailure(call: Call<PaymentGatewayCreditInitiateResponseModel>, t: Throwable) {
+//                Log.e("Error", t.localizedMessage)
+//                mProgressRelLayout.visibility= View.GONE
+//            }
+//
+//            override fun onResponse(
+//                call: Call<PaymentGatewayCreditInitiateResponseModel>,
+//                response: Response<PaymentGatewayCreditInitiateResponseModel>
+//            ) {
+//                mProgressRelLayout.visibility= View.GONE
+//                if (response.body()!!.status == 100) {
+//
+//                    var payment_url = response.body()!!.data.redirect_url
+//                    val intent = Intent(mContext, PaymentPayActivity::class.java)
+//                    intent.putExtra("payment_url",payment_url)
+//                    startActivity(intent)
+////                    var url = payment_url.replaceFirst(
+////                        "^(http[s]?://www\\\\.|http[s]?://|www\\\\.)",
+////                        ""
+////                    )
+////                    mainLinear.visibility = View.GONE
+////                    paymentWeb.visibility = View.VISIBLE
+////                    setWebViewSettingsPrint()
+////                    Log.e("URL LOAD", url)
+////                    paymentWeb.loadUrl(url)
+//
+//
+//                }
+//                else if(response.body()!!.status==116)
+//                {
+//                    PreferenceManager.setUserCode(mContext,"")
+//                    PreferenceManager.setUserEmail(mContext,"")
+//                    val mIntent = Intent(this@PaymentDetailActivity, LoginActivity::class.java)
+//                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+//                    mContext.startActivity(mIntent)
+//
+//                }
+//                else
+//                {
+//
+//
+//                }
+//            }
+//
+//        })
+//    }
+
+
+    fun callDebitInitApi(paymentMethod: String) {
+        val manufacturer = Build.MANUFACTURER
+        val model = Build.MODEL
+        var device = manufacturer + model
+        val versionName: String = BuildConfig.VERSION_NAME
+        val token = PreferenceManager.getUserCode(mContext)
+        val paramObject = JsonObject()
+        val tsLong = System.currentTimeMillis() / 1000
+        val ts = tsLong.toString()
+        merchantOrderReference = "NAISAKTRIPAND$ts"
+        paramObject.addProperty("student_id", "19")
+        paramObject.addProperty("trip_item_id", "4")
+        paramObject.addProperty("order_reference", merchantOrderReference)
+        paramObject.addProperty("invoice_number", merchantOrderReference)
+        paramObject.addProperty("paid_amount", "100")
+        paramObject.addProperty("payment_type", "full_payment")
+        paramObject.addProperty("device_type", "2")
+        paramObject.addProperty("device_name", "Nokia")
+        paramObject.addProperty("app_version", "1.2")
+        val call: Call<PaymentGatewayCreditInitiateResponseModel> =
+            ApiClient.getClient.tripDCPaymentInitiate("Bearer " + token, paramObject)
+        call.enqueue(object : Callback<PaymentGatewayCreditInitiateResponseModel> {
+            override fun onFailure(
+                call: Call<PaymentGatewayCreditInitiateResponseModel>,
+                t: Throwable
+            ) {
+                Log.e("Error", t.localizedMessage)
+            }
+
+            override fun onResponse(
+                call: Call<PaymentGatewayCreditInitiateResponseModel>,
+                response: Response<PaymentGatewayCreditInitiateResponseModel>
+            ) {
+                if (response.body()!!.status == 100) {
+
+                    var payment_url = response.body()!!.data.redirect_url
+                    val intent = Intent(mContext, PaymentPayActivity::class.java)
+                    intent.putExtra("payment_url", payment_url)
+                    startActivity(intent)
+//                    var url = payment_url.replaceFirst(
+//                        "^(http[s]?://www\\\\.|http[s]?://|www\\\\.)",
+//                        ""
+//                    )
+//                    mainLinear.visibility = View.GONE
+//                    paymentWeb.visibility = View.VISIBLE
+//                    setWebViewSettingsPrint()
+//                    Log.e("URL LOAD", url)
+//                    paymentWeb.loadUrl(url)
+
+
+                } else if (response.body()!!.status == 116) {
+                    PreferenceManager.setUserCode(mContext, "")
+                    PreferenceManager.setUserEmail(mContext, "")
+                    val mIntent = Intent(this@TripDetailsActivity, LoginActivity::class.java)
+                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    mContext.startActivity(mIntent)
+
+                } else {
+
+
+                }
+            }
+
+        })
     }
 
 

@@ -252,65 +252,65 @@ class AbsenceEarlyPickUpFragment : Fragment() {
         val studentInfoAdapter = RequestAbsenceRecyclerAdapter(studentAbsenceArrayList)
         mAbsenceListView.adapter = studentInfoAdapter
         val token = PreferenceManager.getUserCode(mContext)
-        val pickupSuccessBody =
-            ListAbsenceApiModel(PreferenceManager.getStudentID(mContext).toString(), 0, 20)
-        val call: Call<AbsenceListResponseModel> =
-            ApiClient.getClient.absencelist(pickupSuccessBody, "Bearer " + token)
-        call.enqueue(object : Callback<AbsenceListResponseModel> {
-            override fun onFailure(call: Call<AbsenceListResponseModel>, t: Throwable) {
-                Log.e("Failed", t.localizedMessage)
-                progressDialogAdd.visibility = View.GONE
-                //mProgressRelLayout.visibility=View.INVISIBLE
-            }
-
-            override fun onResponse(
-                call: Call<AbsenceListResponseModel>,
-                response: Response<AbsenceListResponseModel>
-            ) {
-                val responsedata = response.body()
-                //progressDialog.visibility = View.GONE
-                Log.e("Response Signup", responsedata.toString())
-                progressDialogAdd.visibility = View.GONE
-                if (responsedata != null) {
-                    try {
-
-                        if (response.body()!!.status == 100) {
-                            studentAbsenceCopy.addAll(response.body()!!.data.request)
-                            studentAbsenceArrayList = studentAbsenceCopy
-
-                            if (studentAbsenceArrayList.size > 0) {
-                                mAbsenceListView.visibility = View.VISIBLE
-                                val studentInfoAdapter =
-                                    RequestAbsenceRecyclerAdapter(studentAbsenceArrayList)
-                                mAbsenceListView.adapter = studentInfoAdapter
-                            } else {
-                                Toast.makeText(
-                                    mContext,
-                                    "No Registered Absence Found",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                mAbsenceListView.visibility = View.GONE
-                            }
-
-
-                        } else if (response.body()!!.status == 103) {
-                            callStudentLeaveInfo()
-                        } else {
-
-                            DialogFunctions.commonErrorAlertDialog(
-                                mContext.resources.getString(R.string.alert),
-                                ConstantFunctions.commonErrorString(response.body()!!.status),
-                                mContext
-                            )
-                        }
-
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-
-        })
+//        val pickupSuccessBody =
+//            ListAbsenceApiModel(PreferenceManager.getStudentID(mContext).toString(), 0, 20)
+//        val call: Call<AbsenceListResponseModel> =
+//            ApiClient.getClient.absencelist(pickupSuccessBody, "Bearer " + token)
+//        call.enqueue(object : Callback<AbsenceListResponseModel> {
+//            override fun onFailure(call: Call<AbsenceListResponseModel>, t: Throwable) {
+//                Log.e("Failed", t.localizedMessage)
+//                progressDialogAdd.visibility = View.GONE
+//                //mProgressRelLayout.visibility=View.INVISIBLE
+//            }
+//
+//            override fun onResponse(
+//                call: Call<AbsenceListResponseModel>,
+//                response: Response<AbsenceListResponseModel>
+//            ) {
+//                val responsedata = response.body()
+//                //progressDialog.visibility = View.GONE
+//                Log.e("Response Signup", responsedata.toString())
+//                progressDialogAdd.visibility = View.GONE
+//                if (responsedata != null) {
+//                    try {
+//
+//                        if (response.body()!!.status == 100) {
+//                            studentAbsenceCopy.addAll(response.body()!!.data.request)
+//                            studentAbsenceArrayList = studentAbsenceCopy
+//
+//                            if (studentAbsenceArrayList.size > 0) {
+//                                mAbsenceListView.visibility = View.VISIBLE
+//                                val studentInfoAdapter =
+//                                    RequestAbsenceRecyclerAdapter(studentAbsenceArrayList)
+//                                mAbsenceListView.adapter = studentInfoAdapter
+//                            } else {
+//                                Toast.makeText(
+//                                    mContext,
+//                                    "No Registered Absence Found",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                                mAbsenceListView.visibility = View.GONE
+//                            }
+//
+//
+//                        } else if (response.body()!!.status == 103) {
+//                            callStudentLeaveInfo()
+//                        } else {
+//
+//                            DialogFunctions.commonErrorAlertDialog(
+//                                mContext.resources.getString(R.string.alert),
+//                                ConstantFunctions.commonErrorString(response.body()!!.status),
+//                                mContext
+//                            )
+//                        }
+//
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                    }
+//                }
+//            }
+//
+//        })
 
 
     }
@@ -320,69 +320,69 @@ class AbsenceEarlyPickUpFragment : Fragment() {
         pickup_list = ArrayList()
         progressDialogAdd.visibility = View.VISIBLE
         val token = PreferenceManager.getUserCode(mContext)
-        val pickupSuccessBody =
-            ListPickupApiModel(PreferenceManager.getStudentID(mContext).toString(), "0", "20")
-        val call: Call<EarlyPickUpListResponseModel.EarlyPickup> =
-            ApiClient.getClient.pickUplist(pickupSuccessBody, "Bearer " + token)
-        call.enqueue(object : Callback<EarlyPickUpListResponseModel.EarlyPickup> {
-            override fun onFailure(
-                call: Call<EarlyPickUpListResponseModel.EarlyPickup>,
-                t: Throwable
-            ) {
-                Log.e("Failed", t.localizedMessage)
-                progressDialogAdd.visibility = View.GONE
-                //mProgressRelLayout.visibility=View.INVISIBLE
-            }
-
-            override fun onResponse(
-                call: Call<EarlyPickUpListResponseModel.EarlyPickup>,
-                response: Response<EarlyPickUpListResponseModel.EarlyPickup>
-            ) {
-                val responsedata = response.body()
-                //progressDialog.visibility = View.GONE
-                Log.e("Response Signup", responsedata.toString())
-
-                if (responsedata != null) {
-                    try {
-
-                        if (response.body()!!.status == 100) {
-
-                            pickup_list.addAll(response.body()!!.pickupListArray)
-                            progressDialogAdd.visibility = View.GONE
-                            mPickupListView.visibility = View.VISIBLE
-                            var list_size = pickup_list.size - 1
-                            pickupListSort = ArrayList()
-                            if (pickup_list.size > 0) {
-                                mPickupListView.layoutManager = LinearLayoutManager(mContext)
-                                var pickuplistAdapter = PickuplistAdapter(mContext, pickup_list)
-                                mPickupListView.adapter = pickuplistAdapter
-                            } else {
-                                mPickupListView.layoutManager = LinearLayoutManager(mContext)
-                                var pickuplistAdapter = PickuplistAdapter(mContext, pickup_list)
-                                mPickupListView.adapter = pickuplistAdapter
-                                Toast.makeText(
-                                    mContext,
-                                    "No Registered Early Pickup Found",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-
-                        } else {
-
-                            DialogFunctions.commonErrorAlertDialog(
-                                mContext.resources.getString(R.string.alert),
-                                ConstantFunctions.commonErrorString(response.body()!!.status),
-                                mContext
-                            )
-                        }
-
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-            }
-
-        })
+//        val pickupSuccessBody =
+//            ListPickupApiModel(PreferenceManager.getStudentID(mContext).toString(), "0", "20")
+//        val call: Call<EarlyPickUpListResponseModel.EarlyPickup> =
+//            ApiClient.getClient.pickUplist(pickupSuccessBody, "Bearer " + token)
+//        call.enqueue(object : Callback<EarlyPickUpListResponseModel.EarlyPickup> {
+//            override fun onFailure(
+//                call: Call<EarlyPickUpListResponseModel.EarlyPickup>,
+//                t: Throwable
+//            ) {
+//                Log.e("Failed", t.localizedMessage)
+//                progressDialogAdd.visibility = View.GONE
+//                //mProgressRelLayout.visibility=View.INVISIBLE
+//            }
+//
+//            override fun onResponse(
+//                call: Call<EarlyPickUpListResponseModel.EarlyPickup>,
+//                response: Response<EarlyPickUpListResponseModel.EarlyPickup>
+//            ) {
+//                val responsedata = response.body()
+//                //progressDialog.visibility = View.GONE
+//                Log.e("Response Signup", responsedata.toString())
+//
+//                if (responsedata != null) {
+//                    try {
+//
+//                        if (response.body()!!.status == 100) {
+//
+//                            pickup_list.addAll(response.body()!!.pickupListArray)
+//                            progressDialogAdd.visibility = View.GONE
+//                            mPickupListView.visibility = View.VISIBLE
+//                            var list_size = pickup_list.size - 1
+//                            pickupListSort = ArrayList()
+//                            if (pickup_list.size > 0) {
+//                                mPickupListView.layoutManager = LinearLayoutManager(mContext)
+//                                var pickuplistAdapter = PickuplistAdapter(mContext, pickup_list)
+//                                mPickupListView.adapter = pickuplistAdapter
+//                            } else {
+//                                mPickupListView.layoutManager = LinearLayoutManager(mContext)
+//                                var pickuplistAdapter = PickuplistAdapter(mContext, pickup_list)
+//                                mPickupListView.adapter = pickuplistAdapter
+//                                Toast.makeText(
+//                                    mContext,
+//                                    "No Registered Early Pickup Found",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                            }
+//
+//                        } else {
+//
+//                            DialogFunctions.commonErrorAlertDialog(
+//                                mContext.resources.getString(R.string.alert),
+//                                ConstantFunctions.commonErrorString(response.body()!!.status),
+//                                mContext
+//                            )
+//                        }
+//
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                    }
+//                }
+//            }
+//
+//        })
 
     }
 
