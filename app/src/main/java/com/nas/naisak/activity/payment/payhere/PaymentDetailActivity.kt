@@ -16,7 +16,11 @@ import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +29,15 @@ import com.nas.naisak.R
 import com.nas.naisak.activity.home.HomeActivity
 import com.nas.naisak.activity.login.LoginActivity
 import com.nas.naisak.activity.payment.payhere.adapter.PaymentOptionAdapter
-import com.nas.naisak.activity.payment.payhere.model.*
+import com.nas.naisak.activity.payment.payhere.model.GenerateReceiptResponseModel
+import com.nas.naisak.activity.payment.payhere.model.PaymentDetailApiModel
+import com.nas.naisak.activity.payment.payhere.model.PaymentDetailResponseModel
+import com.nas.naisak.activity.payment.payhere.model.PaymentGatewayApiModel
+import com.nas.naisak.activity.payment.payhere.model.PaymentGatewayCreditInitiateResponseModel
+import com.nas.naisak.activity.payment.payhere.model.PaymentGatewayResponseModel
+import com.nas.naisak.activity.payment.payhere.model.PaymentReceiptApiModel
+import com.nas.naisak.activity.payment.payhere.model.PaymentSubmissionApiModel
+import com.nas.naisak.activity.payment.payhere.model.PaymentSubmissionResponseModel
 import com.nas.naisak.constants.ApiClient
 import com.nas.naisak.constants.CommonMethods
 import com.nas.naisak.constants.PreferenceManager
@@ -404,19 +416,19 @@ class PaymentDetailActivity  : AppCompatActivity(){
     {
         val token = PreferenceManager.getUserCode(mContext)
         val paymentID = PaymentReceiptApiModel(PaymentID.toString())
-        val call: Call<GeneretReceiptResponseModel> =
+        val call: Call<GenerateReceiptResponseModel> =
             ApiClient.getClient.generateReceipt(paymentID, "Bearer " + token)
-        call.enqueue(object : Callback<GeneretReceiptResponseModel> {
-            override fun onFailure(call: Call<GeneretReceiptResponseModel>, t: Throwable) {
+        call.enqueue(object : Callback<GenerateReceiptResponseModel> {
+            override fun onFailure(call: Call<GenerateReceiptResponseModel>, t: Throwable) {
                 Log.e("Error", t.localizedMessage)
-                mProgressRelLayout.visibility= View.GONE
+                mProgressRelLayout.visibility = View.GONE
             }
 
             override fun onResponse(
-                call: Call<GeneretReceiptResponseModel>,
-                response: Response<GeneretReceiptResponseModel>
+                call: Call<GenerateReceiptResponseModel>,
+                response: Response<GenerateReceiptResponseModel>
             ) {
-                mProgressRelLayout.visibility= View.GONE
+                mProgressRelLayout.visibility = View.GONE
                 if (response.body()!!.status == 100) {
 
                     var receipt_url = response.body()!!.data.receipt

@@ -259,7 +259,7 @@ interface ApiInterface {
     fun generateReceipt(
         @Body receipt: PaymentReceiptApiModel,
         @Header("Authorization") token: String
-    ): Call<GeneretReceiptResponseModel>
+    ): Call<GenerateReceiptResponseModel>
 
     /*SEND EMAIL TO STAFF*/
     @POST("api/v1/parent/send_email")
@@ -522,6 +522,13 @@ interface ApiInterface {
     @POST("api/v1/parent/init_trip_dc_payment")
     @Headers("Content-Type: application/json")
     fun tripDCPaymentInitiate(
+        @Header("Authorization") token: String?,
+        @Body json: JsonObject?
+    ): Call<PaymentGatewayCreditInitiateResponseModel>
+
+    @POST("api/v1/parent/init_trip_cc_payment")
+    @Headers("Content-Type: application/json")
+    fun tripCCPaymentInitiate(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
     ): Call<PaymentGatewayCreditInitiateResponseModel>

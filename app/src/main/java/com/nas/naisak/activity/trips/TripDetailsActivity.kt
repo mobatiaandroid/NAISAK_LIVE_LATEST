@@ -610,7 +610,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             callDebitInitApi("2")
         }
         creditCardView!!.setOnClickListener {
-
+            callCreditInitApi("1")
         }
 
         bottomSheetDialog.findViewById<ConstraintLayout>(R.id.selectPaymentMethodView)
@@ -677,67 +677,68 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
         dialog.show()
     }
-//    fun callCreditInitApi(paymentMethod:String)
-//    {
-//        val manufacturer = Build.MANUFACTURER
-//        val model = Build.MODEL
-//        var device=manufacturer+model
-//        val versionName: String = BuildConfig.VERSION_NAME
-//        val token = PreferenceManager.getUserCode(mContext)
-//        val paymentID = PaymentGatewayApiModel(
-//            PaymentID.toString(), current, invoice_no, PreferenceManager.getUserEmail(
-//                mContext
-//            )!!, paymentMethod, "2", device, versionName
-//        )
-//        val call: Call<PaymentGatewayCreditInitiateResponseModel> =
-//            ApiClient.getClient.paymentCreditInitiate(paymentID, "Bearer " + token)
-//        call.enqueue(object : Callback<PaymentGatewayCreditInitiateResponseModel> {
-//            override fun onFailure(call: Call<PaymentGatewayCreditInitiateResponseModel>, t: Throwable) {
-//                Log.e("Error", t.localizedMessage)
-//                mProgressRelLayout.visibility= View.GONE
-//            }
-//
-//            override fun onResponse(
-//                call: Call<PaymentGatewayCreditInitiateResponseModel>,
-//                response: Response<PaymentGatewayCreditInitiateResponseModel>
-//            ) {
-//                mProgressRelLayout.visibility= View.GONE
-//                if (response.body()!!.status == 100) {
-//
-//                    var payment_url = response.body()!!.data.redirect_url
-//                    val intent = Intent(mContext, PaymentPayActivity::class.java)
-//                    intent.putExtra("payment_url",payment_url)
-//                    startActivity(intent)
-////                    var url = payment_url.replaceFirst(
-////                        "^(http[s]?://www\\\\.|http[s]?://|www\\\\.)",
-////                        ""
-////                    )
-////                    mainLinear.visibility = View.GONE
-////                    paymentWeb.visibility = View.VISIBLE
-////                    setWebViewSettingsPrint()
-////                    Log.e("URL LOAD", url)
-////                    paymentWeb.loadUrl(url)
-//
-//
-//                }
-//                else if(response.body()!!.status==116)
-//                {
-//                    PreferenceManager.setUserCode(mContext,"")
-//                    PreferenceManager.setUserEmail(mContext,"")
-//                    val mIntent = Intent(this@PaymentDetailActivity, LoginActivity::class.java)
-//                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//                    mContext.startActivity(mIntent)
-//
-//                }
-//                else
-//                {
-//
-//
-//                }
-//            }
-//
-//        })
-//    }
+
+    fun callCreditInitApi(paymentMethod: String) {
+        val manufacturer = Build.MANUFACTURER
+        val model = Build.MODEL
+        var device = manufacturer + model
+        val versionName: String = BuildConfig.VERSION_NAME
+        val token = PreferenceManager.getUserCode(context)
+        val paramObject = JsonObject()
+        val tsLong = System.currentTimeMillis() / 1000
+        val ts = tsLong.toString()
+        merchantOrderReference = "TRIPAND$ts"
+        paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
+        paramObject.addProperty("trip_item_id", tripID)
+        paramObject.addProperty("order_reference", merchantOrderReference)
+        paramObject.addProperty("invoice_number", merchantOrderReference)
+        paramObject.addProperty("paid_amount", singleInstallmentAmount)
+        paramObject.addProperty("payment_type", "full_payment")
+        paramObject.addProperty("device_type", "2")
+        paramObject.addProperty("device_name", device)
+        paramObject.addProperty("app_version", versionName)
+
+        progressDialogP.show()
+        val call: Call<PaymentGatewayCreditInitiateResponseModel> =
+            ApiClient.getClient.tripCCPaymentInitiate("Bearer " + token, paramObject)
+
+        call.enqueue(object : Callback<PaymentGatewayCreditInitiateResponseModel> {
+            override fun onFailure(
+                call: Call<PaymentGatewayCreditInitiateResponseModel>,
+                t: Throwable
+            ) {
+                Log.e("Error", t.localizedMessage)
+                progressDialogP.dismiss()
+            }
+
+            override fun onResponse(
+                call: Call<PaymentGatewayCreditInitiateResponseModel>,
+                response: Response<PaymentGatewayCreditInitiateResponseModel>
+            ) {
+                progressDialogP.dismiss()
+                if (response.body()!!.status == 100) {
+
+                    var payment_url = response.body()!!.data.redirect_url
+                    val intent = Intent(context, PaymentPayActivity::class.java)
+                    intent.putExtra("payment_url", payment_url)
+                    startActivity(intent)
+
+
+                } else if (response.body()!!.status == 116) {
+                    PreferenceManager.setUserCode(context, "")
+                    PreferenceManager.setUserEmail(context, "")
+                    val mIntent = Intent(this@TripDetailsActivity, LoginActivity::class.java)
+                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                    context.startActivity(mIntent)
+
+                } else {
+
+
+                }
+            }
+
+        })
+    }
 
 
     fun callDebitInitApi(paymentMethod: String) {
@@ -757,8 +758,8 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         paramObject.addProperty("paid_amount", singleInstallmentAmount)
         paramObject.addProperty("payment_type", "full_payment")
         paramObject.addProperty("device_type", "2")
-        paramObject.addProperty("device_name", "Nokia")
-        paramObject.addProperty("app_version", "1.2")
+        paramObject.addProperty("device_name", device)
+        paramObject.addProperty("app_version", versionName)
         val call: Call<PaymentGatewayCreditInitiateResponseModel> =
             ApiClient.getClient.tripDCPaymentInitiate("Bearer " + token, paramObject)
         call.enqueue(object : Callback<PaymentGatewayCreditInitiateResponseModel> {
