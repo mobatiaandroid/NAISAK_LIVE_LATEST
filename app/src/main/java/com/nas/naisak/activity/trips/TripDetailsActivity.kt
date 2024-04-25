@@ -749,7 +749,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         val paramObject = JsonObject()
         val tsLong = System.currentTimeMillis() / 1000
         val ts = tsLong.toString()
-        merchantOrderReference = "NAISAKTRIPAND$ts"
+        merchantOrderReference = "TRIPAND$ts"
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
         paramObject.addProperty("trip_item_id", tripID)
         paramObject.addProperty("order_reference", merchantOrderReference)
