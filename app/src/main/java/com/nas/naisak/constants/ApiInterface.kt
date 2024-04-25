@@ -455,8 +455,8 @@ interface ApiInterface {
         @Part("trip_item_id") tripItemId: RequestBody?,
         @Part("student_id") studentId: RequestBody?,
         @Part("card_number") cardNumber: RequestBody?,
-        @Part image: Part?,
-        @Part image2: Part?
+        @Part image: MultipartBody.Part?,
+        @Part image2: MultipartBody.Part?
     ): Call<SubmitDocResponseModel>
 
     @Multipart

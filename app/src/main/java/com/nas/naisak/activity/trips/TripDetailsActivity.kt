@@ -12,6 +12,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -57,6 +58,7 @@ import com.nas.naisak.activity.trips.adapter.ImagePagerDrawableAdapter
 import com.nas.naisak.activity.trips.adapter.TripImageAdapter
 import com.nas.naisak.activity.trips.adapter.TripsCategoryAdapter
 import com.nas.naisak.activity.trips.model.ChoicePreferenceModel
+import com.nas.naisak.activity.trips.model.SubmitDocResponseModel
 import com.nas.naisak.activity.trips.model.TripChoicePaymentCountResponseModel
 import com.nas.naisak.activity.trips.model.TripConsentResponseModel
 import com.nas.naisak.constants.ApiClient
@@ -70,6 +72,7 @@ import com.nas.naisak.constants.recyclermanager.addOnItemClickListener
 import com.nas.naisak.fragment.home.mContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -82,7 +85,7 @@ import java.util.Timer
 import java.util.TimerTask
 import kotlin.properties.Delegates
 
-class TripDetailsActivity : AppCompatActivity() {
+class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemSelectedListener {
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 101
     private val PERMISSION_CALLBACK_CONSTANT_EXTERNAL_STORAGE = 2
     private val REQUEST_PERMISSION_EXTERNAL_STORAGE = 102
@@ -123,8 +126,8 @@ class TripDetailsActivity : AppCompatActivity() {
     lateinit var orderId: String
 
     var tripStatus by Delegates.notNull<Int>()
-    lateinit var paymentToken: String
-    lateinit var permissionSlip: String
+    var paymentToken: String = ""
+    var permissionSlip: String = ""
     lateinit var studentList: ArrayList<String>
     lateinit var tripMainBanner: ViewPager
     lateinit var tripImageRecycler: RecyclerView
@@ -584,11 +587,39 @@ class TripDetailsActivity : AppCompatActivity() {
         }
         payTotalView!!.setOnClickListener {
             bottomSheetDialog.dismiss()
-            callOptionDialog(mContext)
+            showOptionPopUp(mContext)
+//            callOptionDialog(mContext)
 //            initialisePayment()
         }
         bottomSheetDialog.show()
     }
+
+    private fun showOptionPopUp(activity: Context) {
+        var flag = false
+        val bottomSheetDialog = BottomSheetDialog(activity, R.style.BottomSheetDialogTheme)
+        val layout: View =
+            LayoutInflater.from(activity)
+                .inflate(R.layout.dialog_bottom_sheet_payment_credit_or_debit, null)
+        bottomSheetDialog.setContentView(layout)
+        bottomSheetDialog.setCancelable(false)
+        bottomSheetDialog.setCanceledOnTouchOutside(true)
+        val debitCardView: ConstraintLayout? =
+            bottomSheetDialog.findViewById<ConstraintLayout>(R.id.debitCardView)
+        val creditCardView: ConstraintLayout? =
+            bottomSheetDialog.findViewById<ConstraintLayout>(R.id.creditCardView)
+        debitCardView!!.setOnClickListener {
+
+            callDebitInitApi("2")
+        }
+        creditCardView!!.setOnClickListener {
+
+        }
+
+        bottomSheetDialog.findViewById<ConstraintLayout>(R.id.selectPaymentMethodView)
+
+        bottomSheetDialog.show()
+    }
+
 
     fun callOptionDialog(context: Context) {
         val dialog = Dialog(context)
@@ -721,8 +752,8 @@ class TripDetailsActivity : AppCompatActivity() {
         val tsLong = System.currentTimeMillis() / 1000
         val ts = tsLong.toString()
         merchantOrderReference = "NAISAKTRIPAND$ts"
-        paramObject.addProperty("student_id", "19")
-        paramObject.addProperty("trip_item_id", "4")
+        paramObject.addProperty("student_id", PreferenceManager.getStudentID(mContext))
+        paramObject.addProperty("trip_item_id", tripID)
         paramObject.addProperty("order_reference", merchantOrderReference)
         paramObject.addProperty("invoice_number", merchantOrderReference)
         paramObject.addProperty("paid_amount", "100")
@@ -1169,7 +1200,7 @@ class TripDetailsActivity : AppCompatActivity() {
             openGallery(PICK_IMAGE_BACK_PASSPORT)
         }
         uploadPassportDetailsButton.setOnClickListener {
-            Log.e("herer", "gesg")
+            Log.e("herer", passportURIArray[0].path + passportURIArray[1].path)
             if (!passportURIArray[0].path.equals(
                     "", ignoreCase = true
                 ) && !passportURIArray[1].path.equals(
@@ -1242,6 +1273,52 @@ class TripDetailsActivity : AppCompatActivity() {
     private fun openGallery(requestCode: Int) {
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(galleryIntent, requestCode)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.e("current", currentPosition.toString())
+        if (resultCode == RESULT_OK && data != null) {
+            val selectedImage = data.data
+            val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
+            val cursor: Cursor? =
+                contentResolver.query(selectedImage!!, filePathColumn, null, null, null)
+            cursor?.use {
+                it.moveToFirst()
+                val columnIndex = it.getColumnIndex(filePathColumn[0])
+                val imagePath = it.getString(columnIndex)
+                when (requestCode) {
+                    PICK_IMAGE_FRONT_PASSPORT -> {
+                        passportURIArray[currentPosition!!] = Uri.parse(imagePath)
+                        Log.e("uri", passportURIArray[currentPosition!!].path!!)
+                    }
+
+                    PICK_IMAGE_BACK_PASSPORT -> {
+                        passportURIArray[currentPosition!!] = Uri.parse(imagePath)
+                        Log.e("uri", passportURIArray[currentPosition!!].path!!)
+                    }
+
+                    PICK_IMAGE_FRONT_VISA -> {
+                        visaURIArray[currentPosition!!] = Uri.parse(imagePath)
+                        Log.e("uri", visaURIArray[currentPosition!!].path!!)
+                    }
+
+                    PICK_IMAGE_FRONT_EID -> {
+                        eIDURIArray[currentPosition!!] = Uri.parse(imagePath)
+                        Log.e("uri", eIDURIArray[currentPosition!!].path!!)
+                        Log.e("ursai", Uri.parse(imagePath).toString())
+                    }
+
+                    PICK_IMAGE_BACK_EID -> {
+                        eIDURIArray[currentPosition!!] = Uri.parse(imagePath)
+                        Log.e("uri", eIDURIArray[currentPosition!!].path.toString())
+                        Log.e("ursai", Uri.parse(imagePath).toString())
+                    }
+
+                    else -> Toast.makeText(context, "Transaction failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
 
@@ -1324,9 +1401,8 @@ class TripDetailsActivity : AppCompatActivity() {
             dialog.findViewById<RecyclerView>(R.id.choicePreferenceRecycler)
         preferenceLayout.visibility = View.GONE // Initially hidden
         yesNoRadioGroup.orientation = LinearLayout.HORIZONTAL
-        val adapter = ChoicePreferenceAdapter(
-            context, choicePreferenceSorted, this as ChoicePreferenceAdapter.OnItemSelectedListener
-        ) // Replace yourDataList with your list of data
+        val adapter = ChoicePreferenceAdapter(context, choicePreferenceSorted, this)
+
         choicePreferenceListView.adapter = adapter
         val layoutManager = GridLayoutManager(context, 3)
         choicePreferenceListView.layoutManager = layoutManager
@@ -1334,7 +1410,8 @@ class TripDetailsActivity : AppCompatActivity() {
         val itemDecoration = GridSpacingItemDecoration(3, spacing, true)
         choicePreferenceListView.addItemDecoration(itemDecoration)
         choicePreferenceListView.addOnItemTouchListener(
-            RecyclerItemListener(context,
+            RecyclerItemListener(
+                context,
                 choicePreferenceListView,
                 object : RecyclerItemListener.RecyclerTouchListener {
                     override fun onClickItem(v: View?, position: Int) {
@@ -1429,33 +1506,76 @@ class TripDetailsActivity : AppCompatActivity() {
     }
 
     private fun uploadConsentAPICall(dial: Dialog, signatureFile: File) {
+        val requestFile1: RequestBody
+        var requestFile2: RequestBody
+        var attachment1: MultipartBody.Part? = null
 
-//                progressDialogP.dismiss()
-//                    if (response.body()!!.status == 100) {
-//                        dial.dismiss()
-//                        Toast.makeText(
-//                            this@TripDetailsActivity,
-//                            "Permission slip successfully submitted.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                        passportStatus = response.body()!!.data.documentStatus.passportStatus
-//                        visaStatus = response.body()!!.data.documentStatus.visaStatus
-//                        eIDStatus = response.body()!!.data.documentStatus.emiratesStatus
-//                        permissionStatus = response.body()!!.data.documentStatus.consentStatus
-//                        dial.dismiss()
-//                        if (response.body()!!.data.documentStatus.documentCompletionStatus == 1
-//                        ) {
-//                            getTripDetails(tripID)
-//                        } else {
-//                            showDocumentSubmissionPopUp()
-//                        }
-//                    } else {
-//                        Toast.makeText(
-//                            this@TripDetailsActivity,
-//                            "Permission slip submit failed.",
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
+
+        if (signatureFile.length() > 0) {
+            val requestFile1 =
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), signatureFile)
+            attachment1 =
+                MultipartBody.Part.createFormData("attachment1", signatureFile.name, requestFile1)
+        }
+
+
+        val frontImagePart: MultipartBody.Part? = attachment1
+        val action = RequestBody.create("text/plain".toMediaTypeOrNull(), "consent")
+        val student_id = RequestBody.create(
+            "text/plain".toMediaTypeOrNull(),
+            PreferenceManager.getStudentID(context).toString()
+        )
+        val trip_item_id = RequestBody.create("text/plain".toMediaTypeOrNull(), tripID)
+        val card_number = RequestBody.create("text/plain".toMediaTypeOrNull(), "number")
+        progressDialogP.show()
+        val call: Call<SubmitDocResponseModel> = ApiClient.getClient.uploadSingleDocument(
+            "Bearer " + PreferenceManager.getUserCode(context),
+            action,
+            trip_item_id,
+            student_id,
+            card_number,
+            frontImagePart
+        )
+        call.enqueue(object : Callback<SubmitDocResponseModel> {
+            override fun onResponse(
+                call: Call<SubmitDocResponseModel>,
+                response: Response<SubmitDocResponseModel>
+            ) {
+                progressDialogP.dismiss()
+                if (response.body()!!.status == 100) {
+                    dial.dismiss()
+                    Toast.makeText(
+                        this@TripDetailsActivity,
+                        "Permission slip successfully submitted.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    passportStatus = response.body()!!.data.documentStatus.passportStatus
+                    visaStatus = response.body()!!.data.documentStatus.visaStatus
+                    eIDStatus = response.body()!!.data.documentStatus.emiratesStatus
+                    permissionStatus = response.body()!!.data.documentStatus.consentStatus
+                    dial.dismiss()
+                    if (response.body()!!.data.documentStatus.documentCompletionStatus == 1
+                    ) {
+                        getTripDetails(tripID)
+                    } else {
+                        showDocumentSubmissionPopUp()
+                    }
+                } else {
+                    Toast.makeText(
+                        this@TripDetailsActivity,
+                        "Permission slip submit failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<SubmitDocResponseModel>, t: Throwable) {
+                progressDialogP.dismiss()
+                Log.e("failed", "failed")
+            }
+        })
+
+//
 
 
     }
@@ -1501,7 +1621,7 @@ class TripDetailsActivity : AppCompatActivity() {
     private fun uploadSingleDocumentsAPICall(
         dial: Dialog, uriArray: Uri, number: String, documentType: String
     ) {
-
+//
 //                progressDialogP.dismiss()
 //                if (response.body()!!.status == 100) {
 //                    dial.dismiss()
@@ -1528,7 +1648,6 @@ class TripDetailsActivity : AppCompatActivity() {
 //                        Toast.LENGTH_SHORT
 //                    ).show()
 //                }
-//
 
 
     }
@@ -1537,32 +1656,75 @@ class TripDetailsActivity : AppCompatActivity() {
     private fun uploadDocumentsAPICall(
         dial: Dialog, uriArray: java.util.ArrayList<Uri>, number: String, documentType: String
     ) {
-//                progressDialogP.dismiss()
-//                if (response.body()!!.status == 100) {
-//                    dial.dismiss()
-//                    Toast.makeText(
-//                        this@TripDetailsActivity,
-//                        "Document successfully submitted.",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    passportStatus = response.body()!!.data.documentStatus.passportStatus
-//                    visaStatus = response.body()!!.data.documentStatus.visaStatus
-//                    eIDStatus = response.body()!!.data.documentStatus.emiratesStatus
-//                    permissionStatus = response.body()!!.data.documentStatus.consentStatus
-//                    dial.dismiss()
-//                    if (response.body()!!.data.documentStatus.documentCompletionStatus == 1
-//                    ) {
-//                        getTripDetails(tripID)
-//                    } else {
-//                        showDocumentSubmissionPopUp()
-//                    }
-//                } else {
-//                    Toast.makeText(
-//                        this@TripDetailsActivity,
-//                        "Document submit failed.",
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                }
+
+        val file1 = File(uriArray[0].path)
+        val file2 = File(uriArray[1].path)
+        val frontImagePart = prepareImagePart(uriArray[0], "attachment1")
+        val backImagePart = prepareImagePart(uriArray[1], "attachment2")
+        Log.e("path", uriArray[0].path.toString())
+        Log.e("path", uriArray[1].path.toString())
+
+        val action = RequestBody.create("text/plain".toMediaTypeOrNull(), documentType)
+        val student_id = RequestBody.create(
+            "text/plain".toMediaTypeOrNull(),
+            PreferenceManager.getStudentID(context).toString()
+        )
+        val trip_item_id = RequestBody.create("text/plain".toMediaTypeOrNull(), tripID)
+        val card_number = RequestBody.create("text/plain".toMediaTypeOrNull(), number)
+        val call: Call<SubmitDocResponseModel> = ApiClient.getClient.uploadDocuments(
+            "Bearer " + PreferenceManager.getUserCode(context),
+            action,
+            trip_item_id,
+            student_id,
+            card_number,
+            frontImagePart,
+            backImagePart
+        )
+        call.enqueue(object : Callback<SubmitDocResponseModel> {
+            override fun onResponse(
+                call: Call<SubmitDocResponseModel>,
+                response: Response<SubmitDocResponseModel>
+            ) {
+                progressDialogP.dismiss()
+                if (response.body()!!.status == 100) {
+                    dial.dismiss()
+                    Toast.makeText(
+                        this@TripDetailsActivity,
+                        "Document successfully submitted.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    passportStatus = response.body()!!.data.documentStatus.passportStatus
+                    visaStatus = response.body()!!.data.documentStatus.visaStatus
+                    eIDStatus = response.body()!!.data.documentStatus.emiratesStatus
+                    permissionStatus = response.body()!!.data.documentStatus.consentStatus
+                    dial.dismiss()
+                    if (response.body()!!.data.documentStatus.documentCompletionStatus == 1
+                    ) {
+                        getTripDetails(tripID)
+                    } else {
+                        showDocumentSubmissionPopUp()
+                    }
+                } else {
+                    Toast.makeText(
+                        this@TripDetailsActivity,
+                        "Document submit failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            override fun onFailure(call: Call<SubmitDocResponseModel>, t: Throwable) {
+                progressDialogP.dismiss()
+                Log.e("failed", "Failed")
+            }
+
+        })
+
+    }
+
+    override fun onItemSelected(choice: String?) {
+        selectedChoice = choice!!
+        Log.e("Selected", selectedChoice)
     }
 
 }
