@@ -69,7 +69,6 @@ import com.nas.naisak.constants.ProgressBarDialog
 import com.nas.naisak.constants.recyclermanager.OnItemClickListener
 import com.nas.naisak.constants.recyclermanager.RecyclerItemListener
 import com.nas.naisak.constants.recyclermanager.addOnItemClickListener
-import com.nas.naisak.fragment.home.mContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -586,8 +585,8 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             context.startActivity(intent)
         }
         payTotalView!!.setOnClickListener {
-            bottomSheetDialog.dismiss()
-            showOptionPopUp(mContext)
+//            bottomSheetDialog.dismiss()
+            showOptionPopUp(context)
 //            callOptionDialog(mContext)
 //            initialisePayment()
         }
@@ -595,7 +594,6 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
     }
 
     private fun showOptionPopUp(activity: Context) {
-        var flag = false
         val bottomSheetDialog = BottomSheetDialog(activity, R.style.BottomSheetDialogTheme)
         val layout: View =
             LayoutInflater.from(activity)
@@ -604,9 +602,9 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         bottomSheetDialog.setCancelable(false)
         bottomSheetDialog.setCanceledOnTouchOutside(true)
         val debitCardView: ConstraintLayout? =
-            bottomSheetDialog.findViewById<ConstraintLayout>(R.id.debitCardView)
+            bottomSheetDialog.findViewById(R.id.debitCardView)
         val creditCardView: ConstraintLayout? =
-            bottomSheetDialog.findViewById<ConstraintLayout>(R.id.creditCardView)
+            bottomSheetDialog.findViewById(R.id.creditCardView)
         debitCardView!!.setOnClickListener {
 
             callDebitInitApi("2")
@@ -631,7 +629,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         lateinit var mPaymentOptionArrayList: ArrayList<String>
         var studentListRecycler =
             dialog.findViewById(R.id.recycler_view_social_media) as RecyclerView
-        val llm = LinearLayoutManager(mContext)
+        val llm = LinearLayoutManager(context)
         llm.orientation = LinearLayoutManager.VERTICAL
         studentListRecycler.layoutManager = llm
         mPaymentOptionArrayList = ArrayList()
@@ -649,7 +647,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         studentListRecycler.addOnItemClickListener(object : OnItemClickListener {
             override fun onItemClicked(position: Int, view: View) {
                 // Your logic
-                if (CommonMethods.isInternetAvailable(mContext)) {
+                if (CommonMethods.isInternetAvailable(context)) {
                     var method: String = ""
                     if (position == 0) {
                         method = "1"
@@ -671,7 +669,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 //                    mProgressRelLayout.visibility= View.VISIBLE
 //                    callGatewayLink(method)
                 } else {
-                    CommonMethods.showSuccessInternetAlert(mContext)
+                    CommonMethods.showSuccessInternetAlert(context)
                 }
                 dialog.dismiss()
             }
@@ -747,16 +745,16 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         val model = Build.MODEL
         var device = manufacturer + model
         val versionName: String = BuildConfig.VERSION_NAME
-        val token = PreferenceManager.getUserCode(mContext)
+        val token = PreferenceManager.getUserCode(context)
         val paramObject = JsonObject()
         val tsLong = System.currentTimeMillis() / 1000
         val ts = tsLong.toString()
         merchantOrderReference = "NAISAKTRIPAND$ts"
-        paramObject.addProperty("student_id", PreferenceManager.getStudentID(mContext))
+        paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
         paramObject.addProperty("trip_item_id", tripID)
         paramObject.addProperty("order_reference", merchantOrderReference)
         paramObject.addProperty("invoice_number", merchantOrderReference)
-        paramObject.addProperty("paid_amount", "100")
+        paramObject.addProperty("paid_amount", singleInstallmentAmount)
         paramObject.addProperty("payment_type", "full_payment")
         paramObject.addProperty("device_type", "2")
         paramObject.addProperty("device_name", "Nokia")
@@ -778,7 +776,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 if (response.body()!!.status == 100) {
 
                     var payment_url = response.body()!!.data.redirect_url
-                    val intent = Intent(mContext, PaymentPayActivity::class.java)
+                    val intent = Intent(context, PaymentPayActivity::class.java)
                     intent.putExtra("payment_url", payment_url)
                     startActivity(intent)
 //                    var url = payment_url.replaceFirst(
@@ -793,11 +791,11 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
 
                 } else if (response.body()!!.status == 116) {
-                    PreferenceManager.setUserCode(mContext, "")
-                    PreferenceManager.setUserEmail(mContext, "")
+                    PreferenceManager.setUserCode(context, "")
+                    PreferenceManager.setUserEmail(context, "")
                     val mIntent = Intent(this@TripDetailsActivity, LoginActivity::class.java)
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    mContext.startActivity(mIntent)
+                    context.startActivity(mIntent)
 
                 } else {
 
@@ -1581,7 +1579,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
     }
 
     private fun bitmapToFile(bitmap: Bitmap): File {
-        val signatureFile = File(mContext.externalCacheDir, "signature.png")
+        val signatureFile = File(context.externalCacheDir, "signature.png")
         try {
             // Write the bitmap to the file
             val fos = FileOutputStream(signatureFile)
@@ -1603,7 +1601,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             val byteArray = stream.toByteArray()
             val currentTimeMillis = System.currentTimeMillis().toString()
             val compressedFile = File(
-                mContext.cacheDir, "compressed_image$currentTimeMillis.jpg"
+                context.cacheDir, "compressed_image$currentTimeMillis.jpg"
             )
             val fos = FileOutputStream(compressedFile)
             fos.write(byteArray)
