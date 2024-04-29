@@ -38,6 +38,8 @@ data class TripListResponseModel(
         val tripStartDate: String,
         @SerializedName("trip_end_date")
         val tripEndDate: String,
+        @SerializedName("preference")
+        val preference: String,
         @SerializedName("total_price")
         val totalPrice: String,
         @SerializedName("trip_status")

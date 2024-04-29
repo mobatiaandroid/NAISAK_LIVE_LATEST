@@ -48,12 +48,9 @@ class TripListingActivity : AppCompatActivity() {
     lateinit var tab_type: String
     private lateinit var progressDialogP: ProgressBarDialog
     lateinit var relativeHeader: RelativeLayout
-//    lateinit var headermanager: HeaderManager
-    lateinit var bannerImageView: ImageView
-    lateinit var descriptionTextView: TextView
-    lateinit var sendEmailImageView: ImageView
     lateinit var tripListRecycler: RecyclerView
     lateinit var recyclerViewLayoutManager: GridLayoutManager
+    lateinit var backRelative: RelativeLayout
     var categoryID = ""
     var categoryName = ""
     lateinit var mStudentSpinner: LinearLayout
@@ -98,45 +95,34 @@ class TripListingActivity : AppCompatActivity() {
         categoryID = extras.getInt("trip_category_id", 0).toString()!!
         categoryName = extras.getString("trip_category_name")!!
         progressDialogP = ProgressBarDialog(context, R.drawable.spinner)
-//        bannerImageView = findViewById(R.id.bannerImage)
-//        descriptionTextView = findViewById(R.id.descriptionTextView)
-//        sendEmailImageView = findViewById(R.id.sendEmailImageView)
+
         relativeHeader = findViewById(R.id.relativeHeader)
-//        headermanager = HeaderManager(this@TripListingActivity, categoryName)
-//        headermanager.getHeader(relativeHeader, 6)
-//        back = headermanager.getLeftButton()
-//        btn_history = headermanager.getRightHistoryImage()
-//        btn_history.visibility = View.INVISIBLE
+        heading = findViewById(R.id.heading)
+        backRelative = findViewById(R.id.backRelative)
+
+
         tripListRecycler = findViewById(R.id.tripListRecycler)
         tripListRecycler.setHasFixedSize(true)
+        heading.text = categoryName
         val spacing = 5 // 50px
 
         val itemDecoration = ItemOffsetDecoration(context, spacing)
         recyclerViewLayoutManager = GridLayoutManager(context, 1)
-//        tripListRecycler.addItemDecoration(
-//            DividerItemDecoration(context.resources.getDrawable(R.drawable.list_divider))
-//        )
+
+
         tripListRecycler.addItemDecoration(itemDecoration)
         tripListRecycler.layoutManager = recyclerViewLayoutManager
-//        headermanager.setButtonLeftSelector(R.drawable.back, R.drawable.back)
-//        back.setOnClickListener {
-//            AppUtils.hideKeyBoard(context)
-//            finish()
-//        }
-//
-//        home = headermanager.getLogoButton()
-//        home.setOnClickListener {
-//            val `in` = Intent(context, HomeListAppCompatActivity::class.java)
-//            `in`.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//            startActivity(`in`)
-//        }
+        backRelative.setOnClickListener {
+            finish()
+        }
+
         mStudentSpinner = findViewById(R.id.studentSpinner)
         studentNameTxt = findViewById<TextView>(R.id.studentName)
         studImg = findViewById<ImageView>(R.id.imagicon)
 
 
         mStudentSpinner.setOnClickListener {
-            showStudentList(context,studentListArrayList)
+            showStudentList(context, studentListArrayList)
         }
     }
     fun showStudentList(context: Context, mStudentList: ArrayList<StudentDataListResponse>) {
@@ -274,15 +260,7 @@ class TripListingActivity : AppCompatActivity() {
                 progressDialogP.dismiss()
             }
         })
-
-
-
-
-
-
     }
-
-
     fun callStudentListApi() {
         studentListArrayList=ArrayList()
         val token = PreferenceManager.getUserCode(context)

@@ -19,6 +19,7 @@ import com.nas.naisak.activity.trips.model.SubmitDocResponseModel
 import com.nas.naisak.activity.trips.model.TripCategoriesResponseModel
 import com.nas.naisak.activity.trips.model.TripChoicePaymentCountResponseModel
 import com.nas.naisak.activity.trips.model.TripConsentResponseModel
+import com.nas.naisak.activity.trips.model.TripInvoiceResponseModel
 import com.nas.naisak.activity.trips.model.TripListResponseModel
 import com.nas.naisak.commonmodels.*
 import com.nas.naisak.fragment.aboutus.model.NAEResponseModel
@@ -41,6 +42,7 @@ import com.nas.naisak.fragment.parents_meeting.model.PTAConfirmResponseModel
 import com.nas.naisak.fragment.parentsessentials.Model.ParentsEssentialResponseModel
 import com.nas.naisak.fragment.payment.model.PaymentBannerResponse
 import com.nas.naisak.fragment.payment.model.PaymentResponseModel
+import com.nas.naisak.fragment.reports.model.ReportsResponseModel
 import com.nas.naisak.fragment.settings.model.ChangePasswordApiModel
 import com.nas.naisak.fragment.settings.model.TermsOfServiceModel
 import okhttp3.MultipartBody
@@ -433,6 +435,7 @@ interface ApiInterface {
         @Body json: JsonObject?
     ): Call<TripListResponseModel>
 
+
     @POST("api/v1/parent/trip_items_detail")
     @Headers("Content-Type: application/json")
     fun tripDetail(
@@ -486,7 +489,7 @@ interface ApiInterface {
     fun tripHistory(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
-    ): Call<ResponseBody?>?
+    ): Call<TripListResponseModel>
 
     @POST("api/v1/parent/get_trip_consent")
     @Headers("Content-Type: application/json")
@@ -532,5 +535,27 @@ interface ApiInterface {
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
     ): Call<PaymentGatewayCreditInitiateResponseModel>
+
+    @POST("api/v1/parent/generate_trip_receipt")
+    @Headers("Content-Type: application/json")
+    fun tripReciept(
+        @Header("Authorization") token: String?,
+        @Body json: JsonObject?
+    ): Call<TripInvoiceResponseModel>
+
+    @POST("api/v1/parent/progress-reports")
+    @Headers("Content-Type: application/json")
+    fun progressReports(
+        @Header("Authorization") token: String?,
+        @Body json: JsonObject?
+    ): Call<ReportsResponseModel>
+
+    @POST("api/v1/parent/status_changeAPI")
+    @Headers("Content-Type: application/json")
+    fun statusChangeAPI(
+        @Header("Authorization") token: String?,
+        @Body json: JsonObject?
+    ): Call<GeneralSubmitResponseModel>
+
 
 }

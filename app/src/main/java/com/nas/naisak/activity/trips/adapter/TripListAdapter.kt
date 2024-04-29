@@ -33,6 +33,8 @@ class TripListAdapter(
         var tripPriceTextView: TextView
         var tripDateTextView: TextView
         var tripBookButton: Button
+        var tripPreference: TextView? = null
+
 
         init {
             tripImageView = view.findViewById<View>(R.id.tripImageView) as ImageView
@@ -40,6 +42,8 @@ class TripListAdapter(
             tripPriceTextView = view.findViewById<View>(R.id.priceTextView) as TextView
             tripDateTextView = view.findViewById<View>(R.id.estimateDateTextView) as TextView
             tripBookButton = view.findViewById(R.id.bookNowButton)
+            tripPreference = view.findViewById(R.id.choicePreference)
+
 
         }
     }
@@ -61,6 +65,12 @@ class TripListAdapter(
                 Glide.with(context).load(CommonMethods.replace(tripList[position].tripImage.get(0)))
                     .fitCenter().placeholder(R.drawable.default_banner).into(holder.tripImageView)
             }
+        }
+        if (tripList[position].preference.equals("")) {
+            holder.tripPreference!!.visibility = View.INVISIBLE
+        } else {
+            holder.tripPreference!!.visibility = View.VISIBLE
+            holder.tripPreference!!.text = (tripList[position].preference)
         }
         holder.tripBookButton.setTextColor(Color.WHITE)
         if (tripList[position].tripStatus === 0) {

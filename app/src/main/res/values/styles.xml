@@ -4,7 +4,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/white</item>
+        <item name="colorAccent">@color/teal</item>
         <item name="colorOnSurface">@color/parents_slot_color</item>
         <item name="colorSecondary">@color/white</item>
     </style>

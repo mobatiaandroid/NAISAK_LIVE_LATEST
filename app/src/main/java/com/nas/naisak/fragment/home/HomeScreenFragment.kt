@@ -35,6 +35,7 @@ import com.nas.naisak.fragment.home.model.LogoutResponseModel
 import com.nas.naisak.fragment.notification.NotificationFragment
 import com.nas.naisak.fragment.parents_meeting.ParentsMeetingFragment
 import com.nas.naisak.fragment.parentsessentials.ParentsEssentialsFragment
+import com.nas.naisak.fragment.reports.ReportsFragment
 import com.nas.naisak.fragment.trips.TripsFragment
 import retrofit2.Call
 import retrofit2.Callback
@@ -374,7 +375,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     relImgOneDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
             } else if (PreferenceManager.getButtonOneRegTabID(mContext)
-                    .equals(NasTabConstants.TAB_TRIPS_REG)
+                    .equals(NasTabConstants.TAB_PAYMENTS)
             ) {
                 if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
                         mContext
@@ -536,7 +537,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     relImgTwoDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
             } else if (PreferenceManager.getButtonTwoRegTabID(mContext)
-                    .equals(NasTabConstants.TAB_TRIPS_REG)
+                    .equals(NasTabConstants.TAB_PAYMENTS)
             ) {
                 if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
                         mContext
@@ -699,7 +700,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     relImgThreeDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
             } else if (PreferenceManager.getButtonThreeRegTabID(mContext)
-                    .equals(NasTabConstants.TAB_TRIPS_REG)
+                    .equals(NasTabConstants.TAB_PAYMENTS)
             ) {
                 if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
                         mContext
@@ -862,7 +863,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     relImgFourDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
             } else if (PreferenceManager.getButtonFourRegTabID(mContext)
-                    .equals(NasTabConstants.TAB_TRIPS_REG)
+                    .equals(NasTabConstants.TAB_PAYMENTS)
             ) {
                 if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
                         mContext
@@ -1024,7 +1025,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
             } else if (PreferenceManager.getButtonFiveRegTabID(mContext)
-                    .equals(NasTabConstants.TAB_TRIPS_REG)
+                    .equals(NasTabConstants.TAB_PAYMENTS)
             ) {
                 if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
                         mContext
@@ -1186,7 +1187,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     relImgSixDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
             } else if (PreferenceManager.getButtonSixRegTabID(mContext)
-                    .equals(NasTabConstants.TAB_TRIPS_REG)
+                    .equals(NasTabConstants.TAB_PAYMENTS)
             ) {
                 if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
                         mContext
@@ -1351,7 +1352,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     relImgSevenDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
             } else if (PreferenceManager.getButtonSevenRegTabID(mContext)
-                    .equals(NasTabConstants.TAB_TRIPS_REG)
+                    .equals(NasTabConstants.TAB_PAYMENTS)
             ) {
                 if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
                         mContext
@@ -1517,7 +1518,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     relImgEightDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
             } else if (PreferenceManager.getButtonEightRegTabID(mContext)
-                    .equals(NasTabConstants.TAB_TRIPS_REG)
+                    .equals(NasTabConstants.TAB_PAYMENTS)
             ) {
                 if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
                         mContext
@@ -1681,7 +1682,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     relImgNineDot.setBackgroundResource(R.drawable.shape_circle_red)
                 }
             } else if (PreferenceManager.getButtonNineRegTabID(mContext)
-                    .equals(NasTabConstants.TAB_TRIPS_REG)
+                    .equals(NasTabConstants.TAB_PAYMENTS)
             ) {
                 if (PreferenceManager.getPaymentBadge(mContext) == 0 && PreferenceManager.getPaymentEditedBadge(
                         mContext
@@ -1929,7 +1930,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                 }
 
                 textdata.equals(ClassNameConstants.PAYMENT) -> {
-                    TAB_ID = NasTabConstants.TAB_TRIPS_REG
+                    TAB_ID = NasTabConstants.TAB_PAYMENTS
                 }
 
                 textdata.equals(ClassNameConstants.PARENT_ESSENTIALS) -> {
@@ -2039,7 +2040,23 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     )
                 }
 
-                NasTabConstants.TAB_TRIPS_REG -> {
+                NasTabConstants.TAB_PAYMENTS -> {
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                }
+
+                NasTabConstants.TAB_TRIPS -> {
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                }
+
+                NasTabConstants.TAB_REPORTS -> {
                     CommonMethods.showDialogueWithOk(
                         mContext,
                         "This Feature is only available for registered users",
@@ -2131,12 +2148,22 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     fragmentIntent(mFragment)
                 }
 
+                NasTabConstants.TAB_TRIPS -> {
+                    mFragment = TripsFragment()
+                    fragmentIntent(mFragment)
+                }
+
+                NasTabConstants.TAB_REPORTS -> {
+                    mFragment = ReportsFragment()
+                    fragmentIntent(mFragment)
+                }
+
                 NasTabConstants.TAB_NOTIFICATIONS_REG -> {
                     mFragment = NotificationFragment()
                     fragmentIntent(mFragment)
                 }
 
-                NasTabConstants.TAB_TRIPS_REG -> {
+                NasTabConstants.TAB_PAYMENTS -> {
                     Log.e("pay", "if frag")
                     if (ActivityCompat.checkSelfPermission(
                             mContext,
@@ -2170,6 +2197,11 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
 
                 NasTabConstants.TAB_PARENT_ESSENTIALS_REG -> {
                     mFragment = ParentsEssentialsFragment()
+                    fragmentIntent(mFragment)
+                }
+
+                NasTabConstants.TAB_PAYMENTS -> {
+                    mFragment = TripsFragment()
                     fragmentIntent(mFragment)
                 }
 

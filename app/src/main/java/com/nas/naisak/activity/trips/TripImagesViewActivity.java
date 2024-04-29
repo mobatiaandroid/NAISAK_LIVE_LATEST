@@ -39,7 +39,7 @@ public class TripImagesViewActivity extends AppCompatActivity {
             pos = extras.getInt("pos");
         }
 
-        back.setOnClickListener(v -> finish());
+//        back.setOnClickListener(v -> finish());
         bannerImageViewPager.setAdapter(new TripsImagePagerAdapter(mContext, mPhotosModelArrayList, "portrait"));
         bannerImageViewPager.setCurrentItem(pos);
         bannerImageViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {

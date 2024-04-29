@@ -1,5 +1,6 @@
-package com.nas.naisak.constants
+package com.nas.naisak.activity.trips
 
+import android.app.Activity
 import android.app.DownloadManager
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -21,11 +22,20 @@ import androidx.core.content.ContextCompat
 import com.downloader.OnDownloadListener
 import com.downloader.PRDownloader
 import com.github.barteksc.pdfviewer.PDFView
+import com.google.gson.JsonObject
 import com.nas.naisak.R
+import com.nas.naisak.activity.trips.model.TripInvoiceResponseModel
+import com.nas.naisak.constants.ApiClient
+import com.nas.naisak.constants.CommonMethods
+import com.nas.naisak.constants.PreferenceManager
+import com.nas.naisak.constants.ProgressBarDialog
+import com.nas.naisak.fragment.home.mContext
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
-@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS", "DEPRECATION")
-class PdfReaderActivity : AppCompatActivity() {
+class TripInvoiceViewActivity : AppCompatActivity() {
     lateinit var back: ImageView
     lateinit var downloadpdf: ImageView
     lateinit var context: Context
@@ -33,29 +43,26 @@ class PdfReaderActivity : AppCompatActivity() {
     var urltoshow: String = ""
     var title: String = ""
     private val STORAGE_PERMISSION_CODE: Int = 1000
+    lateinit var progressDialogP: ProgressBarDialog
     lateinit var pdfprogress: ProgressBar
-
-
+    var invoiceNumber = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_pdf_reader)
+        setContentView(R.layout.activity_trip_invoice_view)
         context = this
         val builder = StrictMode.VmPolicy.Builder()
         StrictMode.setVmPolicy(builder.build())
-        urltoshow = intent.getStringExtra("pdf_url").toString()
-        title = intent.getStringExtra("pdf_title").toString()
+        invoiceNumber = intent.getStringExtra("invoice_number").toString()
+//        title = intent.getStringExtra("pdf_title").toString()
         back = findViewById(R.id.back)
+        progressDialogP = ProgressBarDialog(context, R.drawable.spinner)
+        getInvoiceReciept(invoiceNumber)
         downloadpdf = findViewById(R.id.downloadpdf)
         pdfviewer = findViewById(R.id.pdfview)
         pdfprogress = findViewById(R.id.pdfprogress)
         Log.e("url", urltoshow)
         PRDownloader.initialize(applicationContext)
-        val fileName = "myFile.pdf"
-        downloadPdfFromInternet(
-            urltoshow,
-            getRootDirPath(this),
-            fileName
-        )
+
         back.setOnClickListener {
             finish()
         }
@@ -80,6 +87,8 @@ class PdfReaderActivity : AppCompatActivity() {
                 }
             }
         }
+
+        invoiceNumber = intent.getStringExtra("invoice_number").toString()
     }
 
     fun onDownloadComplete() {
@@ -159,4 +168,47 @@ class PdfReaderActivity : AppCompatActivity() {
         pdfprogress.visibility = View.GONE
 
     }
+
+
+    private fun getInvoiceReciept(invoiceNumber: String) {
+        progressDialogP.show()
+        val paramObject = JsonObject()
+        paramObject.addProperty("invoice_no", invoiceNumber)
+        val call: Call<TripInvoiceResponseModel> = ApiClient.getClient.tripReciept(
+            "Bearer " + PreferenceManager.getUserCode(mContext), paramObject
+        )
+        call.enqueue(object : Callback<TripInvoiceResponseModel> {
+            override fun onResponse(
+                call: Call<TripInvoiceResponseModel>, response: Response<TripInvoiceResponseModel>
+            ) {
+                progressDialogP.dismiss()
+                if (response.body()!!.status == 100) {
+
+                    if (response.body()!!.data.receiptUrl.isNotEmpty()) {
+                        val fileName = "myFile.pdf"
+
+                        urltoshow = response.body()!!.data.receiptUrl
+                        downloadPdfFromInternet(
+                            urltoshow,
+                            getRootDirPath(context),
+                            fileName
+                        )
+                    }
+
+                } else {
+                }
+
+            }
+
+            override fun onFailure(call: Call<TripInvoiceResponseModel>, t: Throwable) {
+                progressDialogP.dismiss()
+                CommonMethods.showDialogueWithOk(
+                    mContext as Activity, getString(R.string.common_error), "Alert"
+                )
+            }
+        })
+
+    }
+
+
 }

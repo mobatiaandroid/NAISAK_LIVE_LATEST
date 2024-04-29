@@ -1,6 +1,5 @@
 package com.nas.naisak.activity.trips
 
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -59,7 +58,9 @@ class TripCategoriesActivity : AppCompatActivity() {
     lateinit var tripsCategoryAdapter: TripsCategoryAdapter
     lateinit var contactEmail: String
     lateinit var back: ImageView
-//    lateinit var btn_history: ImageView
+    private lateinit var backRelative: RelativeLayout
+
+    //    lateinit var btn_history: ImageView
     lateinit var home: ImageView
     lateinit var studentName: TextView
     lateinit var studImg: ImageView
@@ -168,10 +169,14 @@ class TripCategoriesActivity : AppCompatActivity() {
 //        back = headermanager.getLeftButton()
 //        btn_history = headermanager.getRightHistoryImage()
 //        btn_history.visibility = View.INVISIBLE
+        backRelative = findViewById(R.id.backRelative)
+
         categoryListRecyclerView = findViewById<RecyclerView>(R.id.categoryListRecycler)
         categoryListRecyclerView.setHasFixedSize(true)
         val spacing = 5 // 50px
-
+        backRelative.setOnClickListener(View.OnClickListener {
+            finish()
+        })
         val itemDecoration = ItemOffsetDecoration(context, spacing)
         recyclerViewLayoutManager = GridLayoutManager(context, 2)
 //        categoryListRecyclerView.addItemDecoration(

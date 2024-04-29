@@ -51,6 +51,8 @@ import com.nas.naisak.fragment.home.model.HomeBadgeResponse
 import com.nas.naisak.fragment.notification.NotificationFragment
 import com.nas.naisak.fragment.parents_meeting.ParentsMeetingFragment
 import com.nas.naisak.fragment.parentsessentials.ParentsEssentialsFragment
+import com.nas.naisak.fragment.payment.PaymentFragment
+import com.nas.naisak.fragment.reports.ReportsFragment
 import com.nas.naisak.fragment.settings.SettingsFragment
 import com.nas.naisak.fragment.trips.TripsFragment
 import retrofit2.Call
@@ -190,28 +192,48 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
                 else if (position == 6) {
                     CommonMethods.showDialogueWithOk(context,"This Feature is only available for registered users","Alert")
                 } else if (position == 7) {
-                    CommonMethods.showDialogueWithOk(context,"This Feature is only available for registered users","Alert")
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
                 } else if (position == 8) {
-                    CommonMethods.showDialogueWithOk(context,"This Feature is only available for registered users","Alert")
-                }
-                else if (position == 9) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                } else if (position == 9) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                } else if (position == 10) {
                     mFragment = NordAngliaEductaionFragment()
                     replaceFragmentsSelected(position)
-                }
-                else if (position == 10) {
-                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                        ActivityCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED)
-                    {
+                } else if (position == 11) {
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.CALL_PHONE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
                         checkpermission()
 
 
-                    }
-                    else {
+                    } else {
                         mFragment = ContactUsFragment()
                         replaceFragmentsSelected(position)
                     }
-                }else if (position == 11) {
+                } else if (position == 12) {
                     mFragment = SettingsFragment()
                     replaceFragmentsSelected(position)
                 }
@@ -285,18 +307,25 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
                     } else {
                         // changed from Payment to Trips
-                        mFragment = TripsFragment()
+                        mFragment = PaymentFragment()
                         replaceFragmentsSelected(position)
                     }
 
                 } else if (position == 7) {
 
-                    mFragment = ParentsEssentialsFragment()
+                    mFragment = ReportsFragment()
+//                    mFragment = ParentsEssentialsFragment()
                     replaceFragmentsSelected(position)
                 } else if (position == 8) {
-                    mFragment = NordAngliaEductaionFragment()
+
+                    mFragment = TripsFragment()
+//                    mFragment = ParentsEssentialsFragment()
                     replaceFragmentsSelected(position)
                 } else if (position == 9) {
+                    mFragment = ParentsEssentialsFragment()
+//                    mFragment = NordAngliaEductaionFragment()
+                    replaceFragmentsSelected(position)
+                } else if (position == 10) {
                     if (ActivityCompat.checkSelfPermission(
                             context,
                             Manifest.permission.ACCESS_FINE_LOCATION
@@ -314,11 +343,21 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
 
                     } else {
-                        mFragment = ContactUsFragment()
+                        mFragment = NordAngliaEductaionFragment()
+//                        mFragment = ContactUsFragment()
                         replaceFragmentsSelected(position)
                     }
-                } else if (position == 10) {
+                } else if (position == 11) {
+                    mFragment = ContactUsFragment()
+
+//                    mFragment = SettingsFragment()
+//                    mFragment = SettingsFragment()
+                    replaceFragmentsSelected(position)
+                } else if (position == 12) {
                     mFragment = SettingsFragment()
+
+//                    mFragment = SettingsFragment()
+//                    mFragment = SettingsFragment()
                     replaceFragmentsSelected(position)
                 }
             }

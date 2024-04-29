@@ -28,17 +28,30 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup,android:icon, android:label, android:theme">
         <activity
+            android:name=".activity.trips.TripInvoiceViewActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
             android:name=".activity.absence_and_early_pick_up.RequestAbsenceActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.absence_and_early_pick_up.RequestEarlyPickUpActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.absence_and_early_pick_up.EarlyPickUpDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.absence_and_early_pick_up.AbsenceDetailActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.trips.TripInstallmentActivity"
             android:exported="false"

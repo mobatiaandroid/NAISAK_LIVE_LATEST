@@ -52,7 +52,8 @@
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:text="14-Apr-2024 To 19-APr-2024"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
+
             <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -61,19 +62,39 @@
                 android:text="3150.00 AED"
                 android:gravity="center_vertical"
                 android:textColor="@color/black"
-                android:layout_weight="1"/>
-            <com.nas.naisak.customviews.button.CustomFontButtonBoldWhite
-                android:layout_width="110dp"
-                android:layout_height="0dp"
-                android:id="@+id/bookNowButton"
-                android:layout_gravity="right"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/white"
+                android:layout_weight="1" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1.5"
-                android:background="@drawable/navy_blue_rectangle"
-                android:gravity="center" />
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/choicePreference"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.75"
+                    android:gravity="center_vertical"
+                    android:text="Choice !"
+                    android:textColor="@color/rel_nine"
+                    android:textSize="12sp"
+                    android:visibility="invisible" />
+
+                <Button
+                    android:id="@+id/bookNowButton"
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.25"
+                    android:background="@drawable/rectangle_navy_blue_button"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
