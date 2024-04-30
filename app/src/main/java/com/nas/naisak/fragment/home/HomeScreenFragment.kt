@@ -35,7 +35,7 @@ import com.nas.naisak.fragment.home.model.LogoutResponseModel
 import com.nas.naisak.fragment.notification.NotificationFragment
 import com.nas.naisak.fragment.parents_meeting.ParentsMeetingFragment
 import com.nas.naisak.fragment.parentsessentials.ParentsEssentialsFragment
-import com.nas.naisak.fragment.reports.ReportsFragment
+import com.nas.naisak.fragment.payment.PaymentFragment
 import com.nas.naisak.fragment.trips.TripsFragment
 import retrofit2.Call
 import retrofit2.Callback
@@ -2048,21 +2048,21 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     )
                 }
 
-                NasTabConstants.TAB_TRIPS -> {
-                    CommonMethods.showDialogueWithOk(
-                        mContext,
-                        "This Feature is only available for registered users",
-                        "Alert"
-                    )
-                }
+//                NasTabConstants.TAB_TRIPS -> {
+//                    CommonMethods.showDialogueWithOk(
+//                        mContext,
+//                        "This Feature is only available for registered users",
+//                        "Alert"
+//                    )
+//                }
 
-                NasTabConstants.TAB_REPORTS -> {
-                    CommonMethods.showDialogueWithOk(
-                        mContext,
-                        "This Feature is only available for registered users",
-                        "Alert"
-                    )
-                }
+//                NasTabConstants.TAB_REPORTS -> {
+//                    CommonMethods.showDialogueWithOk(
+//                        mContext,
+//                        "This Feature is only available for registered users",
+//                        "Alert"
+//                    )
+//                }
 
                 NasTabConstants.TAB_PARENT_ESSENTIALS_REG -> {
                     CommonMethods.showDialogueWithOk(
@@ -2148,15 +2148,15 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     fragmentIntent(mFragment)
                 }
 
-                NasTabConstants.TAB_TRIPS -> {
-                    mFragment = TripsFragment()
-                    fragmentIntent(mFragment)
-                }
-
-                NasTabConstants.TAB_REPORTS -> {
-                    mFragment = ReportsFragment()
-                    fragmentIntent(mFragment)
-                }
+//                NasTabConstants.TAB_TRIPS -> {
+//                    mFragment = TripsFragment()
+//                    fragmentIntent(mFragment)
+//                }
+//
+//                NasTabConstants.TAB_REPORTS -> {
+//                    mFragment = ReportsFragment()
+//                    fragmentIntent(mFragment)
+//                }
 
                 NasTabConstants.TAB_NOTIFICATIONS_REG -> {
                     mFragment = NotificationFragment()
@@ -2189,7 +2189,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                         Log.e("pay", "frag")
                         // changed from Payment to Trips
                         PreferenceManager.setStudentID(mContext, 0)
-                        mFragment = TripsFragment()
+                        mFragment = PaymentFragment()
                         fragmentIntent(mFragment)
                     }
 

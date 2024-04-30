@@ -16,15 +16,15 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nas.naisak.R
 import com.nas.naisak.activity.trips.TripDetailsActivity
-import com.nas.naisak.activity.trips.model.TripListResponseModel
+import com.nas.naisak.activity.trips.model.TripHistoryResponseModel
 import com.nas.naisak.constants.CommonMethods
 
 
-class TripListAdapter(
-    mContext: Context, mListViewArray: ArrayList<TripListResponseModel.Trip>
-) : RecyclerView.Adapter<TripListAdapter.MyViewHolder>() {
+class TripHistoryListAdapter(
+    mContext: Context, mListViewArray: ArrayList<TripHistoryResponseModel.Trip>
+) : RecyclerView.Adapter<TripHistoryListAdapter.MyViewHolder>() {
     private val context: Context = mContext
-    private val tripList: ArrayList<TripListResponseModel.Trip> = mListViewArray
+    private val tripList: ArrayList<TripHistoryResponseModel.Trip> = mListViewArray
 
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -61,9 +61,10 @@ class TripListAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         Log.e("tripName", tripList[position].tripNameEn.toString())
         holder.tripNameTextView.text = tripList[position].tripNameEn
-        if (tripList[position].tripImage.size > 0) {
-            if (!tripList[position].tripImage[0].equals("")) {
-                Glide.with(context).load(CommonMethods.replace(tripList[position].tripImage.get(0)))
+        if (tripList[position].tripImages.size > 0) {
+            if (!tripList[position].tripImages[0].equals("")) {
+                Glide.with(context)
+                    .load(CommonMethods.replace(tripList[position].tripImages.get(0)))
                     .fitCenter().placeholder(R.drawable.default_banner).into(holder.tripImageView)
             }
         }
@@ -173,5 +174,4 @@ class TripListAdapter(
     override fun getItemCount(): Int {
         return tripList.size
     }
-
 }

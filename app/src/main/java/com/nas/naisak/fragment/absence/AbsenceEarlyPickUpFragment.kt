@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.google.gson.JsonObject
 import com.nas.naisak.R
 import com.nas.naisak.activity.absence_and_early_pick_up.AbsenceDetailActivity
 import com.nas.naisak.activity.absence_and_early_pick_up.EarlyPickUpDetailActivity
@@ -80,8 +81,8 @@ class AbsenceEarlyPickUpFragment : Fragment() {
     lateinit var mPickupListView: RecyclerView
     lateinit var pickup_list: ArrayList<EarlyPickUpListResponseModel.EarlyPickup>
     lateinit var pickupListSort: ArrayList<EarlyPickUpListResponseModel.EarlyPickup>
-    lateinit var studentAbsenceCopy: ArrayList<AbsenceListResponseModel.Request>
-    var studentAbsenceArrayList = ArrayList<AbsenceListResponseModel.Request>()
+    lateinit var studentAbsenceCopy: ArrayList<AbsenceListResponseModel.Absence>
+    var studentAbsenceArrayList = ArrayList<AbsenceListResponseModel.Absence>()
 
     lateinit var absence_btn: TextView
     lateinit var pickup_btn: TextView
@@ -252,65 +253,65 @@ class AbsenceEarlyPickUpFragment : Fragment() {
         val studentInfoAdapter = RequestAbsenceRecyclerAdapter(studentAbsenceArrayList)
         mAbsenceListView.adapter = studentInfoAdapter
         val token = PreferenceManager.getUserCode(mContext)
-//        val pickupSuccessBody =
-//            ListAbsenceApiModel(PreferenceManager.getStudentID(mContext).toString(), 0, 20)
-//        val call: Call<AbsenceListResponseModel> =
-//            ApiClient.getClient.absencelist(pickupSuccessBody, "Bearer " + token)
-//        call.enqueue(object : Callback<AbsenceListResponseModel> {
-//            override fun onFailure(call: Call<AbsenceListResponseModel>, t: Throwable) {
-//                Log.e("Failed", t.localizedMessage)
-//                progressDialogAdd.visibility = View.GONE
-//                //mProgressRelLayout.visibility=View.INVISIBLE
-//            }
-//
-//            override fun onResponse(
-//                call: Call<AbsenceListResponseModel>,
-//                response: Response<AbsenceListResponseModel>
-//            ) {
-//                val responsedata = response.body()
-//                //progressDialog.visibility = View.GONE
-//                Log.e("Response Signup", responsedata.toString())
-//                progressDialogAdd.visibility = View.GONE
-//                if (responsedata != null) {
-//                    try {
-//
-//                        if (response.body()!!.status == 100) {
-//                            studentAbsenceCopy.addAll(response.body()!!.data.request)
-//                            studentAbsenceArrayList = studentAbsenceCopy
-//
-//                            if (studentAbsenceArrayList.size > 0) {
-//                                mAbsenceListView.visibility = View.VISIBLE
-//                                val studentInfoAdapter =
-//                                    RequestAbsenceRecyclerAdapter(studentAbsenceArrayList)
-//                                mAbsenceListView.adapter = studentInfoAdapter
-//                            } else {
-//                                Toast.makeText(
-//                                    mContext,
-//                                    "No Registered Absence Found",
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                                mAbsenceListView.visibility = View.GONE
-//                            }
-//
-//
-//                        } else if (response.body()!!.status == 103) {
-//                            callStudentLeaveInfo()
-//                        } else {
-//
-//                            DialogFunctions.commonErrorAlertDialog(
-//                                mContext.resources.getString(R.string.alert),
-//                                ConstantFunctions.commonErrorString(response.body()!!.status),
-//                                mContext
-//                            )
-//                        }
-//
-//                    } catch (e: Exception) {
-//                        e.printStackTrace()
-//                    }
-//                }
-//            }
-//
-//        })
+        val paramObject = JsonObject()
+        paramObject.addProperty("student_id", PreferenceManager.getStudentID(mContext))
+        paramObject.addProperty("start", "0")
+        paramObject.addProperty("limit", "100")
+
+        val call: Call<AbsenceListResponseModel> =
+            ApiClient.getClient.absenceList("Bearer " + token, paramObject)
+        call.enqueue(object : Callback<AbsenceListResponseModel> {
+            override fun onFailure(call: Call<AbsenceListResponseModel>, t: Throwable) {
+                Log.e("Failed", t.localizedMessage)
+                progressDialogAdd.visibility = View.GONE
+                //mProgressRelLayout.visibility=View.INVISIBLE
+            }
+
+            override fun onResponse(
+                call: Call<AbsenceListResponseModel>,
+                response: Response<AbsenceListResponseModel>
+            ) {
+                val responsedata = response.body()
+                //progressDialog.visibility = View.GONE
+                Log.e("Response Signup", responsedata.toString())
+                progressDialogAdd.visibility = View.GONE
+                if (responsedata != null) {
+                    try {
+
+                        if (response.body()!!.status == 100) {
+                            studentAbsenceCopy.addAll(response.body()!!.data.absences)
+                            studentAbsenceArrayList = studentAbsenceCopy
+                            Log.e("absencelist", studentAbsenceArrayList.size.toString())
+                            if (studentAbsenceArrayList.size > 0) {
+                                mAbsenceListView.visibility = View.VISIBLE
+                                val studentInfoAdapter =
+                                    RequestAbsenceRecyclerAdapter(studentAbsenceArrayList)
+                                mAbsenceListView.adapter = studentInfoAdapter
+                            } else {
+                                Toast.makeText(
+                                    mContext,
+                                    "No Registered Absence Found",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                mAbsenceListView.visibility = View.GONE
+                            }
+
+
+                        } else if (response.body()!!.status == 103) {
+                            callStudentLeaveInfo()
+                        } else {
+
+                            Toast.makeText(mContext, "Some Error Occurred!", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                    } catch (e: Exception) {
+                        Log.e("error", e.toString())
+                    }
+                }
+            }
+
+        })
 
 
     }
@@ -320,69 +321,67 @@ class AbsenceEarlyPickUpFragment : Fragment() {
         pickup_list = ArrayList()
         progressDialogAdd.visibility = View.VISIBLE
         val token = PreferenceManager.getUserCode(mContext)
-//        val pickupSuccessBody =
-//            ListPickupApiModel(PreferenceManager.getStudentID(mContext).toString(), "0", "20")
-//        val call: Call<EarlyPickUpListResponseModel.EarlyPickup> =
-//            ApiClient.getClient.pickUplist(pickupSuccessBody, "Bearer " + token)
-//        call.enqueue(object : Callback<EarlyPickUpListResponseModel.EarlyPickup> {
-//            override fun onFailure(
-//                call: Call<EarlyPickUpListResponseModel.EarlyPickup>,
-//                t: Throwable
-//            ) {
-//                Log.e("Failed", t.localizedMessage)
-//                progressDialogAdd.visibility = View.GONE
-//                //mProgressRelLayout.visibility=View.INVISIBLE
-//            }
-//
-//            override fun onResponse(
-//                call: Call<EarlyPickUpListResponseModel.EarlyPickup>,
-//                response: Response<EarlyPickUpListResponseModel.EarlyPickup>
-//            ) {
-//                val responsedata = response.body()
-//                //progressDialog.visibility = View.GONE
-//                Log.e("Response Signup", responsedata.toString())
-//
-//                if (responsedata != null) {
-//                    try {
-//
-//                        if (response.body()!!.status == 100) {
-//
-//                            pickup_list.addAll(response.body()!!.pickupListArray)
-//                            progressDialogAdd.visibility = View.GONE
-//                            mPickupListView.visibility = View.VISIBLE
-//                            var list_size = pickup_list.size - 1
-//                            pickupListSort = ArrayList()
-//                            if (pickup_list.size > 0) {
-//                                mPickupListView.layoutManager = LinearLayoutManager(mContext)
-//                                var pickuplistAdapter = PickuplistAdapter(mContext, pickup_list)
-//                                mPickupListView.adapter = pickuplistAdapter
-//                            } else {
-//                                mPickupListView.layoutManager = LinearLayoutManager(mContext)
-//                                var pickuplistAdapter = PickuplistAdapter(mContext, pickup_list)
-//                                mPickupListView.adapter = pickuplistAdapter
-//                                Toast.makeText(
-//                                    mContext,
-//                                    "No Registered Early Pickup Found",
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                            }
-//
-//                        } else {
-//
-//                            DialogFunctions.commonErrorAlertDialog(
-//                                mContext.resources.getString(R.string.alert),
-//                                ConstantFunctions.commonErrorString(response.body()!!.status),
-//                                mContext
-//                            )
-//                        }
-//
-//                    } catch (e: Exception) {
-//                        e.printStackTrace()
-//                    }
-//                }
-//            }
-//
-//        })
+        val paramObject = JsonObject()
+        paramObject.addProperty("student_id", PreferenceManager.getStudentID(mContext))
+        paramObject.addProperty("start", "0")
+        paramObject.addProperty("limit", "100")
+        val call: Call<EarlyPickUpListResponseModel> =
+            ApiClient.getClient.earlyPickUpList("Bearer " + token, paramObject)
+        call.enqueue(object : Callback<EarlyPickUpListResponseModel> {
+            override fun onFailure(
+                call: Call<EarlyPickUpListResponseModel>,
+                t: Throwable
+            ) {
+                Log.e("Failed", t.localizedMessage)
+                progressDialogAdd.visibility = View.GONE
+                //mProgressRelLayout.visibility=View.INVISIBLE
+            }
+
+            override fun onResponse(
+                call: Call<EarlyPickUpListResponseModel>,
+                response: Response<EarlyPickUpListResponseModel>
+            ) {
+                val responsedata = response.body()
+                //progressDialog.visibility = View.GONE
+                Log.e("Response Signup", responsedata.toString())
+
+                if (responsedata != null) {
+                    try {
+
+                        if (response.body()!!.status == 100) {
+
+                            pickup_list.addAll(response.body()!!.data.earlyPickups)
+                            progressDialogAdd.visibility = View.GONE
+                            mPickupListView.visibility = View.VISIBLE
+                            var list_size = pickup_list.size - 1
+                            pickupListSort = ArrayList()
+                            if (pickup_list.size > 0) {
+                                mPickupListView.layoutManager = LinearLayoutManager(mContext)
+                                var pickuplistAdapter = PickuplistAdapter(mContext, pickup_list)
+                                mPickupListView.adapter = pickuplistAdapter
+                            } else {
+                                mPickupListView.layoutManager = LinearLayoutManager(mContext)
+                                var pickuplistAdapter = PickuplistAdapter(mContext, pickup_list)
+                                mPickupListView.adapter = pickuplistAdapter
+                                Toast.makeText(
+                                    mContext,
+                                    "No Registered Early Pickup Found",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
+                        } else {
+                            Toast.makeText(mContext, "Some Error Occurred!", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+        })
 
     }
 
@@ -418,8 +417,8 @@ class AbsenceEarlyPickUpFragment : Fragment() {
                 val intent = Intent(activity, AbsenceDetailActivity::class.java)
                 intent.putExtra("studentName", PreferenceManager.getStudentName(mContext))
                 intent.putExtra("studentClass", PreferenceManager.getStudentClass(mContext))
-                intent.putExtra("fromDate", studentAbsenceArrayList.get(position).from_date)
-                intent.putExtra("toDate", studentAbsenceArrayList.get(position).to_date)
+                intent.putExtra("fromDate", studentAbsenceArrayList.get(position).fromDate)
+                intent.putExtra("toDate", studentAbsenceArrayList.get(position).toDate)
                 intent.putExtra("reason", studentAbsenceArrayList.get(position).reason)
                 activity?.startActivity(intent)
             }
@@ -430,14 +429,14 @@ class AbsenceEarlyPickUpFragment : Fragment() {
                 val intent = Intent(activity, EarlyPickUpDetailActivity::class.java)
                 intent.putExtra("studentName", PreferenceManager.getStudentName(mContext))
                 intent.putExtra("studentClass", PreferenceManager.getStudentClass(mContext))
-                intent.putExtra("date", pickup_list.get(position).pickup_date)
-                intent.putExtra("time", pickup_list.get(position).pickup_time)
-                intent.putExtra("pickupby", pickup_list.get(position).pickup_by_whom)
+                intent.putExtra("date", pickup_list.get(position).pickupDate)
+                intent.putExtra("time", pickup_list.get(position).pickupTime)
+                intent.putExtra("pickupby", pickup_list.get(position).pickupByWhom)
                 intent.putExtra("reason", pickup_list.get(position).reason)
                 intent.putExtra("status", pickup_list.get(position).status)
                 intent.putExtra(
                     "reason_for_rejection",
-                    pickup_list[position].reason_for_rejection
+                    pickup_list[position].reasonForRejection
                 )
                 activity?.startActivity(intent)
             }
@@ -573,13 +572,17 @@ class AbsenceEarlyPickUpFragment : Fragment() {
                 } else {
                     studImg.setImageResource(R.drawable.boy)
                 }
-//                if (CommonMethods.isInternetAvailable(context)) {
-//                    callTripList()
-//                }
-//                else
-//                {
-//                    CommonMethods.showSuccessInternetAlert(context)
-//                }
+                if (select_val == 0) {
+                    callStudentLeaveInfo()
+                } else if (select_val == 1) {
+                    if (CommonMethods.isInternetAvailable(mContext)) {
+                        callpickuplist_api()
+                    } else {
+                        Toast.makeText(mContext, "No internet connection!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                }
                 dialog.dismiss()
             }
         })

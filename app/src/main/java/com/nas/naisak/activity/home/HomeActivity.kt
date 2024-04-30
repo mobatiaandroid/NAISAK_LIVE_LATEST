@@ -42,6 +42,7 @@ import com.nas.naisak.constants.CommonMethods
 import com.nas.naisak.constants.MyDragShadowBuilder
 import com.nas.naisak.constants.PreferenceManager
 import com.nas.naisak.fragment.aboutus.NordAngliaEductaionFragment
+import com.nas.naisak.fragment.absence.AbsenceEarlyPickUpFragment
 import com.nas.naisak.fragment.calendar.CalendarFragment
 import com.nas.naisak.fragment.communications.CommunicationFragment
 import com.nas.naisak.fragment.contactus.ContactUsFragment
@@ -210,9 +211,15 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
                         "Alert"
                     )
                 } else if (position == 10) {
+                    CommonMethods.showDialogueWithOk(
+                        context,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+                } else if (position == 11) {
                     mFragment = NordAngliaEductaionFragment()
                     replaceFragmentsSelected(position)
-                } else if (position == 11) {
+                } else if (position == 12) {
                     if (ActivityCompat.checkSelfPermission(
                             context,
                             Manifest.permission.ACCESS_FINE_LOCATION
@@ -233,7 +240,7 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
                         mFragment = ContactUsFragment()
                         replaceFragmentsSelected(position)
                     }
-                } else if (position == 12) {
+                } else if (position == 13) {
                     mFragment = SettingsFragment()
                     replaceFragmentsSelected(position)
                 }
@@ -313,19 +320,24 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
                 } else if (position == 7) {
 
-                    mFragment = ReportsFragment()
+                    mFragment = AbsenceEarlyPickUpFragment()
 //                    mFragment = ParentsEssentialsFragment()
                     replaceFragmentsSelected(position)
                 } else if (position == 8) {
 
-                    mFragment = TripsFragment()
+                    mFragment = ReportsFragment()
 //                    mFragment = ParentsEssentialsFragment()
                     replaceFragmentsSelected(position)
                 } else if (position == 9) {
+
+                    mFragment = TripsFragment()
+//                    mFragment = ParentsEssentialsFragment()
+                    replaceFragmentsSelected(position)
+                } else if (position == 10) {
                     mFragment = ParentsEssentialsFragment()
 //                    mFragment = NordAngliaEductaionFragment()
                     replaceFragmentsSelected(position)
-                } else if (position == 10) {
+                } else if (position == 11) {
                     if (ActivityCompat.checkSelfPermission(
                             context,
                             Manifest.permission.ACCESS_FINE_LOCATION
@@ -347,13 +359,13 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 //                        mFragment = ContactUsFragment()
                         replaceFragmentsSelected(position)
                     }
-                } else if (position == 11) {
+                } else if (position == 12) {
                     mFragment = ContactUsFragment()
 
 //                    mFragment = SettingsFragment()
 //                    mFragment = SettingsFragment()
                     replaceFragmentsSelected(position)
-                } else if (position == 12) {
+                } else if (position == 13) {
                     mFragment = SettingsFragment()
 
 //                    mFragment = SettingsFragment()

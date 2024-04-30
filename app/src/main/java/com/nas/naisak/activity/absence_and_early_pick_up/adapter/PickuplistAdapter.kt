@@ -34,7 +34,7 @@ internal class PickuplistAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val list = pickup_list[position]
 
-        val fromDate = list.pickup_date
+        val fromDate = list.pickupDate
         val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
         val outputFormat: DateFormat = SimpleDateFormat("dd MMM yyyy")
         val inputDateStr = fromDate

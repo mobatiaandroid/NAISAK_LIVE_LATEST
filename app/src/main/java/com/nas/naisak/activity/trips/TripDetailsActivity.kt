@@ -569,6 +569,10 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         bottomSheetDialog.setCancelable(false)
         bottomSheetDialog.setCanceledOnTouchOutside(true)
         val payTotalView = bottomSheetDialog.findViewById<ConstraintLayout>(R.id.payTotalView)
+        val selectPaymentMethodView =
+            bottomSheetDialog.findViewById<ConstraintLayout>(R.id.selectPaymentMethodView)
+        val debitCardView = bottomSheetDialog.findViewById<ConstraintLayout>(R.id.debitCardView)
+        val creditCardView = bottomSheetDialog.findViewById<ConstraintLayout>(R.id.creditCardView)
         val payInstallmentView =
             bottomSheetDialog.findViewById<ConstraintLayout>(R.id.payInstallmentView)
         val totalAmountTextView = bottomSheetDialog.findViewById<TextView>(R.id.totalAmountTextView)
@@ -592,11 +596,22 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             context.startActivity(intent)
         }
         payTotalView!!.setOnClickListener {
-            bottomSheetDialog.dismiss()
-
-            showOptionPopUp(context)
+//            bottomSheetDialog.dismiss()
+            selectPaymentMethodView!!.visibility = View.VISIBLE
+//            showOptionPopUp(context)
 //            callOptionDialog(mContext)
 //            initialisePayment()
+        }
+        debitCardView!!.setOnClickListener {
+            bottomSheetDialog.dismiss()
+
+            callDebitInitApi("2")
+
+        }
+        creditCardView!!.setOnClickListener {
+            bottomSheetDialog.dismiss()
+            callCreditInitApi("1")
+
         }
         bottomSheetDialog.show()
     }
@@ -1648,6 +1663,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         )
         val trip_item_id = RequestBody.create("text/plain".toMediaTypeOrNull(), tripID)
         val card_number = RequestBody.create("text/plain".toMediaTypeOrNull(), number)
+        progressDialogP.show()
         val call: Call<SubmitDocResponseModel> = ApiClient.getClient.uploadSingleDocument(
             "Bearer " + PreferenceManager.getUserCode(context),
             action,
@@ -1706,6 +1722,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
         val file1 = File(uriArray[0].path)
         val file2 = File(uriArray[1].path)
+        progressDialogP.show()
         val frontImagePart = prepareImagePart(uriArray[0], "attachment1")
         val backImagePart = prepareImagePart(uriArray[1], "attachment2")
         Log.e("path", uriArray[0].path.toString())

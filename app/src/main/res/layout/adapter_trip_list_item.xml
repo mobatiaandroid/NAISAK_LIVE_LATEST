@@ -35,7 +35,7 @@
             android:layout_margin="2dp"
             android:weightSum="5"
             android:orientation="vertical">
-            <com.nas.naisak.customviews.button.CustomFontButtonSemiBoldBlack
+            <com.nas.naisak.customviews.textview.CustomFontTextViewBoldBlack
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:id="@+id/tripNameTextView"
@@ -43,7 +43,7 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/black"
                 android:text="Egypt Trip"
-                android:layout_weight="1.5"/>
+                android:layout_weight="1.5" />
             <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

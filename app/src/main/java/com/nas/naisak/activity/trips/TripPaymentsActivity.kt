@@ -26,8 +26,8 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.gson.JsonObject
 import com.nas.naisak.R
 import com.nas.naisak.activity.login.LoginActivity
-import com.nas.naisak.activity.trips.adapter.TripListAdapter
-import com.nas.naisak.activity.trips.model.TripListResponseModel
+import com.nas.naisak.activity.trips.adapter.TripHistoryListAdapter
+import com.nas.naisak.activity.trips.model.TripHistoryResponseModel
 import com.nas.naisak.commonadapters.StudentListAdapter
 import com.nas.naisak.commonmodels.StudentDataListResponse
 import com.nas.naisak.commonmodels.StudentListModel
@@ -61,7 +61,7 @@ class TripPaymentsActivity : AppCompatActivity() {
     var studentClass: String = ""
 
     //    lateinit var categoriesList: ArrayList<TripListResponseModel.TripItem>
-    lateinit var tripsCategoryAdapter: TripListAdapter
+    lateinit var tripsCategoryAdapter: TripHistoryListAdapter
     var contactEmail = ""
     lateinit var back: ImageView
 
@@ -79,7 +79,7 @@ class TripPaymentsActivity : AppCompatActivity() {
     private lateinit var logoClickImgView: ImageView
     private lateinit var btn_left: ImageView
     private lateinit var heading: TextView
-    var tripList: ArrayList<TripListResponseModel.Trip> = ArrayList()
+    var tripList: ArrayList<TripHistoryResponseModel.Trip> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_trip_payments)
@@ -204,35 +204,35 @@ class TripPaymentsActivity : AppCompatActivity() {
         var paramObject = JsonObject()
         android.util.Log.e("student name", studentNameTxt.getText().toString())
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
-        val call: Call<TripListResponseModel> =
+        val call: Call<TripHistoryResponseModel> =
             ApiClient.getClient.tripHistory(
                 "Bearer " + PreferenceManager.getUserCode(context),
                 paramObject
             )
-        call.enqueue(object : Callback<TripListResponseModel> {
+        call.enqueue(object : Callback<TripHistoryResponseModel> {
             override fun onResponse(
-                call: Call<TripListResponseModel>,
-                response: Response<TripListResponseModel>
+                call: Call<TripHistoryResponseModel>,
+                response: Response<TripHistoryResponseModel>
             ) {
                 progressDialogP.dismiss()
                 tripList = ArrayList()
 //                assert(response.body() != null)
                 if (response.body()!!.status == 100) {
-                    if (response.body()!!.data.lists.size > 0) {
-                        Log.e("asd", response.body()!!.data.lists.size.toString())
+                    if (response.body()!!.data.trips.size > 0) {
+                        Log.e("asd", response.body()!!.data.trips.size.toString())
 
-                        tripList = response.body()!!.data.lists
+                        tripList = response.body()!!.data.trips
                         Log.e("tripList", tripList.size.toString())
                         if (tripList.size > 0) {
                             Log.e("Here", "Here")
-                            tripsCategoryAdapter = TripListAdapter(context, tripList)
+                            tripsCategoryAdapter = TripHistoryListAdapter(context, tripList)
                             tripListRecycler.adapter = tripsCategoryAdapter
                         } else {
                             Log.e("Here", "not")
                             tripList =
-                                ArrayList<TripListResponseModel.Trip>()
+                                ArrayList<TripHistoryResponseModel.Trip>()
                             tripsCategoryAdapter =
-                                TripListAdapter(context, ArrayList())
+                                TripHistoryListAdapter(context, ArrayList())
                             tripListRecycler.adapter = tripsCategoryAdapter
                             Toast.makeText(
                                 this@TripPaymentsActivity,
@@ -241,9 +241,9 @@ class TripPaymentsActivity : AppCompatActivity() {
                             ).show()
                         }
                     } else {
-                        tripList = java.util.ArrayList<TripListResponseModel.Trip>()
+                        tripList = java.util.ArrayList<TripHistoryResponseModel.Trip>()
                         tripsCategoryAdapter =
-                            TripListAdapter(context, ArrayList())
+                            TripHistoryListAdapter(context, ArrayList())
                         tripListRecycler.adapter = tripsCategoryAdapter
                         Toast.makeText(
                             this@TripPaymentsActivity,
@@ -261,7 +261,7 @@ class TripPaymentsActivity : AppCompatActivity() {
 
             }
 
-            override fun onFailure(call: Call<TripListResponseModel>, t: Throwable) {
+            override fun onFailure(call: Call<TripHistoryResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
             }
         })

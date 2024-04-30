@@ -90,6 +90,11 @@ class TripListingActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        callTripList()
+    }
+
     private fun initialiseUI() {
         extras = intent.extras!!
         categoryID = extras.getInt("trip_category_id", 0).toString()!!

@@ -4,6 +4,8 @@ import GeneralSubmitResponseModel
 import TripChoicePreferenceResponseModel
 import TripDetailsResponseModel
 import com.google.gson.JsonObject
+import com.nas.naisak.activity.absence_and_early_pick_up.model.AbsenceListResponseModel
+import com.nas.naisak.activity.absence_and_early_pick_up.model.EarlyPickUpListResponseModel
 import com.nas.naisak.activity.cca.model.*
 import com.nas.naisak.activity.communication.model.SocialMediaResponse
 import com.nas.naisak.activity.gallery.model.GetPhotoRequestModel
@@ -19,6 +21,7 @@ import com.nas.naisak.activity.trips.model.SubmitDocResponseModel
 import com.nas.naisak.activity.trips.model.TripCategoriesResponseModel
 import com.nas.naisak.activity.trips.model.TripChoicePaymentCountResponseModel
 import com.nas.naisak.activity.trips.model.TripConsentResponseModel
+import com.nas.naisak.activity.trips.model.TripHistoryResponseModel
 import com.nas.naisak.activity.trips.model.TripInvoiceResponseModel
 import com.nas.naisak.activity.trips.model.TripListResponseModel
 import com.nas.naisak.commonmodels.*
@@ -489,7 +492,7 @@ interface ApiInterface {
     fun tripHistory(
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
-    ): Call<TripListResponseModel>
+    ): Call<TripHistoryResponseModel>
 
     @POST("api/v1/parent/get_trip_consent")
     @Headers("Content-Type: application/json")
@@ -549,6 +552,34 @@ interface ApiInterface {
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
     ): Call<ReportsResponseModel>
+
+    @POST("api/v1/parent/list-leave")
+    @Headers("Content-Type: application/json")
+    fun absenceList(
+        @Header("Authorization") token: String?,
+        @Body json: JsonObject?
+    ): Call<AbsenceListResponseModel>
+
+    @POST("api/v1/parent/request-leave")
+    @Headers("Content-Type: application/json")
+    fun requestAbsence(
+        @Header("Authorization") token: String?,
+        @Body json: JsonObject?
+    ): Call<GeneralSubmitResponseModel>
+
+    @POST("api/v1/parent/list-early-pickup")
+    @Headers("Content-Type: application/json")
+    fun earlyPickUpList(
+        @Header("Authorization") token: String?,
+        @Body json: JsonObject?
+    ): Call<EarlyPickUpListResponseModel>
+
+    @POST("api/v1/parent/request-early-pickup")
+    @Headers("Content-Type: application/json")
+    fun requestEarlyPickUp(
+        @Header("Authorization") token: String?,
+        @Body json: JsonObject?
+    ): Call<GeneralSubmitResponseModel>
 
     @POST("api/v1/parent/status_changeAPI")
     @Headers("Content-Type: application/json")
