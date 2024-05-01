@@ -1446,6 +1446,12 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 choicePreferenceListView,
                 object : RecyclerItemListener.RecyclerTouchListener {
                     override fun onClickItem(v: View?, position: Int) {
+                        for(i in 0..choicePreferenceSorted.size-1)
+                        {
+                           choicePreferenceSorted.get(i).selected=false
+                        }
+                        choicePreferenceSorted.get(position).selected=true
+                       adapter.notifyDataSetChanged()
 //                submitIntent("1",dialog,choicePreferenceArray.get(position));
                     }
 
