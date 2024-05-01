@@ -299,7 +299,16 @@ class AbsenceEarlyPickUpFragment : Fragment() {
 
                         } else if (response.body()!!.status == 103) {
                             callStudentLeaveInfo()
-                        } else {
+                        }
+                        else if (response.body()!!.status == 132) {
+                            //callStudentLeaveInfo()
+                            Toast.makeText(
+                                mContext,
+                                "No Registered Absence Found",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        else {
 
                             Toast.makeText(mContext, "Some Error Occurred!", Toast.LENGTH_SHORT)
                                 .show()
