@@ -27,6 +27,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.gson.JsonObject
 import com.nas.naisak.R
 import com.nas.naisak.activity.cca.adapter.StrudentSpinnerAdapter
+import com.nas.naisak.commonadapters.StudentListAdapter
 import com.nas.naisak.commonmodels.StudentListReponseModel
 import com.nas.naisak.constants.ApiClient
 import com.nas.naisak.constants.CommonMethods
@@ -221,6 +222,7 @@ class ReportsFragment : Fragment() {
             }
 
         })
+
         studentSpinner.setOnClickListener {
 
             showStudentList(mContext, studentsModelArrayList)
