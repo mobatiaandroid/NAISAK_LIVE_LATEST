@@ -219,11 +219,11 @@ class TripListingActivity : AppCompatActivity() {
             ) {
                 progressDialogP.dismiss()
                 tripList = ArrayList()
-                Log.e("statys", response.body()!!.data.lists.size.toString())
+            //    Log.e("statys", response.body()!!.data.lists.size.toString())
 //                assert(response.body() != null)
                 if (response.body()!!.status == 100) {
                     if (response.body()!!.data.lists.size > 0) {
-                        Log.e("asd", response.body()!!.data.lists.size.toString())
+
 
                         tripList = response.body()!!.data.lists
                         Log.e("tripList", tripList.size.toString())

@@ -1451,6 +1451,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                            choicePreferenceSorted.get(i).selected=false
                         }
                         choicePreferenceSorted.get(position).selected=true
+                        selectedChoice=choicePreferenceSorted.get(position).choiceName
                        adapter.notifyDataSetChanged()
 //                submitIntent("1",dialog,choicePreferenceArray.get(position));
                     }
