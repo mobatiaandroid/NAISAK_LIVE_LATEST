@@ -25,6 +25,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.gson.JsonObject
 import com.nas.naisak.R
+import com.nas.naisak.activity.home.HomeActivity
 import com.nas.naisak.activity.login.LoginActivity
 import com.nas.naisak.activity.trips.adapter.TripListAdapter
 import com.nas.naisak.activity.trips.model.TripListResponseModel
@@ -104,6 +105,7 @@ class TripListingActivity : AppCompatActivity() {
         relativeHeader = findViewById(R.id.relativeHeader)
         heading = findViewById(R.id.heading)
         backRelative = findViewById(R.id.backRelative)
+        logoClickImgView = findViewById(R.id.logoClickImgView)
 
 
         tripListRecycler = findViewById(R.id.tripListRecycler)
@@ -117,6 +119,11 @@ class TripListingActivity : AppCompatActivity() {
 
         tripListRecycler.addItemDecoration(itemDecoration)
         tripListRecycler.layoutManager = recyclerViewLayoutManager
+        logoClickImgView.setOnClickListener(View.OnClickListener {
+            val intent = Intent(context, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+        })
         backRelative.setOnClickListener {
             finish()
         }

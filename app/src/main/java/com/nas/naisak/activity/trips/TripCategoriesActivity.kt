@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.nas.naisak.R
+import com.nas.naisak.activity.home.HomeActivity
 import com.nas.naisak.activity.login.LoginActivity
 import com.nas.naisak.activity.trips.adapter.TripsCategoryAdapter
 import com.nas.naisak.activity.trips.model.TripCategoriesResponseModel
@@ -176,6 +177,11 @@ class TripCategoriesActivity : AppCompatActivity() {
         val spacing = 5 // 50px
         backRelative.setOnClickListener(View.OnClickListener {
             finish()
+        })
+        logoClickImgView.setOnClickListener(View.OnClickListener {
+            val intent = Intent(context, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
         })
         val itemDecoration = ItemOffsetDecoration(context, spacing)
         recyclerViewLayoutManager = GridLayoutManager(context, 2)

@@ -42,8 +42,9 @@ class NasTabConstants {
         var TAB_PAYMENTS = "4"
         var TAB_PARENT_ESSENTIALS_REG = "5"
         var TAB_PARENT_MEETINGS_REG = "6"
-        var TAB_CONTACT_US_REG = "7"
+        var TAB_CONTACT_US_REG = "10"
         var TAB_ABOUT_US = "9"
+        var TAB_TRIPS ="7"
         var TAB_COMMU = "8"
 
     }

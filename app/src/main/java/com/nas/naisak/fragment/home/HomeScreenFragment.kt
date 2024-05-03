@@ -576,7 +576,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
         if (PreferenceManager
                 .getButtonThreeRegTextImage(mContext)!!.toInt() != 0
         ) {
-            relImgthree.setImageResource(R.drawable.contacts)
+            relImgthree.setImageResource(R.drawable.plane)
             var relTwoStr: String? = ""
             relTwoStr = if (listitems[PreferenceManager
                     .getButtonThreeRegTextImage(mContext)!!.toInt()].equals(
@@ -586,7 +586,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             ) {
                 JsonConstants.EAP
             } else {
-                ClassNameConstants.CONTACT_US
+                ClassNameConstants.TRIPS
             }
             relTxtthree.text = relTwoStr
             relTxtthree.setTextColor(ContextCompat.getColor(mContext, R.color.white))
@@ -1952,7 +1952,9 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                 textdata.equals(ClassNameConstants.ABOUT_US) -> {
                     TAB_ID = NasTabConstants.TAB_ABOUT_US
                 }
-
+                textdata.equals(ClassNameConstants.TRIPS) -> {
+                    TAB_ID = NasTabConstants.TAB_TRIPS
+                }
             }
 
         }
@@ -2081,6 +2083,15 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
 
 //                    CommonMethods.showDialogueWithOk(mContext,"This Feature is only available for registered users","Alert")
                 }
+                NasTabConstants.TAB_TRIPS -> {
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        "This Feature is only available for registered users",
+                        "Alert"
+                    )
+
+//                    CommonMethods.showDialogueWithOk(mContext,"This Feature is only available for registered users","Alert")
+                }
 
                 NasTabConstants.TAB_CONTACT_US_REG -> {
                     if (ActivityCompat.checkSelfPermission(
@@ -2186,7 +2197,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
 
 
                     } else {
-                        Log.e("pay", "frag")
+
                         // changed from Payment to Trips
                         PreferenceManager.setStudentID(mContext, 0)
                         mFragment = PaymentFragment()
@@ -2210,6 +2221,10 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                     fragmentIntent(mFragment)
                 }
 
+                NasTabConstants.TAB_TRIPS -> {
+                    mFragment = TripsFragment()
+                    fragmentIntent(mFragment)
+                }
                 NasTabConstants.TAB_CONTACT_US_REG -> {
                     if (ActivityCompat.checkSelfPermission(
                             mContext,

@@ -18,6 +18,7 @@ import com.nas.naisak.activity.parents_meeting.model.PostSlotResponseModel
 import com.nas.naisak.activity.parents_meeting.model.ReviewAppointmentsResponseModel
 import com.nas.naisak.activity.payment.payhere.model.*
 import com.nas.naisak.activity.trips.model.SubmitDocResponseModel
+import com.nas.naisak.activity.trips.model.TripBannerResponseModel
 import com.nas.naisak.activity.trips.model.TripCategoriesResponseModel
 import com.nas.naisak.activity.trips.model.TripChoicePaymentCountResponseModel
 import com.nas.naisak.activity.trips.model.TripConsentResponseModel
@@ -587,6 +588,10 @@ interface ApiInterface {
         @Header("Authorization") token: String?,
         @Body json: JsonObject?
     ): Call<GeneralSubmitResponseModel>
+
+    @GET("api/v1/parent/trip/banner")
+    @Headers("Content-Type: application/json")
+    fun trip_banner(@Header("Authorization") token: String): Call<TripBannerResponseModel>
 
 
 }

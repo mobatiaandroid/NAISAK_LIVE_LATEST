@@ -25,6 +25,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.google.gson.JsonObject
 import com.nas.naisak.R
+import com.nas.naisak.activity.home.HomeActivity
 import com.nas.naisak.activity.login.LoginActivity
 import com.nas.naisak.activity.trips.adapter.TripHistoryListAdapter
 import com.nas.naisak.activity.trips.model.TripHistoryResponseModel
@@ -97,6 +98,7 @@ class TripPaymentsActivity : AppCompatActivity() {
 //        categoryID = extras.getInt("trip_category_id", 0).toString()!!
 //        categoryName = extras.getString("trip_category_name")!!
         progressDialogP = ProgressBarDialog(context, R.drawable.spinner)
+        logoClickImgView = findViewById(R.id.logoClickImgView)
 
         relativeHeader = findViewById(R.id.relativeHeader)
         heading = findViewById(R.id.heading)
@@ -114,6 +116,11 @@ class TripPaymentsActivity : AppCompatActivity() {
 
         tripListRecycler.addItemDecoration(itemDecoration)
         tripListRecycler.layoutManager = recyclerViewLayoutManager
+        logoClickImgView.setOnClickListener(View.OnClickListener {
+            val intent = Intent(context, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+        })
         backRelative.setOnClickListener {
             finish()
         }

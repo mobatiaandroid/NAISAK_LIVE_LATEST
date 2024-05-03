@@ -360,11 +360,28 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
                         replaceFragmentsSelected(position)
                     }
                 } else if (position == 12) {
-                    mFragment = ContactUsFragment()
 
-//                    mFragment = SettingsFragment()
-//                    mFragment = SettingsFragment()
-                    replaceFragmentsSelected(position)
+                    if (ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED &&
+                        ActivityCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.CALL_PHONE
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        checkpermission()
+
+
+                    } else {
+                        mFragment = ContactUsFragment()
+                        replaceFragmentsSelected(position)
+                    }
+
                 } else if (position == 13) {
                     mFragment = SettingsFragment()
 

@@ -139,7 +139,6 @@ class ContactUsFragment : Fragment(), LocationListener,
 
                     location =
                         locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!!
-                    Log.e("loc", location.toString())
                     if (location != null) {
                         lat = location.latitude
                         long = location.longitude
@@ -204,7 +203,7 @@ class ContactUsFragment : Fragment(), LocationListener,
                     }
                 }
                 mapFragment.getMapAsync { googleMap ->
-                    Log.d("Map Working", "good")
+
                     map = googleMap
                     map.uiSettings.isMapToolbarEnabled = false
                     map.uiSettings.isZoomControlsEnabled = false

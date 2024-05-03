@@ -49,6 +49,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
 import com.nas.naisak.BuildConfig
 import com.nas.naisak.R
+import com.nas.naisak.activity.home.HomeActivity
 import com.nas.naisak.activity.login.LoginActivity
 import com.nas.naisak.activity.payment.payhere.PaymentPayActivity
 import com.nas.naisak.activity.payment.payhere.adapter.PaymentOptionAdapter
@@ -120,7 +121,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
     lateinit var btn_history: ImageView
     lateinit var home: ImageView
     lateinit var stud_id: String
-    lateinit var selectedChoice: String
+     var selectedChoice: String=""
     lateinit var studClass: String
     lateinit var orderId: String
 
@@ -267,7 +268,13 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 //        btn_history = headermanager.getRightHistoryImage()
 //        btn_history.visibility = View.INVISIBLE
         tripImageRecycler.setHasFixedSize(true)
+        logoClickImgView = findViewById(R.id.logoClickImgView)
         val spacing = 5 // 50px
+        logoClickImgView.setOnClickListener(View.OnClickListener {
+            val intent = Intent(context, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+        })
         backRelative.setOnClickListener {
             finish()
         }
@@ -293,7 +300,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         )
         heading = findViewById(R.id.heading)
         btn_left = findViewById(R.id.btn_left)
-        logoClickImgView = findViewById(R.id.logoClickImgView)
+
         heading.text = tripName
 
         getChoicePreferenceArrayList()
@@ -536,11 +543,18 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         emailContactEditText.setText(coodEmail)
         whatsappContactEditText.setText(coodWhatsapp)
         emailContactEditText.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SENDTO)
+           /* val intent = Intent(Intent.ACTION_SENDTO)
             intent.setData(Uri.parse("mailto:$coodEmail"))
             if (intent.resolveActivity(packageManager) != null) {
                 startActivity(intent)
-            }
+            }*/
+
+            val intent = Intent(Intent.ACTION_SEND)
+            val recipients = arrayOf(coodEmail)
+            intent.putExtra(Intent.EXTRA_EMAIL, recipients)
+            intent.setType("text/html")
+            intent.setPackage("com.google.android.gm")
+            context.startActivity(Intent.createChooser(intent, "Send mail"))
         }
         phoneContactEditText.setOnClickListener {
             val intent = Intent(Intent.ACTION_DIAL)
@@ -550,12 +564,35 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             }
         }
         whatsappContactEditText.setOnClickListener {
-            val url = "https://wa.me/$coodWhatsapp"
+
+
+            /*String url = "https://wa.me/" + coodWhatsapp;
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }*/
+            val url = "https://api.whatsapp.com/send?phone=$coodWhatsapp"
+            try {
+                val pm = context.packageManager
+                pm.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+                val i = Intent(Intent.ACTION_VIEW)
+                i.setData(Uri.parse(url))
+                startActivity(i)
+            } catch (e: PackageManager.NameNotFoundException) {
+                Toast.makeText(
+                    context,
+                    "Whatsapp app not installed in your phone",
+                    Toast.LENGTH_SHORT
+                ).show()
+                e.printStackTrace()
+            }
+           /* val url = "https://wa.me/$coodWhatsapp"
             val intent = Intent(Intent.ACTION_VIEW)
             intent.setData(Uri.parse(url))
             if (intent.resolveActivity(packageManager) != null) {
                 startActivity(intent)
-            }
+            }*/
         }
         dialog.show()
     }
