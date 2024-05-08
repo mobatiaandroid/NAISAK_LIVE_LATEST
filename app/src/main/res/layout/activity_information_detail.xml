@@ -30,6 +30,7 @@
         android:src="@drawable/titlebar"
         app:layout_constraintBottom_toTopOf="@+id/titleTextView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
     <ImageView
         android:layout_width="150dp"

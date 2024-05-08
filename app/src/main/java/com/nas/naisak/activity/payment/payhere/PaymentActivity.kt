@@ -129,7 +129,7 @@ class PaymentActivity : AppCompatActivity(){
         val call: Call<StudentListModel> = ApiClient.getClient.studentList("Bearer " + token)
         call.enqueue(object : Callback<StudentListModel> {
             override fun onFailure(call: Call<StudentListModel>, t: Throwable) {
-                Log.e("Error", t.localizedMessage)
+                //Log.e("Error", t.localizedMessage)
             }
 
             override fun onResponse(
@@ -140,10 +140,10 @@ class PaymentActivity : AppCompatActivity(){
                 {
                     studentListArrayList=ArrayList()
                     studentListArrayList.addAll(response.body()!!.dataArray.studentListArray)
-                    Log.e("studlistsize",studentListArrayList.size.toString())
+                   // Log.e("studlistsize",studentListArrayList.size.toString())
                     if (PreferenceManager.getStudentID(mContext)==0)
                     {
-                        Log.e("Empty", "Empty")
+                      //  Log.e("Empty", "Empty")
                         studentName = studentListArrayList.get(0).studentName
                         studentImg = studentListArrayList.get(0).photo
                         studentId = studentListArrayList.get(0).studentId
@@ -302,7 +302,7 @@ class PaymentActivity : AppCompatActivity(){
             ApiClient.getClient.paymentlist(studentid, "Bearer " + token)
         call.enqueue(object : Callback<PaymentResponseModel> {
             override fun onFailure(call: Call<PaymentResponseModel>, t: Throwable) {
-                Log.e("Error", t.localizedMessage)
+               // Log.e("Error", t.localizedMessage)
                 progressDialog.visibility=View.GONE
                 noDataImg.visibility= View.GONE
             }
@@ -349,9 +349,9 @@ class PaymentActivity : AppCompatActivity(){
 
     override fun onResume() {
         super.onResume()
-Log.e("resume","on")
+        // Log.e("resume","on")
         recycler_view_list.visibility=View.GONE
-        Log.e("resume","resume")
+       // Log.e("resume","resume")
         if(PreferenceManager.getStudentID(mContext).equals("")){
 
         }else {

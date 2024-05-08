@@ -78,7 +78,6 @@ class TermsOfServiceActivity : AppCompatActivity(){
         call.enqueue(object : Callback<TermsOfServiceModel> {
             override fun onFailure(call: Call<TermsOfServiceModel>, t: Throwable) {
                 progressDialog.visibility = View.GONE
-                Log.e("Error", t.localizedMessage)
             }
             override fun onResponse(call: Call<TermsOfServiceModel>, response: Response<TermsOfServiceModel>) {
                 progressDialog.visibility = View.GONE
@@ -119,7 +118,7 @@ class TermsOfServiceActivity : AppCompatActivity(){
                             "<p class='title'>"+termsTitle+"</p>"+"<p class='description'>"+termsDescription+"</p>"+
                             "</body>\n</html>"
                     var htmlData=pushNotificationDetail
-                    Log.e("HTML DATA",htmlData)
+                  //  Log.e("HTML DATA",htmlData)
                     //  webView.loadData(htmlData,"text/html; charset=utf-8","utf-8")
                     webView.loadDataWithBaseURL("file:///android_asset/fonts/",htmlData,"text/html; charset=utf-8", "utf-8", "about:blank")
 

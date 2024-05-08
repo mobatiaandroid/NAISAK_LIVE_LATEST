@@ -115,7 +115,7 @@ class TermCalendarActivity : AppCompatActivity(){
         val call: Call<TermCalendarResponseModel> = ApiClient.getClient.termCalendar("Bearer " + token)
         call.enqueue(object : Callback<TermCalendarResponseModel> {
             override fun onFailure(call: Call<TermCalendarResponseModel>, t: Throwable) {
-                Log.e("Error", t.localizedMessage)
+                //Log.e("Error", t.localizedMessage)
                 progressDialog.visibility=View.GONE
             }
 

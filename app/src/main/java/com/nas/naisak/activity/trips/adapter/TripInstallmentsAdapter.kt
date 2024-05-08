@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.nas.naisak.R
+import com.nas.naisak.constants.CommonMethods
 
 
 class TripInstallmentsAdapter(
@@ -25,6 +26,8 @@ class TripInstallmentsAdapter(
         var termname: TextView = view.findViewById(R.id.listTxtTitle)
         var status: TextView = view.findViewById(R.id.status)
         var statusLayout: RelativeLayout = view.findViewById(R.id.statusLayout)
+        var tripsDateTxt: TextView = view.findViewById(R.id.tripsDateTxt)
+
 //        var clickLinear: LinearLayout = view.findViewById(R.id.clickLinear)
 
     }
@@ -41,8 +44,8 @@ class TripInstallmentsAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val summary = repoetDetailArray[position]
         holder.termname.text =
-            "Installment No." + (position + 1) + " - " + repoetDetailArray[position].amount + " AED"
-
+            "Installment No." + (position + 1) + " - " + repoetDetailArray[position].amount + " QAR"
+        holder.tripsDateTxt.text= CommonMethods.dateConversionddmmyyyytoddMMYYYY(repoetDetailArray[position].dueDate)
         if (repoetDetailArray[position].paidStatus == 1) {
             holder.statusLayout.visibility = View.VISIBLE
             holder.status.text = "Paid"

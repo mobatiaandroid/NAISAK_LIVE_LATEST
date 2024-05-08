@@ -42,7 +42,7 @@ class PaymentPayActivity : AppCompatActivity(){
         initUI()
     }
     fun initUI() {
-        Log.e("pay","activity")
+        //Log.e("pay","activity")
         payment_url = intent.getStringExtra("payment_url").toString()
         relativeHeader = findViewById(R.id.relativeHeader)
         backRelative = findViewById(R.id.backRelative)
@@ -68,7 +68,7 @@ class PaymentPayActivity : AppCompatActivity(){
             ""
         )
         setWebViewSettingsPrint()
-        Log.e("URL LOAD", url)
+       // Log.e("URL LOAD", url)
         paymentWeb.loadUrl(url)
 
     }
@@ -93,7 +93,7 @@ class PaymentPayActivity : AppCompatActivity(){
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 // TODO Auto-generated method stub
                 view.loadUrl(url)
-                Log.e("IT WORKING", "PAYMENT")
+               // Log.e("IT WORKING", "PAYMENT")
                 if(url.contains("http://naisakweb.mobatia.in:5000/payment/credit/callback"))
                 {
                     Handler(Looper.myLooper()!!).postDelayed({
@@ -102,7 +102,7 @@ class PaymentPayActivity : AppCompatActivity(){
                     }, PAYMENT_TIME_OUT)
                 }
                 if(url.contains("http://naisakweb.mobatia.in:5000/payment/Callback?success=True")){
-                    Log.e("PAYMEBNT", "SUCCESS" + url)
+                   // Log.e("PAYMEBNT", "SUCCESS" + url)
                     var uri:Uri=Uri.parse(url)
                     var reference:String? =  uri.getQueryParameter("reference")
                     var PUN:String? =  uri.getQueryParameter("PUN")

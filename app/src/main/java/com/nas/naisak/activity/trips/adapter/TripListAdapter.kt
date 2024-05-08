@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.nas.naisak.R
-import com.nas.naisak.activity.trips.TripDetailsActivity
+import com.nas.naisak.activity.trips.TripDetailsActivityNew
 import com.nas.naisak.activity.trips.model.TripListResponseModel
 import com.nas.naisak.constants.CommonMethods
 
@@ -35,6 +35,7 @@ class TripListAdapter(
         var tripDateTextView: TextView
         var tripBookButton: Button
         var tripPreference: TextView? = null
+        var endateTextview: TextView
 
 
         init {
@@ -44,6 +45,7 @@ class TripListAdapter(
             tripDateTextView = view.findViewById<View>(R.id.estimateDateTextView) as TextView
             tripBookButton = view.findViewById(R.id.bookNowButton)
             tripPreference = view.findViewById(R.id.choicePreference)
+            endateTextview = view.findViewById(R.id.endateTextview)
 
 
         }
@@ -90,12 +92,15 @@ class TripListAdapter(
             holder.tripBookButton.text = "Pay now"
         } else if (tripList[position].tripStatus === 7) {
             holder.tripBookButton.text = "View Invoice"
-        } else {
+        } else if (tripList[position].tripStatus === 9) {
+            holder.tripBookButton.text = "Expired"
+        }
+        else {
             holder.tripBookButton.text = "Not Available"
         }
 
         holder.itemView.setOnClickListener {
-            val intent = Intent(context, TripDetailsActivity::class.java)
+            val intent = Intent(context, TripDetailsActivityNew::class.java)
             intent.putExtra("tripID", tripList[position].id)
             intent.putExtra("tripName", tripList[position].tripNameEn)
             context.startActivity(intent)
@@ -104,7 +109,7 @@ class TripListAdapter(
             //                showIntentionPopUp();
         }
         holder.tripBookButton.setOnClickListener {
-            val intent = Intent(context, TripDetailsActivity::class.java)
+            val intent = Intent(context, TripDetailsActivityNew::class.java)
             intent.putExtra("tripID", tripList[position].id)
 
             intent.putExtra("tripName", tripList[position].tripNameEn)
@@ -112,7 +117,8 @@ class TripListAdapter(
 //            showPaymentsPopUp(context)
             //                showIntentionPopUp();
         }
-        holder.tripPriceTextView.setText(tripList[position].totalPrice + " AED")
+        holder.tripPriceTextView.setText(tripList[position].totalPrice + " QAR")
+        holder.endateTextview.setText(CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(tripList[position].registrationEndDate))
 
         holder.tripDateTextView.setText(
             CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(tripList[position].tripStartDate) + " to " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(

@@ -187,7 +187,7 @@ class TripInstallmentActivity : AppCompatActivity() {
                 call: Call<PaymentGatewayCreditInitiateResponseModel>,
                 t: Throwable
             ) {
-                Log.e("Error", t.localizedMessage)
+               // Log.e("Error", t.localizedMessage)
                 progressDialogP.dismiss()
             }
 
@@ -248,7 +248,7 @@ class TripInstallmentActivity : AppCompatActivity() {
                 call: Call<PaymentGatewayCreditInitiateResponseModel>,
                 t: Throwable
             ) {
-                Log.e("Error", t.localizedMessage)
+               // Log.e("Error", t.localizedMessage)
             }
 
             override fun onResponse(
@@ -292,7 +292,7 @@ class TripInstallmentActivity : AppCompatActivity() {
     private fun getTripDetails(tripID: String) {
         progressDialogP.show()
         val paramObject = JsonObject()
-        Log.e("tripID name", tripID)
+       // Log.e("tripID name", tripID)
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(mContext))
         paramObject.addProperty("trip_id", tripID)
         val call: Call<TripDetailsResponseModel> = ApiClient.getClient.tripDetail(

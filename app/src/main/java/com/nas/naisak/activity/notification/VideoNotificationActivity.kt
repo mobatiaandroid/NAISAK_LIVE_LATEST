@@ -102,7 +102,7 @@ class VideoNotificationActivity : AppCompatActivity(){
         call.enqueue(object : Callback<MessageDetailResponse> {
             override fun onFailure(call: Call<MessageDetailResponse>, t: Throwable) {
                 proWebView.visibility = View.GONE
-                Log.e("Error", t.localizedMessage)
+               // Log.e("Error", t.localizedMessage)
             }
 
             override fun onResponse(

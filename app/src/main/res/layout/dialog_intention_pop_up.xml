@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="350dp"
-    android:layout_height="450dp"
+    android:layout_height="300dp"
     android:background="@drawable/curved_rectangle_white"
     android:orientation="vertical">
 
@@ -22,7 +22,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:src="@drawable/titlebar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintBottom_toTopOf="@+id/tripIntentionQuestion"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -142,6 +141,7 @@
             android:layout_gravity="left"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/submitIntentionButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -164,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -173,14 +173,18 @@
 
 
         <Button
+
             android:id="@+id/submitIntentionButton"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:layout_gravity="bottom|center"
             android:layout_marginBottom="8dp"
             android:background="@drawable/rect_confirm_blue"
             android:foregroundGravity="center"
             android:paddingStart="8dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:layout_marginRight="10dp"
             android:paddingEnd="8dp"
             android:text="Submit Intention"
             android:textAllCaps="false"

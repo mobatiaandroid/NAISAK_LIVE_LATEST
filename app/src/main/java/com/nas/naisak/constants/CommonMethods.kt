@@ -16,6 +16,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.nas.naisak.R
+import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -90,6 +91,23 @@ class CommonMethods {
             return strCurrentDate
         }
 
+        fun dateConversionddmmyyyytoddMMYYYY(inputDate: String?): String? {
+            var mDate = ""
+            try {
+                val date: Date
+                val formatter: DateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH)
+                date = formatter.parse(inputDate)
+                //Subtracting 6 hours from selected time
+                val time = date.time
+
+                //SimpleDateFormat formatterFullDate = new SimpleDateFormat("dd MMMM yyyy");
+                val formatterFullDate = SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH)
+                mDate = formatterFullDate.format(time)
+            } catch (e: Exception) {
+//			Log.d("Exception", "" + e);
+            }
+            return mDate
+        }
         fun showDialogueWithOk(context: Context, message: String, msgHead: String)
         {
             val dialog = Dialog(context)

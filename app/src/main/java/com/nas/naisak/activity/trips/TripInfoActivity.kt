@@ -103,7 +103,7 @@ class TripInfoActivity : AppCompatActivity() {
         ibdetaillist = ArrayList()
         progress.visibility = View.VISIBLE
         var page= ModelWithPageNumberOnly("1")
-        val call: Call<CommonDetailResponse> = ApiClient.getClient.paymentInformation(page,"Bearer "+ PreferenceManager.getUserCode(mContext))
+        val call: Call<CommonDetailResponse> = ApiClient.getClient.tripInformation(page,"Bearer "+ PreferenceManager.getUserCode(mContext))
         call.enqueue(object : Callback<CommonDetailResponse> {
             override fun onFailure(call: Call<CommonDetailResponse>, t: Throwable) {
                 progress.visibility = View.GONE

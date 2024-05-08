@@ -162,7 +162,7 @@
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tripNameTextView"
-                tools:text="5000 AED" />
+                tools:text="5000 QAR" />
 
             <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
                 android:id="@+id/dateTextView"

@@ -190,9 +190,9 @@ class PaymentDetailActivity  : AppCompatActivity(){
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 // TODO Auto-generated method stub
                 view.loadUrl(url)
-                Log.e("IT WORKING", "PAYMENT")
+              //  Log.e("IT WORKING", "PAYMENT")
                 if(url.contains("http://naisakweb.mobatia.in:5000/payment/Callback?success=True")){
-                    Log.e("PAYMEBNT", "SUCCESS" + url)
+                   // Log.e("PAYMEBNT", "SUCCESS" + url)
                     var uri:Uri=Uri.parse(url)
                     var reference:String? =  uri.getQueryParameter("reference")
                     var PUN:String? =  uri.getQueryParameter("PUN")
@@ -225,7 +225,7 @@ class PaymentDetailActivity  : AppCompatActivity(){
             ApiClient.getClient.paymentdetail(paymentID, "Bearer " + token)
         call.enqueue(object : Callback<PaymentDetailResponseModel> {
             override fun onFailure(call: Call<PaymentDetailResponseModel>, t: Throwable) {
-                Log.e("Error", t.localizedMessage)
+               // Log.e("Error", t.localizedMessage)
                 mProgressRelLayout.visibility= View.GONE
             }
 
@@ -332,7 +332,7 @@ class PaymentDetailActivity  : AppCompatActivity(){
             ApiClient.getClient.paymentGateway(paymentID, "Bearer " + token)
         call.enqueue(object : Callback<PaymentGatewayResponseModel> {
             override fun onFailure(call: Call<PaymentGatewayResponseModel>, t: Throwable) {
-                Log.e("Error", t.localizedMessage)
+               // Log.e("Error", t.localizedMessage)
                 mProgressRelLayout.visibility= View.GONE
             }
 
@@ -351,7 +351,7 @@ class PaymentDetailActivity  : AppCompatActivity(){
                     mainLinear.visibility = View.GONE
                     paymentWeb.visibility = View.VISIBLE
                     setWebViewSettingsPrint()
-                    Log.e("URL LOAD", url)
+                   // Log.e("URL LOAD", url)
                     paymentWeb.loadUrl(url)
 
                 }
@@ -375,7 +375,7 @@ class PaymentDetailActivity  : AppCompatActivity(){
             ApiClient.getClient.paymentSubmission(paymentID, "Bearer " + token)
         call.enqueue(object : Callback<PaymentSubmissionResponseModel> {
             override fun onFailure(call: Call<PaymentSubmissionResponseModel>, t: Throwable) {
-                Log.e("Error", t.localizedMessage)
+              //  Log.e("Error", t.localizedMessage)
                 mProgressRelLayout.visibility= View.GONE
             }
 
@@ -420,7 +420,7 @@ class PaymentDetailActivity  : AppCompatActivity(){
             ApiClient.getClient.generateReceipt(paymentID, "Bearer " + token)
         call.enqueue(object : Callback<GenerateReceiptResponseModel> {
             override fun onFailure(call: Call<GenerateReceiptResponseModel>, t: Throwable) {
-                Log.e("Error", t.localizedMessage)
+               // Log.e("Error", t.localizedMessage)
                 mProgressRelLayout.visibility = View.GONE
             }
 
@@ -435,7 +435,7 @@ class PaymentDetailActivity  : AppCompatActivity(){
                     var url = receipt_url.replaceFirst(
                         "^(http[s]?://www\\\\.|http[s]?://|www\\\\.)",
                         "")
-                    Log.e("URL LOAD", url)
+                   // Log.e("URL LOAD", url)
 
                     if(click.equals("print"))
                     {
@@ -561,7 +561,7 @@ class PaymentDetailActivity  : AppCompatActivity(){
             ApiClient.getClient.paymentCreditInitiate(paymentID, "Bearer " + token)
         call.enqueue(object : Callback<PaymentGatewayCreditInitiateResponseModel> {
             override fun onFailure(call: Call<PaymentGatewayCreditInitiateResponseModel>, t: Throwable) {
-                Log.e("Error", t.localizedMessage)
+               // Log.e("Error", t.localizedMessage)
                 mProgressRelLayout.visibility= View.GONE
             }
 
@@ -624,7 +624,7 @@ class PaymentDetailActivity  : AppCompatActivity(){
             ApiClient.getClient.paymentDebitInitiate(paymentID, "Bearer " + token)
         call.enqueue(object : Callback<PaymentGatewayCreditInitiateResponseModel> {
             override fun onFailure(call: Call<PaymentGatewayCreditInitiateResponseModel>, t: Throwable) {
-                Log.e("Error", t.localizedMessage)
+               // Log.e("Error", t.localizedMessage)
                 mProgressRelLayout.visibility= View.GONE
             }
 

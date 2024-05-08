@@ -8,18 +8,38 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp" >
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="5dp"
+    android:layout_marginLeft="10dp"
+    android:orientation="vertical">
+    <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+        android:id="@+id/listTxtTitle"
+        style="@style/textstyleblackNopadding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
-        <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
-            android:id="@+id/listTxtTitle"
-            style="@style/textstyleblackNopadding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="10dp"
-            android:text="Category"
-            android:layout_centerInParent="true"
-            android:layout_toLeftOf="@+id/statusLayout"
-            android:singleLine="true" />
+        android:text="Category"
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@+id/statusLayout"
+        android:singleLine="true" />
+
+    <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+        android:id="@+id/tripsDateTxt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/mainLinear"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:textSize="12sp"
+
+        android:textColor="@color/white"
+        android:layout_below="@+id/pdfTitle"
+        android:text="12-12-2019"
+        android:layout_toRightOf="@+id/imageIcon"/>
+</LinearLayout>
+
 
 
         <include

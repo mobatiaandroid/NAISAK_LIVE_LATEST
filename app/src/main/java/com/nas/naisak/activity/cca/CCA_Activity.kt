@@ -254,7 +254,7 @@ class CCA_Activity : AppCompatActivity() {
 
                                     mCCAmodelArrayList!!.add(addCCAlist(response.body()!!.data!!.lists!![i]))
                                 }
-                                Log.e("arraty",mCCAmodelArrayList.toString())
+                               // Log.e("arraty",mCCAmodelArrayList.toString())
                                 if (mCCAmodelArrayList!!.size > 0) {
                                     mCCAsActivityAdapter = CCAsListActivityAdapter(
                                         this@CCA_Activity,
@@ -335,9 +335,9 @@ class CCA_Activity : AppCompatActivity() {
         mCCAModel.submission_dateTime = dataObject.submission_dateTime
         mCCAModel.isSubmissionDateOver = dataObject.isSubmissiondateOver
         val jsonCCADetailArray: ArrayList<CCAListResponseModel.Data.Lists.Detail?>? = dataObject.details
-        Log.e("choice2adasda", dataObject.details!![0]!!.choice2.toString())
+       // Log.e("choice2adasda", dataObject.details!![0]!!.choice2.toString())
 
-        Log.e("choice2adasda", dataObject.details!![0]!!.choice2!![0]!!.attending_status.toString())
+        //Log.e("choice2adasda", dataObject.details!![0]!!.choice2!![0]!!.attending_status.toString())
         CCADetailModelArrayList = java.util.ArrayList<CCADetailModel>()
         if (jsonCCADetailArray!!.isNotEmpty()) {
             for (element in jsonCCADetailArray) {
@@ -347,10 +347,10 @@ class CCA_Activity : AppCompatActivity() {
 
                 val jsonCCAChoiceArray = objectCCA.choice1
                 val jsonCCAChoiceArray2 = objectCCA.choice2
-                Log.e("choice1",objectCCA.choice1.toString())
-                Log.e("choice2 atte", objectCCA.choice1!![0]!!.attending_status.toString())
-                Log.e("choice2 atte", objectCCA.choice2!![0]!!.attending_status.toString())
-                Log.e("choice2 atte", jsonCCAChoiceArray2!![0]!!.attending_status.toString())
+                //Log.e("choice1",objectCCA.choice1.toString())
+               // Log.e("choice2 atte", objectCCA.choice1!![0]!!.attending_status.toString())
+               // Log.e("choice2 atte", objectCCA.choice2!![0]!!.attending_status.toString())
+               // Log.e("choice2 atte", jsonCCAChoiceArray2!![0]!!.attending_status.toString())
                 CCAchoiceModelArrayList = java.util.ArrayList<CCAchoiceModel>()
                 if (jsonCCAChoiceArray!!.size > 0) {
                     var k = 0
@@ -433,7 +433,7 @@ class CCA_Activity : AppCompatActivity() {
                                     mCCADetailModelchoice.status = "1"
                                     mCCADetailModel.choice2 = objectCCAchoice.cca_item_name
                                     mCCADetailModel.choice2Id = objectCCAchoice.cca_details_id.toString()
-                                    Log.e("choice2qqq",mCCADetailModel.choice2.toString())
+                                   // Log.e("choice2qqq",mCCADetailModel.choice2.toString())
                                 } else {
                                     mCCADetailModelchoice.status = "0"
                                 }
@@ -575,8 +575,8 @@ class CCA_Activity : AppCompatActivity() {
                 } else if (mCCAmodelArrayList!![position].isAttendee.equals("2")) {
                     val intent =
                         Intent(mContext, CCAsReviewEditAfterSubmissionActivity::class.java)
-                    Log.e("cca choice1s",mCCAmodelArrayList!![position].details.get(0).choice1)
-                    Log.e("cca choice2s",mCCAmodelArrayList!![position].details.get(0).choice2)
+                   // Log.e("cca choice1s",mCCAmodelArrayList!![position].details.get(0).choice1)
+                    //Log.e("cca choice2s",mCCAmodelArrayList!![position].details.get(0).choice2)
                     intent.putExtra("tab_type", tab_type)
                     intent.putExtra("CCA_Detail", mCCAmodelArrayList!![position].details)
                     intent.putExtra(

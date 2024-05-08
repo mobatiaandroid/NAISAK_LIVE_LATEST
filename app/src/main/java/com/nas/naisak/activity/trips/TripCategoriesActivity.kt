@@ -118,11 +118,11 @@ class TripCategoriesActivity : AppCompatActivity() {
                     } else sendEmailImageView.visibility = View.GONE
                     categoriesList = response.body()!!.data.tripCategories
                     if (categoriesList.size > 0) {
-                        Log.e("Here", "Here")
+                       // Log.e("Here", "Here")
                         tripsCategoryAdapter = TripsCategoryAdapter(context, categoriesList)
                         categoryListRecyclerView.adapter = tripsCategoryAdapter
                     } else {
-                        Log.e("Here", "not")
+                     //   Log.e("Here", "not")
                         Toast.makeText(
                             this@TripCategoriesActivity,
                             "No categories available.",

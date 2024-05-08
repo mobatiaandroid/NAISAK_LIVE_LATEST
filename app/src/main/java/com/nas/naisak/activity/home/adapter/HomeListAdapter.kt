@@ -43,7 +43,7 @@ class HomeListAdapter(
             }
             else if (PreferenceManager.getNotificationBadge(context)>0 && PreferenceManager.getNotificationEditedBadge(context)==0)
             {
-                Log.e("It enters","notify")
+                //Log.e("It enters","notify")
                 badge.visibility= View.VISIBLE
                 badge.text = PreferenceManager.getNotificationBadge(context).toString()
                 badge.setBackgroundResource(R.drawable.shape_circle_red)

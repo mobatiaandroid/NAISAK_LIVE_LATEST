@@ -410,7 +410,7 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
         }
         @Override
     public int getItemCount() {
-        Log.e("size edit" , String.valueOf(mCCADetailModelArrayList.size()));
+        //Log.e("size edit" , String.valueOf(mCCADetailModelArrayList.size()));
         return mCCADetailModelArrayList.size();
     }
     public void showAttendanceList(int mPosition) {
@@ -477,7 +477,7 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
             LinearLayoutManager llmrecycler_view_social_mediaChoice2 = new LinearLayoutManager(mContext);
             llmrecycler_view_social_mediaChoice2.setOrientation(LinearLayoutManager.VERTICAL);
             recycler_view_social_mediaChoice2.setLayoutManager(llmrecycler_view_social_mediaChoice2);
-            Log.e("mCCACAcaldar", String.valueOf(mCCADetailModelArrayList.get(mPosition).getCca_details_id()));
+           // Log.e("mCCACAcaldar", String.valueOf(mCCADetailModelArrayList.get(mPosition).getCca_details_id()));
             CCAAttendenceListAdapter socialMediaAdapterChoice2 = new CCAAttendenceListAdapter(mContext, mCCADetailModelArrayList.get(mPosition).getCalendarDaysChoice2());
             recycler_view_social_mediaChoice2.setAdapter(socialMediaAdapterChoice2);
         } else {

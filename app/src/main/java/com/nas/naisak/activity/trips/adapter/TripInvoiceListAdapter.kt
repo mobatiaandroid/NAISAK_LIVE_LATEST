@@ -24,6 +24,7 @@ class TripInvoiceListAdapter(
         var termname: TextView = view.findViewById(R.id.listTxtTitle)
         var status: TextView = view.findViewById(R.id.status)
         var statusLayout: RelativeLayout = view.findViewById(R.id.statusLayout)
+        var tripsDateTxt:TextView = view.findViewById(R.id.tripsDateTxt)
 //        var clickLinear: LinearLayout = view.findViewById(R.id.clickLinear)
 
     }
@@ -39,6 +40,7 @@ class TripInvoiceListAdapter(
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val summary = repoetDetailArray[position]
+        holder.tripsDateTxt.visibility=View.GONE
         holder.termname.text = repoetDetailArray[position].invoiceNo
 
         holder.statusLayout.visibility = View.VISIBLE

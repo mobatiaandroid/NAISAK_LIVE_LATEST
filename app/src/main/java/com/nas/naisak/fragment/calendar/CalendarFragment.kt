@@ -622,7 +622,7 @@ class CalendarFragment  : Fragment() {
                     "YEAR"
                 )
             ) {
-                Log.e("CAL DAY", "Con:1")
+                //Log.e("CAL DAY", "Con:1")
                 tempArrayList = ArrayList()
                 if (calendarDetailArrayListUse.size > 0) {
                     for (i in 0..calendarDetailArrayListUse.size - 1) {
@@ -658,7 +658,7 @@ class CalendarFragment  : Fragment() {
                         "YEAR"
                     )
             ) {
-                Log.e("CAL DAY", "Con:2")
+               // Log.e("CAL DAY", "Con:2")
                 tempArrayList = ArrayList()
                 if (calendarDetailArrayListUse.size > 0) {
                     for (i in 0..calendarDetailArrayListUse.size - 1) {
@@ -689,7 +689,7 @@ class CalendarFragment  : Fragment() {
                         "MONTH"
                     )
             ) {
-                Log.e("CAL DAY", "Con:3")
+               // Log.e("CAL DAY", "Con:3")
                 tempArrayList = ArrayList()
                 if (calendarDetailArrayListUse.size > 0) {
                     for (i in 0..calendarDetailArrayListUse.size - 1) {
@@ -721,7 +721,7 @@ class CalendarFragment  : Fragment() {
             }
             else  if ( !monthSpinner.text.toString().equals("MONTH"))
             {
-                Log.e("CAL DAY", "Con:4")
+               // Log.e("CAL DAY", "Con:4")
                 tempArrayList= ArrayList()
                 if (calendarDetailArrayListUse.size>0) {
                     for (i in 0..calendarDetailArrayListUse.size - 1) {
@@ -750,23 +750,23 @@ class CalendarFragment  : Fragment() {
             }
             else  if (!daySpinner.text.toString().equals("DAY"))
             {
-                Log.e("CAL DAY", "Con:5")
+               // Log.e("CAL DAY", "Con:5")
                 tempArrayList= ArrayList()
                 if (calendarDetailArrayListUse.size>0) {
-                    Log.e("CAL DAY", "Con:51")
+                   // Log.e("CAL DAY", "Con:51")
                     for (i in 0..calendarDetailArrayListUse.size - 1) {
                         if (calendarDetailArrayListUse.get(i).dayDate.equals(daySpinner.text.toString()) || calendarDetailArrayListUse.get(
                                 i
                             ).dayDate.equals("0" + daySpinner.text.toString())
                         ) {
-                            Log.e("CAL DAY", "Con:52")
+                           // Log.e("CAL DAY", "Con:52")
                             tempArrayList.add(calendarDetailArrayListUse.get(i))
                         }
                     }
                     if (tempArrayList.size > 0) {
                         mListView.visibility = View.VISIBLE
                         noDataImg.visibility = View.GONE
-                        Log.e("CAL DAY", "Con:53")
+                       // Log.e("CAL DAY", "Con:53")
                         val calendarAdapter = CalendarListAdapter(mContext, tempArrayList)
                         calendarAdapter.notifyDataSetChanged()
                         mListView.adapter = calendarAdapter
@@ -781,7 +781,7 @@ class CalendarFragment  : Fragment() {
             }
             else  if ( !yearSpinner.text.toString().equals("YEAR"))
             {
-                Log.e("CAL DAY", "Con:6")
+               // Log.e("CAL DAY", "Con:6")
                 tempArrayList= ArrayList()
                 if (calendarDetailArrayListUse.size>0)
                 {
@@ -958,7 +958,7 @@ class CalendarFragment  : Fragment() {
                 "YEAR"
             )
         ) {
-            Log.e("CAL MON", "CON 1")
+           // Log.e("CAL MON", "CON 1")
             tempArrayList = ArrayList()
             if (calendarDetailArrayListUse.size > 0) {
                 for (i in 0..calendarDetailArrayListUse.size - 1) {
@@ -992,7 +992,7 @@ class CalendarFragment  : Fragment() {
                     "YEAR"
                 )
         ) {
-            Log.e("CAL MON", "CON 2")
+          //  Log.e("CAL MON", "CON 2")
             tempArrayList = ArrayList()
             if (calendarDetailArrayListUse.size > 0) {
                 for (i in 0..calendarDetailArrayListUse.size - 1) {
@@ -1021,7 +1021,7 @@ class CalendarFragment  : Fragment() {
                     "MONTH"
                 )
         ) {
-            Log.e("CAL MON", "CON 3")
+           // Log.e("CAL MON", "CON 3")
             tempArrayList = ArrayList()
             if (calendarDetailArrayListUse.size > 0) {
                 for (i in 0..calendarDetailArrayListUse.size - 1) {
@@ -1053,16 +1053,12 @@ class CalendarFragment  : Fragment() {
         }
         else  if ( !monthSpinner.text.toString().equals("MONTH"))
         {
-            Log.e("CAL MON", "CON 4")
+          //  Log.e("CAL MON", "CON 4")
             tempArrayList= ArrayList()
             if (calendarDetailArrayListUse.size>0) {
-                Log.e("CAL MON", "CON 41")
+               // Log.e("CAL MON", "CON 41")
                 for (i in 0..calendarDetailArrayListUse.size - 1) {
-                    Log.e(
-                        "CAL MON",
-                        "CON 4" + calendarDetailArrayListUse.get(i).monthDate.lowercase(Locale.getDefault()) + "   " + daySpinner.text.toString()
-                            .lowercase(Locale.getDefault())
-                    )
+
                     if (calendarDetailArrayListUse.get(i).monthDate.lowercase(Locale.getDefault())
                             .contains(
                                 monthSpinner.text.toString().lowercase(Locale.getDefault())
@@ -1087,7 +1083,7 @@ class CalendarFragment  : Fragment() {
         }
         else  if (!daySpinner.text.toString().equals("DAY"))
         {
-            Log.e("CAL MON", "CON 5")
+          //  Log.e("CAL MON", "CON 5")
             tempArrayList= ArrayList()
             if (calendarDetailArrayListUse.size>0)
             {
@@ -1117,7 +1113,7 @@ class CalendarFragment  : Fragment() {
         }
         else  if ( !yearSpinner.text.toString().equals("YEAR"))
         {
-            Log.e("CAL MON", "CON 6")
+           // Log.e("CAL MON", "CON 6")
             tempArrayList= ArrayList()
             if (calendarDetailArrayListUse.size>0)
             {
@@ -1234,7 +1230,7 @@ class CalendarFragment  : Fragment() {
     {
         val selctedCalender = Calendar.getInstance()
         val noOfDays = selctedCalender.getActualMaximum(Calendar.DAY_OF_MONTH)
-        Log.e("noofdays", noOfDays.toString() + "")
+       // Log.e("noofdays", noOfDays.toString() + "")
         dayValues = ArrayList()
         when (noOfDays) {
             28 -> dayValues =
@@ -1287,7 +1283,7 @@ class CalendarFragment  : Fragment() {
                             val str = calendarDetailArrayList.get(i).date
                             val splitStr =
                                 str.trim { it <= ' ' }.split("\\s+".toRegex()).toTypedArray()
-                            Log.e("SPLITDATA", splitStr[0])
+                           // Log.e("SPLITDATA", splitStr[0])
                             model.dayStringDate = splitStr[0]
                             model.dayDate = splitStr[1]
                             model.monthDate = splitStr[2]
@@ -1364,7 +1360,7 @@ class CalendarFragment  : Fragment() {
                             calendarDetailArrayListUse.add(model)
 
                         }
-                        Log.e("Adapter Line", "Work1")
+                      //  Log.e("Adapter Line", "Work1")
                         val calendarAdapter = CalendarListAdapter(
                             mContext,
                             calendarDetailArrayListUse

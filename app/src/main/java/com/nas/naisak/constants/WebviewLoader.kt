@@ -76,9 +76,9 @@ class WebviewLoader : AppCompatActivity() {
             finish()
         }
         webview.settings.javaScriptEnabled = true
-        Log.e("url",urltoshow)
+        //Log.e("url",urltoshow)
         if (urltoshow.contains("facebook")){
-            Log.e("fb","true")
+           // Log.e("fb","true")
             val userAgent =
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
             webview.getSettings().setUserAgentString(userAgent)
@@ -86,7 +86,7 @@ class WebviewLoader : AppCompatActivity() {
             webview.loadUrl(urltoshow!!)
             //progressbar.visibility= View.GONE
         }else{
-            Log.e("nofb","true")
+           // Log.e("nofb","true")
             webview.webViewClient = MyWebViewClient(this)
             webview.loadUrl(urltoshow!!)
            // progressbar.visibility= View.GONE
@@ -115,7 +115,7 @@ class WebviewLoader : AppCompatActivity() {
 
         override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
             progressbar.visibility= View.GONE
-            Log.e("ERROR",error.toString())
+           // Log.e("ERROR",error.toString())
             //Toast.makeText(activity, "Got Error! $error", Toast.LENGTH_SHORT).show()
         }
     }

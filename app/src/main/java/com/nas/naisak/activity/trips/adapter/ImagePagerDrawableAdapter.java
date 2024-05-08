@@ -1,6 +1,7 @@
 package com.nas.naisak.activity.trips.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +39,7 @@ public class ImagePagerDrawableAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-
+Log.e("size", String.valueOf(mImagesArrayListUrlBg.size()));
         return mImagesArrayListUrlBg.size();
     }
 

@@ -100,7 +100,7 @@ public class CCAsListActivityAdapter extends RecyclerView.Adapter<CCAsListActivi
 
     @Override
     public int getItemCount() {
-        Log.e("size", String.valueOf(mCCAmodelArrayList.size()));
+        //Log.e("size", String.valueOf(mCCAmodelArrayList.size()));
         return mCCAmodelArrayList.size();
     }
     public static String dateParsingTodd_MMM_yyyy(String date) {

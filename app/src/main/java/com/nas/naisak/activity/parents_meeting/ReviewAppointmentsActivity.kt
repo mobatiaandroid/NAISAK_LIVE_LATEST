@@ -143,10 +143,10 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                                         val mEndTime = formatterTime.format(timeEnd)
                                         mPhotosModel.startTimeFormated = mStartTime
                                         mPhotosModel.endTimeFormated = mEndTime
-                                        Log.e("StartTime ", mStartTime)
-                                        Log.e("EndTime ", mEndTime)
+                                       // Log.e("StartTime ", mStartTime)
+                                       // Log.e("EndTime ", mEndTime)
                                     } catch (e: Exception) {
-                                        Log.d("Exception", "" + e)
+                                        //Log.d("Exception", "" + e)
                                     }
                                     if (imageDetail.status!!.toString().equals(
                                             "2",
@@ -413,8 +413,8 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
 
     private fun postSelectedSlot(position: Int) {
 //hardcoded
-        Log.e("review",reviewArrayList!![position].staffId)
-        Log.e("temp",tempReviewList!![position].staff_id.toString())
+       // Log.e("review",reviewArrayList!![position].staffId)
+       // Log.e("temp",tempReviewList!![position].staff_id.toString())
         val body = PostSlotRequestModel(
             reviewArrayList!![position].studentId,
             tempReviewList[position].pta_time_slot_id.toString(), "0",

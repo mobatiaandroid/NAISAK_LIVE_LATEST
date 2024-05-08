@@ -247,21 +247,21 @@ class ParentsEssentialsFragment : Fragment() {
             ApiClient.getClient.sendStaffMail(sendMailBody, "Bearer " + token)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.e("Failed", t.localizedMessage)
+               // Log.e("Failed", t.localizedMessage)
                 progressDialog.visibility = View.GONE
             }
 
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 val responsedata = response.body()
                 progressDialog.visibility = View.GONE
-                Log.e("Response Signup", responsedata.toString())
+               // Log.e("Response Signup", responsedata.toString())
                 if (responsedata != null) {
                     try {
 
                         val jsonObject = JSONObject(responsedata.string())
                         if (jsonObject.has("status")) {
                             val status: Int = jsonObject.optInt("status")
-                            Log.e("STATUS LOGIN", status.toString())
+                           // Log.e("STATUS LOGIN", status.toString())
                             if (status == 100) {
                                 dialog.dismiss()
                                 CommonMethods.showDialogueWithOk(

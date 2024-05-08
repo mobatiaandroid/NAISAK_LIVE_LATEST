@@ -229,18 +229,18 @@ class LoginActivity :Activity() {
             override fun afterTextChanged(s: Editable) {
                 if (!s.toString().trim().equals(""))
                 {
-                    Log.e("SIGN","COND : 1")
+                    //Log.e("SIGN","COND : 1")
                     val emailPattern =
                         CommonMethods.isEmailValid(s.toString().trim())
                     if (emailPattern)
                     {
-                        Log.e("SIGN","COND : 2")
+                       // Log.e("SIGN","COND : 2")
                         btn_signup?.alpha=1.0f
                         btn_signup?.isClickable=true
                         isSigned=true
                     }
                     else{
-                        Log.e("SIGN","COND : 3")
+                       // Log.e("SIGN","COND : 3")
                         btn_signup?.alpha=0.5f
                         btn_signup?.isClickable=false
                         isSigned=false
@@ -257,18 +257,18 @@ class LoginActivity :Activity() {
                                            count: Int, after: Int) {
                 if (!s.toString().trim().equals(""))
                 {
-                    Log.e("SIGN","COND : 1")
+                   // Log.e("SIGN","COND : 1")
                     val emailPattern =
                         CommonMethods.isEmailValid(s.toString().trim())
                     if (emailPattern)
                     {
-                        Log.e("SIGN","COND : 2")
+                       // Log.e("SIGN","COND : 2")
                         btn_signup?.alpha=1.0f
                         btn_signup?.isClickable=true
                         isSigned=true
                     }
                     else{
-                        Log.e("SIGN","COND : 3")
+                       // Log.e("SIGN","COND : 3")
                         btn_signup?.alpha=0.5f
                         btn_signup?.isClickable=false
                         isSigned=false
@@ -285,18 +285,18 @@ class LoginActivity :Activity() {
                                        before: Int, count: Int) {
                 if (!s.toString().trim().equals(""))
                 {
-                    Log.e("SIGN","COND : 1")
+                   // Log.e("SIGN","COND : 1")
                     val emailPattern =
                         CommonMethods.isEmailValid(s.toString().trim())
                     if (emailPattern)
                     {
-                        Log.e("SIGN","COND : 2")
+                       // Log.e("SIGN","COND : 2")
                         btn_signup?.alpha=1.0f
                         btn_signup?.isClickable=true
                         isSigned=true
                     }
                     else{
-                        Log.e("SIGN","COND : 3")
+                       // Log.e("SIGN","COND : 3")
                         btn_signup?.alpha=0.5f
                         btn_signup?.isClickable=false
                         isSigned=false
@@ -417,7 +417,7 @@ class LoginActivity :Activity() {
         var text_dialog = dialog.findViewById(R.id.text_dialog) as? TextView
         var btn_Ok = dialog.findViewById(R.id.btn_Ok) as? Button
         text_dialog?.text = message
-        Log.e("printeddata:", message)
+       // Log.e("printeddata:", message)
         alertHead?.text = msgHead
         iconImageView?.setImageResource(R.drawable.tick)
         btn_Ok?.setOnClickListener()
@@ -470,18 +470,18 @@ class LoginActivity :Activity() {
             override fun afterTextChanged(s: Editable) {
                 if (!s.toString().trim().equals(""))
                 {
-                    Log.e("SIGN","COND : 1")
+                   // Log.e("SIGN","COND : 1")
                     val emailPattern =
                         CommonMethods.isEmailValid(s.toString().trim())
                     if (emailPattern)
                     {
-                        Log.e("SIGN","COND : 2")
+                       // Log.e("SIGN","COND : 2")
                         btn_signup?.alpha=1.0f
                         btn_signup?.isClickable=true
                         isSigned=true
                     }
                     else{
-                        Log.e("SIGN","COND : 3")
+                       // Log.e("SIGN","COND : 3")
                         btn_signup?.alpha=0.5f
                         btn_signup?.isClickable=false
                         isSigned=false
@@ -498,18 +498,18 @@ class LoginActivity :Activity() {
                                            count: Int, after: Int) {
                 if (!s.toString().trim().equals(""))
                 {
-                    Log.e("SIGN","COND : 1")
+                   // Log.e("SIGN","COND : 1")
                     val emailPattern =
                         CommonMethods.isEmailValid(s.toString().trim())
                     if (emailPattern)
                     {
-                        Log.e("SIGN","COND : 2")
+                      //  Log.e("SIGN","COND : 2")
                         btn_signup?.alpha=1.0f
                         btn_signup?.isClickable=true
                         isSigned=true
                     }
                     else{
-                        Log.e("SIGN","COND : 3")
+                      //  Log.e("SIGN","COND : 3")
                         btn_signup?.alpha=0.5f
                         btn_signup?.isClickable=false
                         isSigned=false
@@ -526,18 +526,18 @@ class LoginActivity :Activity() {
                                        before: Int, count: Int) {
                 if (!s.toString().trim().equals(""))
                 {
-                    Log.e("SIGN","COND : 1")
+                   // Log.e("SIGN","COND : 1")
                     val emailPattern =
                         CommonMethods.isEmailValid(s.toString().trim())
                     if (emailPattern)
                     {
-                        Log.e("SIGN","COND : 2")
+                      //  Log.e("SIGN","COND : 2")
                         btn_signup?.alpha=1.0f
                         btn_signup?.isClickable=true
                         isSigned=true
                     }
                     else{
-                        Log.e("SIGN","COND : 3")
+                        //Log.e("SIGN","COND : 3")
                         btn_signup?.alpha=0.5f
                         btn_signup?.isClickable=false
                         isSigned=false
@@ -664,14 +664,14 @@ class LoginActivity :Activity() {
     fun callLoginApi(email: String, password: String) {
         progressDialog.visibility=View.VISIBLE
         var androidID = Settings.Secure.getString(this.contentResolver, Settings.Secure.ANDROID_ID)
-        Log.e("FCM", FirebaseInstanceId.getInstance().token.toString())
+       // Log.e("FCM", FirebaseInstanceId.getInstance().token.toString())
       //  System.out.println("LOGINRESPONSE:"+"email:"+email+"pass:"+password+"devid:  "+androidID+" FCM ID : "+ FirebaseInstanceId.getInstance().token.toString())
         val call: Call<LoginResponse> = ApiClient.getClient.login(email, password, 2,
             FirebaseInstanceId.getInstance().token.toString(), androidID)
 
         call.enqueue(object : Callback<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.e("Failed", t.localizedMessage)
+               // Log.e("Failed", t.localizedMessage)
                 progressDialog.visibility=View.GONE
                 isClicked=false
             }
@@ -679,12 +679,12 @@ class LoginActivity :Activity() {
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 val responsedata = response.body()
                 progressDialog.visibility=View.GONE
-                Log.e("Response Signup", responsedata.toString())
+              //  Log.e("Response Signup", responsedata.toString())
                 if (responsedata != null) {
                     try {
                         val status=responsedata.status
                         isClicked=false
-                        Log.e("STATUS", status.toString())
+                    //    Log.e("STATUS", status.toString())
                         if (status==100)
                         {
                             PreferenceManager.setUserCode(mContext,responsedata.data.token)

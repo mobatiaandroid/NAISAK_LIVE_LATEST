@@ -4,10 +4,10 @@
     <solid android:color="@color/split_bg" />
 
     <stroke
-        android:width="3dp"
+        android:width="2dp"
         android:color="@color/split_bg" />
 
-    <corners android:radius="20dp" />
+    <corners android:radius="10dp" />
 
     <padding
         android:bottom="0dp"

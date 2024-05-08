@@ -216,7 +216,7 @@ if (mCCADetailModelArrayList.get(position).getLocation()==null){
     @Override
     public int getItemCount() {
 
-        Log.e("size", String.valueOf(mCCADetailModelArrayList.size()));
+       // Log.e("size", String.valueOf(mCCADetailModelArrayList.size()));
         return mCCADetailModelArrayList.size();
     }
 }

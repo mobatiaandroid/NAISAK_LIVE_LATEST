@@ -48,7 +48,7 @@ class PdfReaderActivity : AppCompatActivity() {
         downloadpdf = findViewById(R.id.downloadpdf)
         pdfviewer = findViewById(R.id.pdfview)
         pdfprogress = findViewById(R.id.pdfprogress)
-        Log.e("url", urltoshow)
+        //Log.e("url", urltoshow)
         PRDownloader.initialize(applicationContext)
         val fileName = "myFile.pdf"
         downloadPdfFromInternet(

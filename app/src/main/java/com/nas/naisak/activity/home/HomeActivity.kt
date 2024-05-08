@@ -139,9 +139,9 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
         ) { result ->
             if (result) {
                 // PERMISSION GRANTED
-                Log.e("Permission","Granted")
+                //Log.e("Permission","Granted")
             } else {
-                Log.e("Permission","Denied")
+                //Log.e("Permission","Denied")
                 // PERMISSION NOT GRANTED
                 val snackbar = Snackbar
                     .make(drawer_layout, "Notification Permission Denied", Snackbar.LENGTH_LONG)

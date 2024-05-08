@@ -36,7 +36,7 @@ class CalendarDetailListAdapter(
         return MyViewHolder(itemView)
     }
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        Log.e("ADAPTAR", "DETAIL")
+        //Log.e("ADAPTAR", "DETAIL")
         holder.eventName.text = calendarModels.get(position).title
 
         if (calendarModels.get(position).isAllday.equals("1")) {
@@ -100,7 +100,7 @@ class CalendarDetailListAdapter(
 
     }
     override fun getItemCount(): Int {
-        Log.e("SIZE ADA", calendarModels.size.toString())
+       // Log.e("SIZE ADA", calendarModels.size.toString())
         return calendarModels.size
 
     }

@@ -60,7 +60,7 @@ class TripInvoiceViewActivity : AppCompatActivity() {
         downloadpdf = findViewById(R.id.downloadpdf)
         pdfviewer = findViewById(R.id.pdfview)
         pdfprogress = findViewById(R.id.pdfprogress)
-        Log.e("url", urltoshow)
+       // Log.e("url", urltoshow)
         PRDownloader.initialize(applicationContext)
 
         back.setOnClickListener {

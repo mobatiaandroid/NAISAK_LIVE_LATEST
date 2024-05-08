@@ -209,7 +209,7 @@ class TripPaymentsActivity : AppCompatActivity() {
     private fun callTripList() {
         progressDialogP.show()
         var paramObject = JsonObject()
-        android.util.Log.e("student name", studentNameTxt.getText().toString())
+       // android.util.Log.e("student name", studentNameTxt.getText().toString())
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
         val call: Call<TripHistoryResponseModel> =
             ApiClient.getClient.tripHistory(
@@ -223,19 +223,19 @@ class TripPaymentsActivity : AppCompatActivity() {
             ) {
                 progressDialogP.dismiss()
                 tripList = ArrayList()
-//                assert(response.body() != null)
+
                 if (response.body()!!.status == 100) {
                     if (response.body()!!.data.trips.size > 0) {
-                        Log.e("asd", response.body()!!.data.trips.size.toString())
+                       // Log.e("asd", response.body()!!.data.trips.size.toString())
 
                         tripList = response.body()!!.data.trips
-                        Log.e("tripList", tripList.size.toString())
+                       // Log.e("tripList", tripList.size.toString())
                         if (tripList.size > 0) {
-                            Log.e("Here", "Here")
+                           // Log.e("Here", "Here")
                             tripsCategoryAdapter = TripHistoryListAdapter(context, tripList)
                             tripListRecycler.adapter = tripsCategoryAdapter
                         } else {
-                            Log.e("Here", "not")
+                          //  Log.e("Here", "not")
                             tripList =
                                 ArrayList<TripHistoryResponseModel.Trip>()
                             tripsCategoryAdapter =
@@ -259,6 +259,10 @@ class TripPaymentsActivity : AppCompatActivity() {
                         ).show()
                     }
                 } else {
+                    tripList = java.util.ArrayList<TripHistoryResponseModel.Trip>()
+                    tripsCategoryAdapter =
+                        TripHistoryListAdapter(context, ArrayList())
+                    tripListRecycler.adapter = tripsCategoryAdapter
                     Toast.makeText(
                         this@TripPaymentsActivity,
                         "No trips available.",
@@ -280,7 +284,7 @@ class TripPaymentsActivity : AppCompatActivity() {
         val call: Call<StudentListModel> = ApiClient.getClient.studentList("Bearer " + token)
         call.enqueue(object : Callback<StudentListModel> {
             override fun onFailure(call: Call<StudentListModel>, t: Throwable) {
-                Log.e("Error", t.localizedMessage)
+               // Log.e("Error", t.localizedMessage)
             }
 
             override fun onResponse(
@@ -290,9 +294,8 @@ class TripPaymentsActivity : AppCompatActivity() {
                 if (response.body()!!.status == 100) {
                     studentListArrayList = ArrayList()
                     studentListArrayList.addAll(response.body()!!.dataArray.studentListArray)
-                    Log.e("studlistsize", studentListArrayList.size.toString())
+                   // Log.e("studlistsize", studentListArrayList.size.toString())
                     if (PreferenceManager.getStudentID(context) == 0) {
-                        Log.e("Empty", "Empty")
                         studentName = studentListArrayList.get(0).studentName
                         studentImg = studentListArrayList.get(0).photo
                         studentId = studentListArrayList.get(0).studentId

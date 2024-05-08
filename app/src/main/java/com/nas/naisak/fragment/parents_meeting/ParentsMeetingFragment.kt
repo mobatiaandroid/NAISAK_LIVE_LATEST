@@ -104,7 +104,7 @@ class ParentsMeetingFragment : Fragment() {
                     if (response.body() != null){
                         if (response.body()!!.status.toString() == "100"){
                             //progressDialog.visibility=View.GONE
-                            Log.e("stud",response.body()!!.data!!.lists!!.size.toString())
+                            //Log.e("stud",response.body()!!.data!!.lists!!.size.toString())
                             if (response.body()!!.data!!.lists!!.size > 0 ){
                                 progressDialog.visibility=View.GONE
                                 for (i in response.body()!!.data!!.lists!!.indices){

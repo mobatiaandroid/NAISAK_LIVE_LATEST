@@ -976,7 +976,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                         mContext
                     ) == 0
                 ) {
-                    Log.e("It enters", "notify")
+                    //Log.e("It enters", "notify")
                     relImgFiveDot.visibility = View.VISIBLE
                     relImgFiveDot.text = PreferenceManager.getNotificationBadge(mContext).toString()
                     relImgFiveDot.setBackgroundResource(R.drawable.shape_circle_red)
@@ -2013,8 +2013,8 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
     private fun CHECKINTENTVALUE(intentTabId: String) {
         TAB_ID = intentTabId
         var mFragment: Fragment? = null
-        Log.e("Click", intentTabId)
-        Log.e("tabID", TAB_ID.toString())
+       // Log.e("Click", intentTabId)
+       // Log.e("tabID", TAB_ID.toString())
         if (PreferenceManager.getUserCode(mContext).equals("")) {
             when (intentTabId) {
 
@@ -2175,7 +2175,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                 }
 
                 NasTabConstants.TAB_PAYMENTS -> {
-                    Log.e("pay", "if frag")
+                  //  Log.e("pay", "if frag")
                     if (ActivityCompat.checkSelfPermission(
                             mContext,
                             Manifest.permission.READ_EXTERNAL_STORAGE
@@ -2396,7 +2396,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                                     mContext
                                 ) == 0
                             ) {
-                                Log.e("It enters", "notify")
+                               // Log.e("It enters", "notify")
                                 relImgFiveDot.visibility = View.VISIBLE
                                 relImgFiveDot.text =
                                     PreferenceManager.getNotificationBadge(mContext).toString()

@@ -98,7 +98,7 @@ class AudioNotification : AppCompatActivity(), Player.EventListener{
         call.enqueue(object : Callback<MessageDetailResponse> {
             override fun onFailure(call: Call<MessageDetailResponse>, t: Throwable) {
 
-                Log.e("Error", t.localizedMessage)
+                //Log.e("Error", t.localizedMessage)
             }
             override fun onResponse(call: Call<MessageDetailResponse>, response: Response<MessageDetailResponse>) {
 
@@ -183,7 +183,7 @@ class AudioNotification : AppCompatActivity(), Player.EventListener{
     }
 
     override fun onBackPressed() {
-        Log.e("Back","Pressed")
+       // Log.e("Back","Pressed")
         if (Util.SDK_INT > 23) releasePlayer()
         super.onBackPressed()
         return

@@ -593,5 +593,10 @@ interface ApiInterface {
     @Headers("Content-Type: application/json")
     fun trip_banner(@Header("Authorization") token: String): Call<TripBannerResponseModel>
 
-
+    @POST("api/v1/parent/trip_informations")
+    @Headers("Content-Type: application/json")
+    fun tripInformation(
+        @Body notificationList: ModelWithPageNumberOnly,
+        @Header("Authorization") token: String
+    ): Call<CommonDetailResponse>
 }

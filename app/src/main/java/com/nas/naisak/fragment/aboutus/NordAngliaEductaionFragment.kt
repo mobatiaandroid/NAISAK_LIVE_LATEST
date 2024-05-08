@@ -92,7 +92,7 @@ class NordAngliaEductaionFragment : Fragment() {
                     //var url=response.body()!!.data.list.url
                      var url=response.body()!!.data.list.get(0).url
                 //    var url="https://www.nordangliaeducation.com/"
-                    Log.e("URL",url)
+                    //Log.e("URL",url)
                     webview.loadUrl(url)
                 }
             }

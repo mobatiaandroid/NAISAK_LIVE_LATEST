@@ -158,7 +158,7 @@ class ContactUsFragment : Fragment(), LocationListener,
                     long = location.longitude
                     println("lat---$lat")
                     println("lat---$long")
-                    Log.e("CONTACTLATITUDE:", (lat + long).toString())
+                   // Log.e("CONTACTLATITUDE:", (lat + long).toString())
                 }
             }
         }

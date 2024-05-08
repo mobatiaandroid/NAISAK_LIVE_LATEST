@@ -141,13 +141,13 @@ class GalleryFragment : Fragment() {
                 call: Call<GetAlbumsResponseModel>,
                 response: Response<GetAlbumsResponseModel>
             ) {
-                Log.e("Response", response.body()!!.message.toString())
+                //Log.e("Response", response.body()!!.message.toString())
                 if (response.isSuccessful){
                     progressDialog.visibility=View.GONE
                     if (response.body() != null){
                         if (response.body()!!.status.toString() == "100"){
                             if (response.body()!!.data!!.size > 0 ){
-                                Log.e("here", response.body()!!.message.toString())
+                                //Log.e("here", response.body()!!.message.toString())
                                 for (i in response.body()!!.data!!.indices) {
                                     mPhotosModelArrayList!!.add(response.body()!!.data!![i]!!)
                                 }

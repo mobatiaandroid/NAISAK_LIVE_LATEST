@@ -1,6 +1,5 @@
 package com.nas.naisak.activity.trips
 
-//import com.github.gcacace.signaturepad.views.SignaturePad
 import GeneralSubmitResponseModel
 import TripChoicePreferenceResponseModel
 import TripDetailsResponseModel
@@ -85,7 +84,7 @@ import java.util.Timer
 import java.util.TimerTask
 import kotlin.properties.Delegates
 
-class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemSelectedListener {
+class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnItemSelectedListener{
     val REQUEST_ID_MULTIPLE_PERMISSIONS = 101
     private val PERMISSION_CALLBACK_CONSTANT_EXTERNAL_STORAGE = 2
     private val REQUEST_PERMISSION_EXTERNAL_STORAGE = 102
@@ -121,7 +120,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
     lateinit var btn_history: ImageView
     lateinit var home: ImageView
     lateinit var stud_id: String
-     var selectedChoice: String=""
+    var selectedChoice: String=""
     lateinit var studClass: String
     lateinit var orderId: String
 
@@ -504,7 +503,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
     private fun getTripConsent() {
         val paramObject = JsonObject()
-        Log.e("tripID name", tripID)
+      //  Log.e("tripID name", tripID)
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
         paramObject.addProperty("trip_item_id", tripID)
         val call: Call<TripConsentResponseModel> = ApiClient.getClient.tripConsent(
@@ -543,11 +542,11 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         emailContactEditText.setText(coodEmail)
         whatsappContactEditText.setText(coodWhatsapp)
         emailContactEditText.setOnClickListener {
-           /* val intent = Intent(Intent.ACTION_SENDTO)
-            intent.setData(Uri.parse("mailto:$coodEmail"))
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            }*/
+            /* val intent = Intent(Intent.ACTION_SENDTO)
+             intent.setData(Uri.parse("mailto:$coodEmail"))
+             if (intent.resolveActivity(packageManager) != null) {
+                 startActivity(intent)
+             }*/
 
             val intent = Intent(Intent.ACTION_SEND)
             val recipients = arrayOf(coodEmail)
@@ -587,12 +586,12 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 ).show()
                 e.printStackTrace()
             }
-           /* val url = "https://wa.me/$coodWhatsapp"
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.setData(Uri.parse(url))
-            if (intent.resolveActivity(packageManager) != null) {
-                startActivity(intent)
-            }*/
+            /* val url = "https://wa.me/$coodWhatsapp"
+             val intent = Intent(Intent.ACTION_VIEW)
+             intent.setData(Uri.parse(url))
+             if (intent.resolveActivity(packageManager) != null) {
+                 startActivity(intent)
+             }*/
         }
         dialog.show()
     }
@@ -613,7 +612,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         val payInstallmentView =
             bottomSheetDialog.findViewById<ConstraintLayout>(R.id.payInstallmentView)
         val totalAmountTextView = bottomSheetDialog.findViewById<TextView>(R.id.totalAmountTextView)
-        totalAmountTextView!!.text = "$singleInstallmentAmount AED"
+        totalAmountTextView!!.text = "$singleInstallmentAmount QAR"
         if (multipleInstallmentsArray.size > 1) {
             payInstallmentView!!.visibility = View.VISIBLE
         } else {
@@ -626,7 +625,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         payInstallmentView.setOnClickListener {
             bottomSheetDialog.dismiss()
 //            Toast.makeText(context, tripID, Toast.LENGTH_SHORT).show()
-            Log.e("Before Activity trip ID", tripID)
+         //   Log.e("Before Activity trip ID", tripID)
             val intent = Intent(context, TripInstallmentActivity::class.java)
             intent.putExtra("tripID", tripID)
             intent.putExtra("tripName", tripName)
@@ -773,7 +772,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 call: Call<PaymentGatewayCreditInitiateResponseModel>,
                 t: Throwable
             ) {
-                Log.e("Error", t.localizedMessage)
+               // Log.e("Error", t.localizedMessage)
                 progressDialogP.dismiss()
             }
 
@@ -793,7 +792,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 } else if (response.body()!!.status == 116) {
                     PreferenceManager.setUserCode(context, "")
                     PreferenceManager.setUserEmail(context, "")
-                    val mIntent = Intent(this@TripDetailsActivity, LoginActivity::class.java)
+                    val mIntent = Intent(this@TripDetailsActivityNew, LoginActivity::class.java)
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     context.startActivity(mIntent)
 
@@ -833,7 +832,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 call: Call<PaymentGatewayCreditInitiateResponseModel>,
                 t: Throwable
             ) {
-                Log.e("Error", t.localizedMessage)
+               // ("Error", t.localizedMessage)
             }
 
             override fun onResponse(
@@ -860,7 +859,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 } else if (response.body()!!.status == 116) {
                     PreferenceManager.setUserCode(context, "")
                     PreferenceManager.setUserEmail(context, "")
-                    val mIntent = Intent(this@TripDetailsActivity, LoginActivity::class.java)
+                    val mIntent = Intent(this@TripDetailsActivityNew, LoginActivity::class.java)
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     context.startActivity(mIntent)
 
@@ -877,7 +876,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
     private fun getTripDetails(tripID: String) {
         progressDialogP.show()
         val paramObject = JsonObject()
-        Log.e("tripID name", tripID)
+       // Log.e("tripID name", tripID)
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
         paramObject.addProperty("trip_id", tripID)
         val call: Call<TripDetailsResponseModel> = ApiClient.getClient.tripDetail(
@@ -890,9 +889,9 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 progressDialogP.dismiss()
                 imagesArray = java.util.ArrayList()
                 if (response.body()!!.status == 100) {
-                    if (response.body()!!.data.lists.tripImage.size > 1) {
+                    if (response.body()!!.data.lists.tripImage.size > 0) {
 //                            Glide.with(context).load(AppUtils.replace(response.body().getResponse().getData().getTripImage().get(0))).placeholder(R.drawable.default_banner).into(tripMainBanner);
-                        for (i in 1 until response.body()!!.data.lists.tripImage.size) {
+                        for (i in 0 until response.body()!!.data.lists.tripImage.size) {
                             imagesArray.add(
                                 response.body()!!.data.lists.tripImage[i]
                             )
@@ -940,7 +939,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     //                        tripQuestion = response.body().getResponse().getData().q
                     tripNameTextView.setText(response.body()!!.data.lists.tripNameEn)
                     tripAmountTextView.text =
-                        "Trip Amount : " + response.body()!!.data.lists.totalPrice + " AED"
+                        "Trip Amount : " + response.body()!!.data.lists.totalPrice + " QAR"
                     dateTextView.text =
                         "Trip Date : " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(response.body()!!.data.lists.tripStartDate) + " To " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(
                             response.body()!!.data.lists.tripEndDate
@@ -1031,7 +1030,6 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
             override fun onFailure(call: Call<TripDetailsResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
-                Log.e("error", t.localizedMessage)
                 CommonMethods.showDialogueWithOk(context, getString(R.string.common_error), "")
                 CommonMethods.showDialogueWithOk(
                     context as Activity, getString(R.string.common_error), "Alert"
@@ -1081,14 +1079,13 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         val uploadEIDDetailsButton = dial.findViewById<Button>(R.id.uploadEIDDetailsButton)
         val submitConsentButton = dial.findViewById<Button>(R.id.submitConsentButton)
         val payNowButtonText = dial.findViewById<TextView>(R.id.payNowButton)
-        payNowButtonText.text = "PAY $singleInstallmentAmount AED"
+        payNowButtonText.text = "PAY $singleInstallmentAmount QAR"
         val close_btn = dial.findViewById<ImageView>(R.id.close_btn)
         val studentAdd = dial.findViewById<ImageView>(R.id.studentAdd)
         val passportAdd = dial.findViewById<ImageView>(R.id.passportAdd)
         val visaAdd = dial.findViewById<ImageView>(R.id.visaAdd)
         val emiratesAdd = dial.findViewById<ImageView>(R.id.emiratesAdd)
         val permissionAdd = dial.findViewById<ImageView>(R.id.permissionAdd)
-        Log.e("permission", permissionSlip)
 //        permissiontitle.text = permissionSlip
         //        if (tripType.equalsIgnoreCase("1")) {
 //            studentAdd.setVisibility(View.GONE);
@@ -1268,7 +1265,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             openGallery(PICK_IMAGE_BACK_PASSPORT)
         }
         uploadPassportDetailsButton.setOnClickListener {
-            Log.e("herer", passportURIArray[0].path + passportURIArray[1].path)
+           // Log.e("herer", passportURIArray[0].path + passportURIArray[1].path)
             if (!passportURIArray[0].path.equals(
                     "", ignoreCase = true
                 ) && !passportURIArray[1].path.equals(
@@ -1293,7 +1290,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             openGallery(PICK_IMAGE_BACK_VISA)
         }
         uploadVisaDetailsButton.setOnClickListener {
-            Log.e("herer", visaURIArray[0].path!!)
+           // Log.e("herer", visaURIArray[0].path!!)
             if (!visaURIArray[0].path.equals(
                     "", ignoreCase = true
                 ) && !visaEditText.text.toString().equals("", ignoreCase = true)
@@ -1316,9 +1313,9 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             openGallery(PICK_IMAGE_BACK_EID)
         }
         uploadEIDDetailsButton.setOnClickListener {
-            Log.e("herer", eIDURIArray[0].path!!)
-            Log.e("front", eIDURIArray[0].path!!)
-            Log.e("back", eIDURIArray[1].path!!)
+            //Log.e("herer", eIDURIArray[0].path!!)
+           // Log.e("front", eIDURIArray[0].path!!)
+          //  Log.e("back", eIDURIArray[1].path!!)
             if (!eIDURIArray[0].path.equals(
                     "", ignoreCase = true
                 ) && !eIDURIArray[1].path.equals(
@@ -1345,7 +1342,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.e("current", currentPosition.toString())
+       // Log.e("current", currentPosition.toString())
         if (resultCode == RESULT_OK && data != null) {
             val selectedImage = data.data
             val filePathColumn = arrayOf(MediaStore.Images.Media.DATA)
@@ -1358,29 +1355,29 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 when (requestCode) {
                     PICK_IMAGE_FRONT_PASSPORT -> {
                         passportURIArray[currentPosition!!] = Uri.parse(imagePath)
-                        Log.e("uri", passportURIArray[currentPosition!!].path!!)
+                      //  Log.e("uri", passportURIArray[currentPosition!!].path!!)
                     }
 
                     PICK_IMAGE_BACK_PASSPORT -> {
                         passportURIArray[currentPosition!!] = Uri.parse(imagePath)
-                        Log.e("uri", passportURIArray[currentPosition!!].path!!)
+                        //Log.e("uri", passportURIArray[currentPosition!!].path!!)
                     }
 
                     PICK_IMAGE_FRONT_VISA -> {
                         visaURIArray[currentPosition!!] = Uri.parse(imagePath)
-                        Log.e("uri", visaURIArray[currentPosition!!].path!!)
+                        //Log.e("uri", visaURIArray[currentPosition!!].path!!)
                     }
 
                     PICK_IMAGE_FRONT_EID -> {
                         eIDURIArray[currentPosition!!] = Uri.parse(imagePath)
-                        Log.e("uri", eIDURIArray[currentPosition!!].path!!)
-                        Log.e("ursai", Uri.parse(imagePath).toString())
+                      //  Log.e("uri", eIDURIArray[currentPosition!!].path!!)
+                      //  Log.e("ursai", Uri.parse(imagePath).toString())
                     }
 
                     PICK_IMAGE_BACK_EID -> {
                         eIDURIArray[currentPosition!!] = Uri.parse(imagePath)
-                        Log.e("uri", eIDURIArray[currentPosition!!].path.toString())
-                        Log.e("ursai", Uri.parse(imagePath).toString())
+                      //  Log.e("uri", eIDURIArray[currentPosition!!].path.toString())
+                      //  Log.e("ursai", Uri.parse(imagePath).toString())
                     }
 
                     else -> Toast.makeText(context, "Transaction failed", Toast.LENGTH_SHORT).show()
@@ -1411,7 +1408,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             }
 
             override fun onFailure(call: Call<TripChoicePreferenceResponseModel>, t: Throwable) {
-                Toast.makeText(this@TripDetailsActivity, "Some error occurred.", Toast.LENGTH_SHORT)
+                Toast.makeText(this@TripDetailsActivityNew, "Some error occurred.", Toast.LENGTH_SHORT)
                     .show()
             }
 
@@ -1424,7 +1421,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         tripID: String?, callback: TripCountCheckCallback
     ) {
         val paramObject = JsonObject()
-        Log.e("tripID name", tripID!!)
+       // Log.e("tripID name", tripID!!)
         paramObject.addProperty("trip_id", tripID)
         val call: Call<TripChoicePaymentCountResponseModel> = ApiClient.getClient.tripCountCheck(
             "Bearer " + PreferenceManager.getUserCode(context), paramObject
@@ -1485,11 +1482,11 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     override fun onClickItem(v: View?, position: Int) {
                         for(i in 0..choicePreferenceSorted.size-1)
                         {
-                           choicePreferenceSorted.get(i).selected=false
+                            choicePreferenceSorted.get(i).selected=false
                         }
                         choicePreferenceSorted.get(position).selected=true
                         selectedChoice=choicePreferenceSorted.get(position).choiceName
-                       adapter.notifyDataSetChanged()
+                        adapter.notifyDataSetChanged()
 //                submitIntent("1",dialog,choicePreferenceArray.get(position));
                     }
 
@@ -1499,18 +1496,28 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 })
         )
         submitIntentionButton.setOnClickListener {
-            if (yesButton.isChecked && selectedChoice == "") {
+
+             if (yesButton.isChecked ) {
+
+                 submitIntent("1", dialog)
+             } else if (noButton.isChecked) {
+
+                 submitIntent("2", dialog)
+             } else Toast.makeText(context, "Please provide your intention!", Toast.LENGTH_SHORT)
+                 .show()
+
+           /* if (yesButton.isChecked && selectedChoice == "") {
                 Toast.makeText(context, "Please select your choice!", Toast.LENGTH_SHORT).show()
             } else if (yesButton.isChecked && selectedChoice != "") {
                 submitIntent("1", dialog, selectedChoice)
             } else if (noButton.isChecked) {
                 submitIntent("2", dialog, "")
             } else Toast.makeText(context, "Please provide your intention!", Toast.LENGTH_SHORT)
-                .show()
+                .show()*/
         }
         yesButton.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
-                preferenceLayout.visibility = View.VISIBLE
+                preferenceLayout.visibility = View.GONE
                 //                    submitIntentionButton.setVisibility(View.GONE);
             }
         }
@@ -1526,14 +1533,14 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         dialog.show()
     }
 
-    private fun submitIntent(intent: String, dialog: Dialog, preference: String) {
+    private fun submitIntent(intent: String, dialog: Dialog) {
         progressDialogP.show()
         val paramObject = JsonObject()
-        Log.e("tripID name", tripID)
+
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
         paramObject.addProperty("trip_item_id", tripID)
         paramObject.addProperty("status", intent)
-        paramObject.addProperty("preference", preference)
+
         val call: Call<GeneralSubmitResponseModel> = ApiClient.getClient.tripIntentSubmit(
             "Bearer " + PreferenceManager.getUserCode(context), paramObject
         )
@@ -1546,23 +1553,23 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 dialog.dismiss()
                 if (response.body()!!.status == 100) {
                     Toast.makeText(
-                        this@TripDetailsActivity,
+                        this@TripDetailsActivityNew,
                         "Intention successfully submitted.",
                         Toast.LENGTH_SHORT
                     ).show()
                 } else if (response.body()!!.status == (313)) {
                     Toast.makeText(
-                        this@TripDetailsActivity, "Intention already submitted.", Toast.LENGTH_SHORT
+                        this@TripDetailsActivityNew, "Intention already submitted.", Toast.LENGTH_SHORT
                     ).show()
                 } else if (response.body()!!.status == 314) {
                     Toast.makeText(
-                        this@TripDetailsActivity,
+                        this@TripDetailsActivityNew,
                         "Intention already submitted for this choice. Select any other choice.",
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
                     Toast.makeText(
-                        this@TripDetailsActivity, "Intention Submission Failed.", Toast.LENGTH_SHORT
+                        this@TripDetailsActivityNew, "Intention Submission Failed.", Toast.LENGTH_SHORT
                     ).show()
                 }
 
@@ -1571,7 +1578,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
             override fun onFailure(call: Call<GeneralSubmitResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
-                Log.e("error", t.localizedMessage)
+
                 CommonMethods.showDialogueWithOk(
                     context as Activity, getString(R.string.common_error), "Alert"
 
@@ -1620,7 +1627,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 if (response.body()!!.status == 100) {
                     dial.dismiss()
                     Toast.makeText(
-                        this@TripDetailsActivity,
+                        this@TripDetailsActivityNew,
                         "Permission slip successfully submitted.",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -1637,7 +1644,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     }
                 } else {
                     Toast.makeText(
-                        this@TripDetailsActivity,
+                        this@TripDetailsActivityNew,
                         "Permission slip submit failed.",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -1646,7 +1653,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
             override fun onFailure(call: Call<SubmitDocResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
-                Log.e("failed", "failed")
+
             }
         })
 
@@ -1698,7 +1705,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
     ) {
         val file1 = File(uriArray.path)
         val frontImagePart = prepareImagePart(uriArray, "attachment1")
-        Log.e("path", uriArray.path.toString())
+       // Log.e("path", uriArray.path.toString())
 
         val action = RequestBody.create("text/plain".toMediaTypeOrNull(), documentType)
         val student_id = RequestBody.create(
@@ -1725,7 +1732,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 if (response.body()!!.status == 100) {
                     dial.dismiss()
                     Toast.makeText(
-                        this@TripDetailsActivity,
+                        this@TripDetailsActivityNew,
                         "Document successfully submitted.",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -1742,7 +1749,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     }
                 } else {
                     Toast.makeText(
-                        this@TripDetailsActivity,
+                        this@TripDetailsActivityNew,
                         "Document submit failed.",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -1751,7 +1758,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
             override fun onFailure(call: Call<SubmitDocResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
-                Log.e("failed", "Failed")
+
             }
 
         })
@@ -1769,8 +1776,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         progressDialogP.show()
         val frontImagePart = prepareImagePart(uriArray[0], "attachment1")
         val backImagePart = prepareImagePart(uriArray[1], "attachment2")
-        Log.e("path", uriArray[0].path.toString())
-        Log.e("path", uriArray[1].path.toString())
+
 
         val action = RequestBody.create("text/plain".toMediaTypeOrNull(), documentType)
         val student_id = RequestBody.create(
@@ -1797,7 +1803,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 if (response.body()!!.status == 100) {
                     dial.dismiss()
                     Toast.makeText(
-                        this@TripDetailsActivity,
+                        this@TripDetailsActivityNew,
                         "Document successfully submitted.",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -1814,7 +1820,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     }
                 } else {
                     Toast.makeText(
-                        this@TripDetailsActivity,
+                        this@TripDetailsActivityNew,
                         "Document submit failed.",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -1823,7 +1829,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
             override fun onFailure(call: Call<SubmitDocResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
-                Log.e("failed", "Failed")
+
             }
 
         })
@@ -1832,10 +1838,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
     override fun onItemSelected(choice: String?) {
         selectedChoice = choice!!
-        Log.e("Selected", selectedChoice)
+
     }
 
 }
-
-
-

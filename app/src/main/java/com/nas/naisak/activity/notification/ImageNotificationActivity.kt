@@ -92,7 +92,7 @@ class ImageNotificationActivity : AppCompatActivity(){
         call.enqueue(object : Callback<MessageDetailResponse> {
             override fun onFailure(call: Call<MessageDetailResponse>, t: Throwable) {
                 progressDialog.visibility = View.GONE
-                Log.e("Error", t.localizedMessage)
+                //Log.e("Error", t.localizedMessage)
             }
             override fun onResponse(call: Call<MessageDetailResponse>, response: Response<MessageDetailResponse>) {
                 progressDialog.visibility = View.GONE
@@ -149,7 +149,7 @@ class ImageNotificationActivity : AppCompatActivity(){
                     }
                     pushNotificationDetail=pushNotificationDetail+"</body>\n</html>"
                     var htmlData=pushNotificationDetail
-                    Log.e("HTML DATA",htmlData)
+                   // Log.e("HTML DATA",htmlData)
                     //  webView.loadData(htmlData,"text/html; charset=utf-8","utf-8")
                     webView.loadDataWithBaseURL("file:///android_asset/fonts/",htmlData,"text/html; charset=utf-8", "utf-8", "about:blank")
 

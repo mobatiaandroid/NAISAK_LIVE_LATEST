@@ -21,6 +21,8 @@ class PaymentListAdapter (private var mContext: Context, private var repoetDetai
         var status: TextView = view.findViewById(R.id.status)
         var statusLayout: RelativeLayout = view.findViewById(R.id.statusLayout)
 //        var clickLinear: LinearLayout = view.findViewById(R.id.clickLinear)
+var tripsDateTxt: TextView = view.findViewById(R.id.tripsDateTxt)
+
 
     }
     @NonNull
@@ -34,6 +36,7 @@ class PaymentListAdapter (private var mContext: Context, private var repoetDetai
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val summary = repoetDetailArray[position]
+        holder.tripsDateTxt.visibility=View.GONE
         holder.termname.text = repoetDetailArray[position].title
         if (repoetDetailArray[position].status==1)
         {

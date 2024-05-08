@@ -515,14 +515,14 @@ class SettingsFragment : Fragment() {
             ApiClient.getClient.changePassword(changePasswordBody, "Bearer " + token)
         call.enqueue(object : Callback<LogoutResponseModel> {
             override fun onFailure(call: Call<LogoutResponseModel>, t: Throwable) {
-                Log.e("Failed", t.localizedMessage)
+                //Log.e("Failed", t.localizedMessage)
                 progressBar.visibility= View.GONE
             }
 
             override fun onResponse(call: Call<LogoutResponseModel>, response: Response<LogoutResponseModel>) {
                 val responsedata = response.body()
                 progressBar.visibility= View.GONE
-                Log.e("Response Signup", responsedata.toString())
+                //Log.e("Response Signup", responsedata.toString())
                 if (responsedata != null) {
                     try {
                         if (response.body()!!.status == 100) {
@@ -697,7 +697,7 @@ class SettingsFragment : Fragment() {
         call.enqueue(object : Callback<DeleteAccountresponseModel> {
             override fun onFailure(call: Call<DeleteAccountresponseModel>, t: Throwable) {
                 dialog.dismiss()
-                Log.e("Failed", t.localizedMessage)
+               // Log.e("Failed", t.localizedMessage)
                 progressbar.visibility=View.GONE
             }
             override fun onResponse(call: Call<DeleteAccountresponseModel>, response: Response<DeleteAccountresponseModel>) {
