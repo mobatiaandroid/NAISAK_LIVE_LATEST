@@ -468,17 +468,36 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
 
         }
         paymentButton.setOnClickListener {
-            if (tripPaymentExceed.equals("", ignoreCase = true)) {
-                showPaymentsPopUp(context)
-            } else {
-                if (tripStatus == 6) {
-                    showPaymentsPopUp(context)
-                } else CommonMethods.showDialogueWithOk(
-                    context,
-                    "You cannot submit any more payments, as you have already reached your trip limit.",
-                    "Alert"
-                )
-            }
+            Log.e("trippaymentexeed",tripPaymentExceed)
+            checkTripCount(tripID,object :TripCountCheckCallback{
+                override fun onTripCountChecked(isTripCountEmpty: Boolean) {
+                   if (isTripCountEmpty)
+                   {
+                       if (tripPaymentExceed.equals("", ignoreCase = true)) {
+                           showPaymentsPopUp(context)
+                       } else {
+                           if (tripStatus == 6) {
+                               showPaymentsPopUp(context)
+                           } else CommonMethods.showDialogueWithOk(
+                               context,
+                               "You cannot submit any more payments, as you have already reached your trip limit.",
+                               "Alert"
+                           )
+                       }
+                   }
+                    else
+                   {
+                       CommonMethods.showDialogueWithOk(
+                           context,
+                           "You can no longer apply for this trip, as all the slots have been filled.",
+                           "Alert"
+                       )
+                   }
+                }
+
+            })
+
+
         }
         coordinatorDetails.setOnClickListener { showCoordinatorDetailsPopUp() }
         viewInvoice.setOnClickListener {

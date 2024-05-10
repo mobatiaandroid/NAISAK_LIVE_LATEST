@@ -340,7 +340,7 @@
                     android:layout_marginLeft="7dp"
                     android:layout_weight="45"
                     android:singleLine="true"
-                    android:text="Reason for not using the bus"
+                    android:text="Reason for early pickup"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 

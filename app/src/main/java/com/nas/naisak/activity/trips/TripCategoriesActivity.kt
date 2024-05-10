@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.inputmethod.InputMethodManager
@@ -185,6 +184,7 @@ class TripCategoriesActivity : AppCompatActivity() {
         })
         val itemDecoration = ItemOffsetDecoration(context, spacing)
         recyclerViewLayoutManager = GridLayoutManager(context, 2)
+
 //        categoryListRecyclerView.addItemDecoration(
 //                new DividerItemDecoration(context.getResources().getDrawable(R.drawable.list_divider)));
         //        categoryListRecyclerView.addItemDecoration(
