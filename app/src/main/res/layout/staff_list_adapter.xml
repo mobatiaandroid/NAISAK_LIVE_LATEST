@@ -27,12 +27,23 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
-            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
             android:text="NAS DUBAI"
             android:layout_toRightOf="@+id/imagicon"
             android:singleLine="true" />
 
-
+        <TextView
+            android:id="@+id/subjectTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@+id/listTxtTitle"
+            android:layout_toLeftOf="@+id/arrowImg"
+            android:text="NAS DUBAI"
+            android:textColor="@color/grey"
+            android:layout_toRightOf="@+id/imagicon"
+            android:singleLine="true" />
 
         <ImageView
             android:id="@+id/arrowImg"

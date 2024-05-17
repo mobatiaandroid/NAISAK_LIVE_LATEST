@@ -39,6 +39,8 @@ data class TripHistoryResponseModel(
         val totalPrice: String,
         @SerializedName("trip_status")
         val tripStatus: Int,
+        @SerializedName("trip_type")
+        val trip_type: String,
         @SerializedName("preference")
         val preference: String,
         @SerializedName("trip_image")

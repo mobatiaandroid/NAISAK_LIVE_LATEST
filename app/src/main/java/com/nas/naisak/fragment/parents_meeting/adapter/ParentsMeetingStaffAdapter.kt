@@ -19,7 +19,8 @@ class ParentsMeetingStaffAdapter(mContext: Context, mListViewStaffArray: ArrayLi
     var staffListArray: java.util.ArrayList<StaffListByStudentResponseModel.Data.Lists>? = mListViewStaffArray
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var imgIcon: ImageView = view.findViewById(R.id.imagicon)
-        var listTxtView: TextView = view.findViewById(R.id.listTxtTitle)
+//        var listTxtView: TextView = view.findViewById(R.id.listTxtTitle)
+//        var subjectTV: TextView = view.findViewById(R.id.subjectTV)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val itemView: View = LayoutInflater.from(parent.context)
@@ -36,6 +37,7 @@ class ParentsMeetingStaffAdapter(mContext: Context, mListViewStaffArray: ArrayLi
 //   holder.imgIcon.setVisibility(View.GONE);
 //   holder.imgIcon.setBackgroundResource(R.drawable.roundfb);
         holder.itemView.listTxtTitle.text = staffListArray!![position].name
+        holder.itemView.subjectTV.text = staffListArray!![position].subject
         if (!(staffListArray!![position].image_url).equals("")){
             Glide.with(context)
                 .load(CommonMethods.replace(staffListArray!![position].image_url.toString()))

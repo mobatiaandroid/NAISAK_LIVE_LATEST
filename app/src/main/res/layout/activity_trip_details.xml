@@ -181,35 +181,66 @@
                 android:layout_margin="8dp"
                 android:text="Co-ordinator Details:"
 
-                app:layout_constraintBottom_toTopOf="@+id/coordinatorDetails"
+                app:layout_constraintBottom_toTopOf="@+id/linearcordinatedetail"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dateTextView" />
+<LinearLayout
+    android:id="@+id/linearcordinatedetail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toTopOf="@+id/linearcordinatormail"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/textView1">
+    <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+        android:id="@+id/coordinatorNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColor="@color/black"
 
-            <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
-                android:id="@+id/coordinatorNameTextView"
-                android:layout_width="0dp"
+        tools:text="Co-ordinator Name       :" />
+
+    <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+        android:id="@+id/coordinatorDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+
+        android:text="Contact Details"
+        android:textColor="@color/split_bg"
+        />
+
+
+</LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearcordinatormail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                app:layout_constraintBottom_toBottomOf="@+id/coordinatorDetails"
-
-                app:layout_constraintEnd_toStartOf="@+id/coordinatorDetails"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/coordinatorDetails"
-                tools:text="Co-ordinator Name" />
-
-            <TextView
-                android:id="@+id/coordinatorDetails"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:padding="8dp"
-                android:text="Contact Details"
-                android:textColor="@color/split_bg"
                 app:layout_constraintBottom_toTopOf="@+id/customFontSansProTextBlackSemiBold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/coordinatorNameTextView"
-                app:layout_constraintTop_toBottomOf="@+id/textView1" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearcordinatedetail">
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:id="@+id/coordinatorMailTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toTopOf="@+id/customFontSansProTextBlackSemiBold"
+                    app:layout_constraintEnd_toStartOf="@+id/coordinatorEmail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/coordinatorNameTextView"
+                    tools:text="Co-ordinator Email        :" />
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:id="@+id/coordinatorEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Contact Details"
+                    android:textColor="@color/split_bg"
+                    android:layout_margin="16dp"
+
+                    />
+            </LinearLayout>
 
             <com.nas.naisak.customviews.textview.CustomFontTextViewSemiBoldBlack
                 android:id="@+id/customFontSansProTextBlackSemiBold"
@@ -220,7 +251,7 @@
 
                 app:layout_constraintBottom_toTopOf="@+id/tripDescriptionTextView"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/coordinatorDetails" />
+                app:layout_constraintTop_toBottomOf="@+id/linearcordinatormail" />
 
             <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
                 android:id="@+id/tripDescriptionTextView"
@@ -335,7 +366,7 @@
             android:layout_margin="16dp"
             android:background="@drawable/button"
             android:gravity="center"
-            android:text="Invoice"
+            android:text="View Invoice"
             android:textColor="@color/white"
 
             android:visibility="gone"

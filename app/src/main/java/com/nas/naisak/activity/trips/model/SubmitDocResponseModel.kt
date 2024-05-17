@@ -27,6 +27,8 @@ data class SubmitDocResponseModel(
         val emiratesStatus: Int,
         @SerializedName("consent_status")
         val consentStatus: Int,
+        @SerializedName("medical_consent_status")
+        val medicalconsentStatus: Int,
         @SerializedName("document_completion_status")
         val documentCompletionStatus: Int
     )

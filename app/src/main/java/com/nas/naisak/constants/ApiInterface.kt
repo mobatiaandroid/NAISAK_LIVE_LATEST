@@ -466,6 +466,8 @@ interface ApiInterface {
         @Part image2: MultipartBody.Part?
     ): Call<SubmitDocResponseModel>
 
+
+
     @Multipart
     @POST("api/v1/parent/trip_document_submit")
     fun uploadSingleDocument(
@@ -486,6 +488,12 @@ interface ApiInterface {
         @Part("student_id") studentId: RequestBody?,
         @Part("card_number") cardNumber: RequestBody?,
         @Part image: MultipartBody.Part?
+    ): Call<SubmitDocResponseModel>
+
+    @POST("api/v1/parent/trip_document_submit")
+    fun uploadmedicalDocuments(
+        @Header("Authorization") token: String?,
+        @Body json: JsonObject?
     ): Call<SubmitDocResponseModel>
 
     @POST("api/v1/parent/trip_history")

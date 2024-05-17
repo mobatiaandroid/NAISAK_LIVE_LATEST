@@ -135,7 +135,9 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
     lateinit var dateTextView: TextView
     lateinit var coordinatorNameTextView: TextView
     lateinit var mActivity: Activity
-    lateinit var coordinatorDetails: TextView
+    lateinit var coordinatorName: TextView
+    lateinit var coordinatorEmail : TextView
+    lateinit var coordinatorMailTextView : TextView
     lateinit var coordinatorPhoneTextView: TextView
     lateinit var tripDescriptionTextView: TextView
     lateinit var submitIntentionButton: Button
@@ -153,6 +155,7 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
     lateinit var coodPhone: String
     lateinit var coodEmail: String
     lateinit var coodWhatsapp: String
+    lateinit var medicalquestion : String
     lateinit var passportFrontURI: Uri
     lateinit var passportBackURI: Uri
     lateinit var visaFrontURI: Uri
@@ -177,6 +180,7 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
     var visaStatus = 0
     var eIDStatus = 0
     var permissionStatus = 0
+    var medicalconsentstatus = 0
 
     lateinit var tripImageAdapter: TripImageAdapter
     lateinit var tripQuestion: String
@@ -194,6 +198,7 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
 
     var choicePreferenceSorted: ArrayList<ChoicePreferenceModel> = ArrayList()
     private var permissionFlag = true
+    private var medicalconsentFlag = true
     private var studentDetailsFLag = true
     private var passportDetailsFLag = true
     private var visaDetailFlag = true
@@ -207,6 +212,8 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
     var visaRequired by Delegates.notNull<Int>()
     var eIDRequired by Delegates.notNull<Int>()
     var consentRequired by Delegates.notNull<Int>()
+    var medicalconsentRequired by Delegates.notNull<Int>()
+
     private lateinit var logoClickImgView: ImageView
     private lateinit var btn_left: ImageView
     private lateinit var heading: TextView
@@ -250,8 +257,10 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
         dateTextView = findViewById(R.id.dateTextView)
         tripImageRecycler = findViewById<RecyclerView>(R.id.tripImageRecycler)
 
+        coordinatorName = findViewById<TextView>(R.id.coordinatorDetails)
         coordinatorNameTextView = findViewById<TextView>(R.id.coordinatorNameTextView)
-        coordinatorDetails = findViewById<TextView>(R.id.coordinatorDetails)
+        coordinatorEmail = findViewById<TextView>(R.id.coordinatorEmail)
+        coordinatorMailTextView = findViewById<TextView>(R.id.coordinatorMailTextView)
         tripDescriptionTextView = findViewById<TextView>(R.id.tripDescriptionTextView)
         submitIntentionButton = findViewById<Button>(R.id.submitIntentionButton)
         submitDetailsButton = findViewById<Button>(R.id.submitDetailsButton)
@@ -487,11 +496,18 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
                    }
                     else
                    {
-                       CommonMethods.showDialogueWithOk(
-                           context,
-                           "You can no longer apply for this trip, as all the slots have been filled.",
-                           "Alert"
-                       )
+                       if (tripStatus == 6) {
+                           showPaymentsPopUp(context)
+                       }
+                       else
+                       {
+                           CommonMethods.showDialogueWithOk(
+                               context,
+                               "You can no longer apply for this trip, as all the slots have been filled.",
+                               "Alert"
+                           )
+                       }
+
                    }
                 }
 
@@ -499,7 +515,7 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
 
 
         }
-        coordinatorDetails.setOnClickListener { showCoordinatorDetailsPopUp() }
+      //  coordinatorDetails.setOnClickListener { showCoordinatorDetailsPopUp() }
         viewInvoice.setOnClickListener {
             val intent = Intent(context, TripInvoiceListingActivity::class.java)
             intent.putExtra("tripID", tripID)
@@ -928,6 +944,7 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
                     visaRequired = response.body()!!.data.lists.documentsRequired.visaDoc
                     eIDRequired = response.body()!!.data.lists.documentsRequired.emiratesDoc
                     consentRequired = response.body()!!.data.lists.documentsRequired.consentDoc
+                    medicalconsentRequired = response.body()!!.data.lists.documentsRequired.medicalconsentDoc
                     tripChoiceExceed = response.body()!!.data.choices_exceed
                     tripPaymentExceed = response.body()!!.data.no_of_trips_exceed
                     if (imagesArray != null) {
@@ -963,19 +980,22 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
                         "Trip Date : " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(response.body()!!.data.lists.tripStartDate) + " To " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(
                             response.body()!!.data.lists.tripEndDate
                         )
-                    coordinatorNameTextView.setText(
-                        response.body()!!.data.lists.coordinatorName
-                    )
+                    coordinatorNameTextView.setText("Co-ordinator Name       :")
+                    coordinatorName.setText(response.body()!!.data.lists.coordinatorName)
+                    coordinatorEmail.setText(response.body()!!.data.lists.coordinatorEmail)
+                    coordinatorMailTextView.setText("Co-ordinator Email        :")
                     coodName = response.body()!!.data.lists.coordinatorName
                     coodPhone = response.body()!!.data.lists.coordinatorPhone
                     coodEmail = response.body()!!.data.lists.coordinatorEmail
                     coodWhatsapp = response.body()!!.data.lists.coordinatorWp
+                    medicalquestion = response.body()!!.data.lists.medicalconsentquestion
                     passportStatus =
                         response.body()!!.data.lists.documentUploadStatus.passportStatus
                     visaStatus = response.body()!!.data.lists.documentUploadStatus.visaStatus
                     eIDStatus = response.body()!!.data.lists.documentUploadStatus.emiratesStatus
                     permissionStatus =
                         response.body()!!.data.lists.documentUploadStatus.consentStatus
+                    medicalconsentstatus = response.body()!!.data.lists.documentUploadStatus.medicalconsentStatus
                     //                        coordinatorDetails.setText(response.body().getResponse().getData().getCoordinatorEmail());
 //                        coordinatorPhoneTextView.setText(response.body().getResponse().getData().getCoordinatorPhone());
 //                        tripDescriptionTextView.setText(response.body().getResponse().getData().getDescription());
@@ -993,55 +1013,116 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
                         invoiceArrayList = response.body()!!.data.lists.invoices
                     }
                     tripStatus = response.body()!!.data.lists.tripStatus
-                    if (tripStatus == 0) {
-                        submitIntentionButton.visibility = View.VISIBLE
-                        submitDetailsButton.visibility = View.GONE
-                        paymentButton.visibility = View.GONE
-                        tripStatusTextView.visibility = View.GONE
-                    } else if (tripStatus == 1) {
-                        submitIntentionButton.visibility = View.GONE
-                        submitDetailsButton.visibility = View.GONE
-                        paymentButton.visibility = View.GONE
-                        tripStatusTextView.visibility = View.VISIBLE
-                        tripStatusTextView.text = "Waiting for approval"
-                    } else if (tripStatus == 2) {
-                        submitIntentionButton.visibility = View.GONE
-                        submitDetailsButton.visibility = View.GONE
-                        paymentButton.visibility = View.GONE
-                        tripStatusTextView.visibility = View.GONE
-                    } else if (tripStatus == 3) {
-                        submitIntentionButton.visibility = View.GONE
-                        submitDetailsButton.visibility = View.VISIBLE
-                        paymentButton.visibility = View.GONE
-                        tripStatusTextView.visibility = View.GONE
-                    } else if (tripStatus == 4) {
-                        submitIntentionButton.visibility = View.GONE
-                        submitDetailsButton.visibility = View.GONE
-                        paymentButton.visibility = View.GONE
-                        tripStatusTextView.visibility = View.VISIBLE
-                        tripStatusTextView.text = "Trip Canceled"
-                    } else if (tripStatus == 5) {
-                        submitIntentionButton.visibility = View.GONE
-                        submitDetailsButton.visibility = View.GONE
-                        paymentButton.visibility = View.VISIBLE
-                        tripStatusTextView.visibility = View.GONE
-                    } else if (tripStatus == 6) {
-                        submitIntentionButton.visibility = View.GONE
-                        submitDetailsButton.visibility = View.GONE
-                        paymentButton.visibility = View.VISIBLE
-                        tripStatusTextView.visibility = View.GONE
-                    } else if (tripStatus == 7) {
-                        submitIntentionButton.visibility = View.GONE
-                        submitDetailsButton.visibility = View.GONE
-                        paymentButton.visibility = View.GONE
-                        viewInvoice.visibility = View.VISIBLE
-                        tripStatusTextView.visibility = View.GONE
-                    } else {
-                        submitIntentionButton.visibility = View.GONE
-                        submitDetailsButton.visibility = View.GONE
-                        paymentButton.visibility = View.GONE
-                        tripStatusTextView.visibility = View.GONE
+                    if (response.body()!!.data.lists.trip_type.equals("international"))
+                    {
+                        if (tripStatus == 0) {
+                            submitIntentionButton.visibility = View.VISIBLE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.GONE
+                        } else if (tripStatus == 1) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.VISIBLE
+                            tripStatusTextView.text = "Waiting for approval"
+                        } else if (tripStatus == 2) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.GONE
+                        } else if (tripStatus == 3) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.VISIBLE
+                            submitDetailsButton.setText("Pay Now")
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.GONE
+                        } else if (tripStatus == 4) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.VISIBLE
+                            tripStatusTextView.text = "Trip Canceled"
+                        } else if (tripStatus == 5) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.VISIBLE
+                            tripStatusTextView.visibility = View.GONE
+                        } else if (tripStatus == 6) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.VISIBLE
+                            tripStatusTextView.visibility = View.GONE
+                        } else if (tripStatus == 7) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            viewInvoice.visibility = View.VISIBLE
+                            tripStatusTextView.visibility = View.GONE
+                        } else {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.GONE
+                        }
+                    }else if (response.body()!!.data.lists.trip_type.equals("domestic"))
+                    {
+                        if (tripStatus == 0) {
+                            submitIntentionButton.visibility = View.VISIBLE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.GONE
+                        } else if (tripStatus == 1) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.VISIBLE
+                            tripStatusTextView.text = "Waiting for approval"
+                        } else if (tripStatus == 2) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.GONE
+                        } else if (tripStatus == 3) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.VISIBLE
+                            submitDetailsButton.setText("Book your Trip")
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.GONE
+                        } else if (tripStatus == 4) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.VISIBLE
+                            tripStatusTextView.text = "Trip Canceled"
+                        } else if (tripStatus == 5) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.VISIBLE
+                            tripStatusTextView.visibility = View.GONE
+                        } else if (tripStatus == 6) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.VISIBLE
+                            tripStatusTextView.visibility = View.GONE
+                        } else if (tripStatus == 7) {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            viewInvoice.visibility = View.VISIBLE
+                            tripStatusTextView.visibility = View.GONE
+                        } else {
+                            submitIntentionButton.visibility = View.GONE
+                            submitDetailsButton.visibility = View.GONE
+                            paymentButton.visibility = View.GONE
+                            tripStatusTextView.visibility = View.GONE
+                        }
                     }
+                    else
+                    {
+
+                    }
+
                 } else {
                 }
 
@@ -1075,6 +1156,7 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
         val passportLinear = dial.findViewById<LinearLayout>(R.id.passportConstraint)
         val visaDetailsLinear = dial.findViewById<LinearLayout>(R.id.visaConstraint)
         val eIDDetailsLinear = dial.findViewById<LinearLayout>(R.id.emirateIDConstraint)
+        val medicalConstraint = dial.findViewById<LinearLayout>(R.id.medicalConstraint)
         val payButtonConstraint = dial.findViewById<ConstraintLayout>(R.id.payNowButtonConstraint)
         val chooseFilePassportFront = dial.findViewById<Button>(R.id.chooseFilePassportFront)
         val passportNumberEditText = dial.findViewById<EditText>(R.id.passportNumberEditText)
@@ -1092,6 +1174,7 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
         val passportTitleTV = dial.findViewById<TextView>(R.id.passportTitleTV)
         val visaTitleTV = dial.findViewById<TextView>(R.id.visaTitleTV)
         val emiratedIDTV = dial.findViewById<TextView>(R.id.emiratedIDTV)
+        val medicalIDTV = dial.findViewById<TextView>(R.id.medicalIDTV)
         val permissiontitle = dial.findViewById<TextView>(R.id.permissiontitle)
         val chooseFileEIDFront = dial.findViewById<Button>(R.id.chooseFileEIDFront)
         val choosefileEIDBack = dial.findViewById<Button>(R.id.choosefileEIDBack)
@@ -1105,6 +1188,31 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
         val visaAdd = dial.findViewById<ImageView>(R.id.visaAdd)
         val emiratesAdd = dial.findViewById<ImageView>(R.id.emiratesAdd)
         val permissionAdd = dial.findViewById<ImageView>(R.id.permissionAdd)
+
+        val medicalconsentAdd = dial.findViewById<ImageView>(R.id.medicalconcentImg)
+        val medicalconsentQuestion = dial.findViewById<TextView>(R.id.medicalconsentQuestion)
+        val medicalconsentEditText = dial.findViewById<EditText>(R.id.medicalconsentEditText)
+        val uploadmedicalDetailsButton = dial.findViewById<Button>(R.id.uploadmedicalDetailsButton)
+
+        val yesNoRadioGroup = dial.findViewById<RadioGroup>(R.id.yesNoRadioGroup)
+        val yesButton = dial.findViewById<RadioButton>(R.id.yesRadio)
+        val noButton = dial.findViewById<RadioButton>(R.id.noRadio)
+        val signhere = dial.findViewById<TextView>(R.id.signhere)
+        yesNoRadioGroup.orientation = LinearLayout.HORIZONTAL
+        medicalconsentQuestion.setText(medicalquestion)
+        yesButton.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                medicalconsentEditText.visibility = View.VISIBLE
+                //                    submitIntentionButton.setVisibility(View.GONE);
+            }
+        }
+        noButton.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                medicalconsentEditText.visibility = View.GONE
+                uploadmedicalDetailsButton.visibility = View.VISIBLE
+            }
+        }
+
 //        permissiontitle.text = permissionSlip
         //        if (tripType.equalsIgnoreCase("1")) {
 //            studentAdd.setVisibility(View.GONE);
@@ -1156,6 +1264,16 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
             permissionAdd.visibility = View.VISIBLE
             permissionLinear.visibility = View.VISIBLE
         }
+
+        if (medicalconsentRequired == 0) {
+            medicalIDTV.visibility = View.GONE
+            medicalconsentAdd.visibility = View.GONE
+            medicalConstraint.visibility = View.GONE
+        } else {
+            medicalIDTV.visibility = View.VISIBLE
+            medicalconsentAdd.visibility = View.VISIBLE
+            medicalConstraint.visibility = View.VISIBLE
+        }
         val rememeberMeImg = dial.findViewById<CheckBox>(R.id.rememeberMeImg)
         val signature_pad: SignaturePad = dial.findViewById(R.id.signature_pad)
         if (passportStatus == 1) {
@@ -1197,6 +1315,17 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
                 permissionLinear.visibility = View.GONE
                 permissionAdd.visibility = View.GONE
                 permissiontitle.visibility = View.GONE
+            }
+        }
+
+        if (medicalconsentstatus == 1) {
+            if (medicalconsentRequired == 1) {
+                medicalConstraint.visibility = View.GONE
+                medicalconsentAdd.setImageResource(R.drawable.participatingsmallicon_new)
+            } else {
+                medicalConstraint.visibility = View.GONE
+                medicalconsentAdd.visibility = View.GONE
+                medicalIDTV.visibility = View.GONE
             }
         }
         payButtonConstraint.setOnClickListener {
@@ -1255,6 +1384,14 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
             }
             permissionFlag = !permissionFlag
         }
+        medicalconsentAdd.setOnClickListener {
+            if (medicalconsentFlag) {
+                medicalConstraint.visibility = View.GONE
+            } else {
+                medicalConstraint.visibility = View.VISIBLE
+            }
+            medicalconsentFlag = !medicalconsentFlag
+        }
         submitConsentButton.setOnClickListener {
             if (signature_pad.isEmpty()) {
                 // Prompt the user to enter a signature
@@ -1269,6 +1406,21 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
                 uploadConsentAPICall(dial, signatureFile)
             }
         }
+
+        uploadmedicalDetailsButton.setOnClickListener {
+
+            if (yesButton.isChecked && (!medicalconsentEditText.text.toString().equals(""))) {
+
+                uploadmedicalConsentApi(
+                    dial,"1", medicalconsentEditText.text.toString())
+            } else if (noButton.isChecked)  {
+
+                uploadmedicalConsentApi(
+                    dial, "2" ,"")
+            } else Toast.makeText(context, "Please provide your Medical Consent!", Toast.LENGTH_SHORT)
+                .show()
+
+        }
         close_btn.setOnClickListener { dial.dismiss() }
         chooseFilePassportFront.setOnClickListener {
             currentPosition = 0
@@ -1277,7 +1429,12 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
         rememeberMeImg.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
                 signature_pad.setVisibility(View.VISIBLE)
-            } else signature_pad.setVisibility(View.GONE)
+                signhere.visibility=View.VISIBLE
+            } else
+            {
+                signature_pad.setVisibility(View.GONE)
+                signhere.visibility=View.GONE
+            }
         }
         chooseFilePassportBack.setOnClickListener {
             currentPosition = 1
@@ -1605,7 +1762,64 @@ class TripDetailsActivityNew : AppCompatActivity(), ChoicePreferenceAdapter.OnIt
             }
         })
     }
+private fun uploadmedicalConsentApi(dial: Dialog, preference: String, reason: String)
+{
 
+    var paramObject = JsonObject()
+    // android.util.Log.e("student name", studentNameTxt.getText().toString())
+    paramObject.addProperty("action", "medical_consent")
+    paramObject.addProperty("trip_item_id", tripID)
+    paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
+    paramObject.addProperty("medical_concern",preference)
+    paramObject.addProperty("medical_concern_reason", reason)
+
+
+    progressDialogP.show()
+    val call: Call<SubmitDocResponseModel> = ApiClient.getClient.uploadmedicalDocuments(
+        "Bearer " + PreferenceManager.getUserCode(context),
+        paramObject
+    )
+    call.enqueue(object : Callback<SubmitDocResponseModel> {
+        override fun onResponse(
+            call: Call<SubmitDocResponseModel>,
+            response: Response<SubmitDocResponseModel>
+        ) {
+            progressDialogP.dismiss()
+            if (response.body()!!.status == 100) {
+                dial.dismiss()
+                Toast.makeText(
+                    this@TripDetailsActivityNew,
+                    "Document successfully submitted.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                passportStatus = response.body()!!.data.documentStatus.passportStatus
+                visaStatus = response.body()!!.data.documentStatus.visaStatus
+                eIDStatus = response.body()!!.data.documentStatus.emiratesStatus
+                permissionStatus = response.body()!!.data.documentStatus.consentStatus
+                medicalconsentstatus = response.body()!!.data.documentStatus.medicalconsentStatus
+                dial.dismiss()
+                if (response.body()!!.data.documentStatus.documentCompletionStatus == 1
+                ) {
+                    getTripDetails(tripID)
+                } else {
+                    showDocumentSubmissionPopUp()
+                }
+            } else {
+                Toast.makeText(
+                    this@TripDetailsActivityNew,
+                    "Document submit failed.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+
+        override fun onFailure(call: Call<SubmitDocResponseModel>, t: Throwable) {
+            progressDialogP.dismiss()
+
+        }
+    })
+
+}
     private fun uploadConsentAPICall(dial: Dialog, signatureFile: File) {
         val requestFile1: RequestBody
         var requestFile2: RequestBody

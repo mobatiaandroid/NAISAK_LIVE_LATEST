@@ -44,6 +44,8 @@ data class TripListResponseModel(
         val totalPrice: String,
         @SerializedName("trip_status")
         val tripStatus: Int,
+        @SerializedName("trip_type")
+        val triptype: String,
         @SerializedName("trip_image")
         val tripImage: ArrayList<String>
     )

@@ -76,28 +76,61 @@ class TripListAdapter(
             holder.tripPreference!!.text = (tripList[position].preference)
         }
         holder.tripBookButton.setTextColor(Color.WHITE)
-        if (tripList[position].tripStatus === 0) {
-            holder.tripBookButton.text = "Book your Trip"
-        } else if (tripList[position].tripStatus === 1) {
-            holder.tripBookButton.text = "Pending"
-        } else if (tripList[position].tripStatus === 2) {
-            holder.tripBookButton.text = "Rejected"
-        } else if (tripList[position].tripStatus === 3) {
-            holder.tripBookButton.text = "Continue"
-        } else if (tripList[position].tripStatus === 4) {
-            holder.tripBookButton.text = "Cancelled"
-        } else if (tripList[position].tripStatus === 5) {
-            holder.tripBookButton.text = "Pay now"
-        } else if (tripList[position].tripStatus === 6) {
-            holder.tripBookButton.text = "Pay now"
-        } else if (tripList[position].tripStatus === 7) {
-            holder.tripBookButton.text = "View Invoice"
-        } else if (tripList[position].tripStatus === 9) {
-            holder.tripBookButton.text = "Expired"
+        if (tripList[position].triptype.equals("international"))
+        {
+            if (tripList[position].tripStatus === 0) {
+                holder.tripBookButton.text = "Book Now"
+            } else if (tripList[position].tripStatus === 1) {
+                holder.tripBookButton.text = "Pending"
+            } else if (tripList[position].tripStatus === 2) {
+                holder.tripBookButton.text = "Rejected"
+            } else if (tripList[position].tripStatus === 3) {
+                holder.tripBookButton.text = "Approved"
+            } else if (tripList[position].tripStatus === 4) {
+                holder.tripBookButton.text = "Cancelled"
+            } else if (tripList[position].tripStatus === 5) {
+                holder.tripBookButton.text = "Pay now"
+            } else if (tripList[position].tripStatus === 6) {
+                holder.tripBookButton.text = "Pay now"
+            } else if (tripList[position].tripStatus === 7) {
+                holder.tripBookButton.text = "Paid"
+            } else if (tripList[position].tripStatus === 9) {
+                holder.tripBookButton.text = "Expired"
+            }
+            else {
+                holder.tripBookButton.text = "Not Available"
+            }
         }
-        else {
-            holder.tripBookButton.text = "Not Available"
+        else if(tripList[position].triptype.equals("domestic"))
+        {
+            if (tripList[position].tripStatus === 0) {
+                holder.tripBookButton.text = "Book Now"
+            } else if (tripList[position].tripStatus === 1) {
+                holder.tripBookButton.text = "Pending"
+            } else if (tripList[position].tripStatus === 2) {
+                holder.tripBookButton.text = "Rejected"
+            } else if (tripList[position].tripStatus === 3) {
+                holder.tripBookButton.text = "Book Now"
+            } else if (tripList[position].tripStatus === 4) {
+                holder.tripBookButton.text = "Cancelled"
+            } else if (tripList[position].tripStatus === 5) {
+                holder.tripBookButton.text = "Pay now"
+            } else if (tripList[position].tripStatus === 6) {
+                holder.tripBookButton.text = "Pay now"
+            } else if (tripList[position].tripStatus === 7) {
+                holder.tripBookButton.text = "Paid"
+            } else if (tripList[position].tripStatus === 9) {
+                holder.tripBookButton.text = "Expired"
+            }
+            else {
+                holder.tripBookButton.text = "Not Available"
+            }
         }
+        else
+        {
+
+        }
+
 
         holder.itemView.setOnClickListener {
             val intent = Intent(context, TripDetailsActivityNew::class.java)

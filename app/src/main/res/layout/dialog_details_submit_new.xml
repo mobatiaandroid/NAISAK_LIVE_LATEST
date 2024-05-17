@@ -568,6 +568,107 @@
 
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/medicalconcentImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/addicon2"
+                    app:layout_constraintBottom_toBottomOf="@+id/medicalIDTV"
+                    app:layout_constraintEnd_toStartOf="@+id/medicalIDTV"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/medicalIDTV">
+
+                </ImageView>
+
+                <com.nas.naisak.customviews.textview.CustomFontTextViewBoldBlack
+                    android:id="@+id/medicalIDTV"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:gravity="center|left"
+                    android:text="Medical consent Details:"
+                    android:textSize="16sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/emiratesAdd"
+                    app:layout_constraintTop_toBottomOf="@id/emirateIDConstraint" />
+
+                <LinearLayout
+                    android:id="@+id/medicalConstraint"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/medicalIDTV">
+
+                    <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                        android:id="@+id/medicalconsentQuestion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+
+                        android:text="Are you willing to join the trip?"
+                        app:layout_constraintBottom_toTopOf="@+id/yesNoRadioGroup"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+                    <RadioGroup
+                        android:id="@+id/yesNoRadioGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toTopOf="@+id/preferenceLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tripIntentionQuestion">
+
+                        <RadioButton
+                            android:id="@+id/yesRadio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:text="Yes" />
+
+                        <RadioButton
+                            android:id="@+id/noRadio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:text="No" />
+                    </RadioGroup>
+                    <EditText
+                        android:id="@+id/medicalconsentEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="16dp"
+                        android:visibility="gone"
+                        android:hint="Reason"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/yesNoRadioGroup" />
+                    <Button
+                        android:id="@+id/uploadmedicalDetailsButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_margin="16dp"
+                        android:background="@drawable/button_blue"
+                        android:text="Submit"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/yesNoRadioGroup" />
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
@@ -649,8 +750,22 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/rememeberMeImg"
                         app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularNoColor
+                    android:id="@+id/signhere"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="Sign Here"
+                    android:layout_marginLeft="16dp"
+                    android:visibility="gone"
+                    android:textColor="@color/red"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearagree"
+                    />
                 <LinearLayout
                     android:id="@+id/linearLayout5"
                     android:layout_width="match_parent"
@@ -661,7 +776,7 @@
                     app:layout_constraintBottom_toTopOf="@+id/submitConsentButton"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/linearagree">
+                    app:layout_constraintTop_toBottomOf="@+id/signhere">
 
                     <com.github.gcacace.signaturepad.views.SignaturePad
                         android:id="@+id/signature_pad"

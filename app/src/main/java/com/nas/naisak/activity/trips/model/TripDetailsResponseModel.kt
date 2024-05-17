@@ -48,8 +48,12 @@ data class TripDetailsResponseModel(
         val coordinatorWp: String,
         @SerializedName("description")
         val description: String,
+        @SerializedName("medical_consent_question")
+        val medicalconsentquestion: String,
         @SerializedName("trip_status")
         val tripStatus: Int,
+        @SerializedName("trip_type")
+        val trip_type: String,
         @SerializedName("documents_required")
         val documentsRequired: DocumentsRequired,
         @SerializedName("installment_details")
@@ -68,7 +72,9 @@ data class TripDetailsResponseModel(
         @SerializedName("emirates_doc")
         val emiratesDoc: Int,
         @SerializedName("consent_doc")
-        val consentDoc: Int
+        val consentDoc: Int,
+        @SerializedName("medical_consent_doc")
+        val medicalconsentDoc: Int
     )
 
     data class InstallmentDetail(
@@ -109,6 +115,8 @@ data class TripDetailsResponseModel(
         val emiratesStatus: Int,
         @SerializedName("consent_status")
         val consentStatus: Int,
+        @SerializedName("medical_consent_status")
+        val medicalconsentStatus: Int,
         @SerializedName("document_completion_status")
         val documentCompletionStatus: Int
     )

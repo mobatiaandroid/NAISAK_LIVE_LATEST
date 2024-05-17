@@ -12,7 +12,8 @@ data class StaffListByStudentResponseModel(
         data class Lists(
             val id: Int?,
             val image_url: String?,
-            val name: String?
+            val name: String?,
+            val subject:String?
         )
     }
 }
