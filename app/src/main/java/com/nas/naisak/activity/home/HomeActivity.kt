@@ -211,15 +211,9 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
                         "Alert"
                     )
                 } else if (position == 10) {
-                    CommonMethods.showDialogueWithOk(
-                        context,
-                        "This Feature is only available for registered users",
-                        "Alert"
-                    )
-                } else if (position == 11) {
                     mFragment = NordAngliaEductaionFragment()
                     replaceFragmentsSelected(position)
-                } else if (position == 12) {
+                } else if (position == 11) {
                     if (ActivityCompat.checkSelfPermission(
                             context,
                             Manifest.permission.ACCESS_FINE_LOCATION
@@ -240,10 +234,12 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
                         mFragment = ContactUsFragment()
                         replaceFragmentsSelected(position)
                     }
-                } else if (position == 13) {
+                } else if (position == 12) {
                     mFragment = SettingsFragment()
                     replaceFragmentsSelected(position)
-                }
+                }/* else if (position == 13) {
+
+                }*/
             } else {
                 if (position == 0) {
                     mFragment = HomeScreenFragment()
@@ -323,21 +319,21 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
                     mFragment = AbsenceEarlyPickUpFragment()
 //                    mFragment = ParentsEssentialsFragment()
                     replaceFragmentsSelected(position)
-                } else if (position == 8) {
+                }/* else if (position == 8) {
 
                     mFragment = ReportsFragment()
 //                    mFragment = ParentsEssentialsFragment()
                     replaceFragmentsSelected(position)
-                } else if (position == 9) {
+                }*/ else if (position == 8) {
 
                     mFragment = TripsFragment()
 //                    mFragment = ParentsEssentialsFragment()
                     replaceFragmentsSelected(position)
-                } else if (position == 10) {
+                } else if (position == 9) {
                     mFragment = ParentsEssentialsFragment()
 //                    mFragment = NordAngliaEductaionFragment()
                     replaceFragmentsSelected(position)
-                } else if (position == 11) {
+                } else if (position == 10) {
                     if (ActivityCompat.checkSelfPermission(
                             context,
                             Manifest.permission.ACCESS_FINE_LOCATION
@@ -359,7 +355,7 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 //                        mFragment = ContactUsFragment()
                         replaceFragmentsSelected(position)
                     }
-                } else if (position == 12) {
+                } else if (position == 11) {
 
                     if (ActivityCompat.checkSelfPermission(
                             context,
@@ -382,7 +378,7 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
                         replaceFragmentsSelected(position)
                     }
 
-                } else if (position == 13) {
+                } else if (position == 12) {
                     mFragment = SettingsFragment()
 
 //                    mFragment = SettingsFragment()
