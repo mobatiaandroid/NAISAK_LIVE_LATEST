@@ -43,7 +43,7 @@
             android:layout_weight="80"
             android:gravity="left|center"
             android:paddingLeft="10dp"
-            android:text="Select a child"
+            android:text="@string/select_a_child"
             android:textSize="16sp" />
 
         <View
@@ -86,7 +86,7 @@
             android:layout_weight=".5"
             android:background="@drawable/event_spinnerfill"
             android:gravity="center"
-            android:text="Registered Absence"
+            android:text="@string/Register_absence"
             android:textColor="@color/black" />
 
         <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
@@ -98,7 +98,7 @@
             android:layout_marginBottom="4dp"
             android:layout_weight=".5"
             android:gravity="center"
-            android:text="Early Pickup"
+            android:text="@string/early_pickup"
             android:textColor="@color/black" />
 
     </LinearLayout>
@@ -112,7 +112,7 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:gravity="center"
-        android:text="App Registered Absences"
+        android:text="@string/app_registered_absence"
         android:textColor="@color/black"
         android:textSize="16dp"
         android:visibility="visible"
@@ -191,7 +191,7 @@
         android:background="@drawable/buttonred_new"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Register New Absence"
+        android:text="@string/register_new_absence"
         android:textColor="@color/white"
         android:textSize="18dp"
         android:visibility="visible"
@@ -240,7 +240,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:gravity="left|center_vertical"
-        android:text="If you need to cancel a registered absence/early pickup please contact reception (phone or email)."
+        android:text="@string/if_you_need_to_cancel_a_absence_earlypickup"
         android:textColor="@color/rel_eight"
         android:textSize="16dp"
         android:visibility="visible"

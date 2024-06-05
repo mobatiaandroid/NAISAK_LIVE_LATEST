@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CIS Doha</string>
+    <string name="loading">تحميل…</string>
+    <string name="no_data">لايوجد بيانات</string>
+    <string name="introduction">مقدمة</string>
+    <string name="no_internet">حدث خطأ في الشبكة. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى لاحقًا.</string>
+
+    <string-array name="navigation_item_reg">
+        <!-- 0 -->
+        <item>بيت</item>
+        <!-- 1 -->
+        <item>تقويم</item>
+        <!-- 2 -->
+        <item>إشعارات</item>
+        <!-- 3 -->
+        <item>مجال الاتصالات</item>
+        <!-- 4 -->
+        <item>اجتماع الأهل</item>
+        <!-- 5 -->
+        <item>صالة عرض</item>
+        <!-- 6 -->
+        <!--        <item>ECA</item>-->
+        <!-- 7 -->
+        <item>المدفوعات</item>
+        <item>الغياب والاستلام المبكر</item>
+
+        <item>التقارير</item>
+        <item>رحلات</item>
+
+        <!-- 8 -->
+        <item>أساسيات الوالدين</item>
+
+        <!-- 9 -->
+        <item>نورد أنجليا
+تعليم
+           </item>
+        <!-- 10 -->
+        <item>اتصل بنا</item>
+        <item>إعدادات</item>
+    </string-array>
+    <string-array name="navigation_item_guest">
+        <!-- 0 -->
+        <item>Home</item>
+        <!-- 1 -->
+        <item>Calendar</item>
+        <!-- 2 -->
+        <item>Notifications</item>
+        <!-- 3 -->
+        <item>Communications</item>
+        <!-- 4 -->
+        <item>Parents Meeting</item>
+        <!-- 5 -->
+        <item>Gallery</item>
+        <!-- 6 -->
+        <!--        <item>ECA</item>-->
+        <!-- 7 -->
+        <item>Payments</item>
+        <item>Absence &amp; Early Pick-Up</item>
+        <item>Reports</item>
+        <item>Trips</item>
+        <!-- 8 -->
+        <item>Parent Essentials</item>
+
+        <!-- 9 -->
+        <item>Nord Anglia Education</item>
+        <!-- 10 -->
+        <item>Contact Us</item>
+        <item>Settings</item>
+    </string-array>
+
+    <string name="add_cal_success">تمت إضافة الحدث إلى تقويم الجهاز</string>
+    <string name="del_cal_success">تمت إزالة الحدث من تقويم الجهاز</string>
+    <string name="del_cal_fail">فشل حذف الحدث</string>
+    <string name="add_all_cal_success">تمت إضافة جميع الأحداث إلى تقويم الجهاز</string>
+    <string name="del_all_cal_success">تمت إزالة جميع الأحداث من تقويم الجهاز</string>
+    <string name="no_evnt_details">لا توجد تفاصيل كافية لإضافتها إلى التقويم</string>
+    <string name="datexpirecontact">انتهى تاريخ الحجز والإلغاء</string>
+    <string name="january">يناير</string>
+    <string name="february">شهر فبراير</string>
+    <string name="march">يمشي</string>
+    <string name="april">أبريل</string>
+    <string name="may">يمكن</string>
+    <string name="june">يونيو</string>
+    <string name="july">يوليو</string>
+    <string name="august">أغسطس</string>
+    <string name="september">سبتمبر</string>
+    <string name="october">اكتوبر</string>
+    <string name="november">شهر نوفمبر</string>
+    <string name="december">ديسمبر</string>
+    <string name="monday">الاثنين</string>
+    <string name="tuesday">يوم الثلاثاء</string>
+    <string name="wednesday">الأربعاء</string>
+    <string name="thursday">يوم الخميس</string>
+    <string name="friday">جمعة</string>
+    <string name="saturday">السبت</string>
+    <string name="sunday">الأحد</string>
+    <string name="jan_short">يناير</string>
+    <string name="feb_short">شهر فبراير</string>
+    <string name="mar_short">يمشي</string>
+    <string name="apr_short">أبريل</string>
+    <string name="may_short">يمكن</string>
+    <string name="jun_short">يونيو</string>
+    <string name="jul_short">يوليو</string>
+    <string name="aug_short">أغسطس</string>
+    <string name="sep_short">سبتمبر</string>
+    <string name="oct_short">اكتوبر</string>
+    <string name="nov_short">شهر نوفمبر</string>
+    <string name="dec_short">ديسمبر</string>
+    <string name="force_update">هناك إصدار أحدث متاح للتنزيل! يرجى تحديث التطبيق من خلال زيارة متجر Google Play</string>
+    <string name="new_version_available">الإصدار الجديد متاح</string>
+    <string name="common_error">لا يمكن الاستمرار. الرجاء معاودة المحاولة في وقت لاحق</string>
+    <string name="hello_blank_fragment">مرحبا جزء فارغ</string>
+    <string name="deltechoicealertques">هل تريد حذف هذا الاختيار؟</string>
+    <string name="enter_valid_email_message">يرجى إدخال البريد الإلكتروني الصحيح.</string>
+    <string name="user_email">البريد الالكتروني للمستخدم</string>
+    <string name="password">كلمة المرور</string>
+    <string name="successfully_logged_in">تم تسجيل الدخول بنجاح.</string>
+    <string name="success">نجاح</string>
+    <string name="notification">إشعار</string>
+    <string name="pending">قيد الانتظار</string>
+    <string name="approved">موافقة</string>
+    <string name="rejected">مرفوض</string>
+    <string name="absence_detail">تفاصيل الغياب</string>
+    <string name="name">اسم</string>
+    <string name="colon">:</string>
+    <string name="class_text">فصل</string>
+    <string name="first_day_of_absence">أول يوم غياب</string>
+    <string name="return_to_school">العودة الى المدرسة</string>
+    <string name="reason_for_absence">سبب الغياب</string>
+    <string name="early_pickup_details">تفاصيل الاستلام المبكر</string>
+    <string name="submit_early_pickup">إرسال الاستلام المبكر</string>
+    <string name="pick_up_by">التقط من قبل</string>
+    <string name="date">تاريخ</string>
+    <string name="time">وقت</string>
+    <string name="if_you_need_to_cancel_a_absence_earlypickup">If you need to cancel a registered absence/early pickup please contact reception (phone or email).</string>
+    <string name="Register_absence">Registered Absence</string>
+    <string name="early_pickup">Early Pickup</string>
+    <string name="day_of_pickup">يوم الاستلام</string>
+    <string name="time_of_pickup">وقت الاستلام</string>
+    <string name="pickup_at">تلتقط في</string>
+    <string name="status">حالة</string>
+    <string name="reason_for_early_pickup">سبب الاستلام المبكر</string>
+    <string name="reason_for_rejection">سبب الرفض</string>
+    <string name="select_first_day_prompt">الرجاء تحديد أول يوم غياب</string>
+    <string name="alert">يُحذًِر</string>
+    <string name="select_return_day_prompt">الرجاء تحديد يوم العودة</string>
+    <string name="enter_reason_prompt">الرجاء إدخال سبب غيابك.</string>
+    <string name="submit_successful_prompt">تم تقديم غيابك بنجاح.</string>
+
+
+    <string name="submit_absence">إرسال الغياب</string>
+    <string name="select_a_child">اختر طفلاً</string>
+    <string name="return_to_school_if_known">العودة إلى المدرسة (إذا كانت معروفة)</string>
+    <string name="submit">يُقدِّم</string>
+    <string name="date_already_registered">تاريخ التسجيل بالفعل!</string>
+    <string name="some_error_occurred">حدث بعض الخطأ!</string>
+    <string name="select_early_pickup_prompt">الرجاء تحديد تاريخ الاستلام المبكر</string>
+    <string name="select_early_pickup_time_prompt">الرجاء تحديد وقت الاستلام الخاص بك</string>
+    <string name="select_early_pickup_person_prompt">الرجاء إدخال اسم شخص الالتقاط</string>
+    <string name="select_early_pickup_reason_prompt">الرجاء إدخال سبب الاستلام المبكر</string>
+    <string name="select_early_pickup_date_prompt">الرجاء تحديد تاريخ الاستلام المبكر</string>
+    <string name="early_pickup_submit_success">تم إرسال طلب الاستلام المبكر بنجاح. يرجى الانتظار للحصول على الموافقة.</string>
+    <string name="upcoming">القادمة</string>
+    <string name="present">حاضر</string>
+    <string name="absent">غائب</string>
+    <string name="no_description">لا يوجد وصف متاح</string>
+    <string name="eca_options">خيارات اللجنة الاقتصادية لأفريقيا</string>
+    <string name="no_student">لم يتم العثور على أي طالب.</string>
+    <string name="fail">يفشل</string>
+    <string name="none">لا أحد</string>
+    <string name="cca_sign_up_closed">الاشتراك في ECA مغلق</string>
+    <string name="eca">ECA</string>
+    <string name="select_eca">حدد اللجنة الاقتصادية لأفريقيا</string>
+    <string name="info">معلومات</string>
+    <string name="select_eca_choice_prompt">الرجاء تحديد ECA أو لا شيء لكل اختيار وكل يوم</string>
+    <string name="select_eca_all_days_prompt">حدد الاختيار لجميع الأيام المتاحة</string>
+    <string name="eca_choice_not_available">اختيار اللجنة الاقتصادية لأفريقيا غير متاح!</string>
+    <string name="confirm">يتأكد</string>
+    <string name="confirm_eca_prompt">هل تريد تأكيد ECA هذا؟</string>
+    <string name="eca_submit_success">يمكنك إجراء تغييرات حتى تاريخ الإغلاق. بعد تاريخ الإغلاق تكون الاختيارات نهائية.</string>
+    <string name="failure">فشل</string>
+    <string name="no_eca">لا تتوفر ECA!</string>
+    <string name="social_media">وسائل التواصل الاجتماعي</string>
+    <string name="gallery_is_empty">المعرض فارغ!</string>
+    <string name="notification_permission_denied">تم رفض إذن الإخطار!</string>
+    <string name="feature_blocked_prompt">هذه الميزة متاحة فقط للمستخدمين المسجلين!</string>
+    <string name="register_success">سجلت بنجاح. يرجى التحقق من البريد الإلكتروني الخاص بك لمزيد من التفاصيل.</string>
+    <string name="forgot_password_success">تم إرسال كلمة المرور بنجاح إلى بريدك الإلكتروني. يرجى المراجعة.</string>
+    <string name="no_app_found">لم يتم العثور على تطبيق لفتح URL!</string>
+    <string name="no_dates">لا توجد تواريخ متاحة!</string>
+    <string name="slot_already_booked">تم حجز الفتحة بالفعل بواسطة مستخدم آخر.</string>
+    <string name="slot_reserved">محجوز فقط - برجاء مراجعة الحجز وتأكيده.</string>
+    <string name="cancel_appointment_prompt">هل تريد إلغاء هذا الموعد؟</string>
+    <string name="slot_unavailable">هذه الفتحة غير متوفرة.</string>
+    <string name="slot_confirmed">لقد تم بالفعل تأكيد الفترة الزمنية الخاصة بك.</string>
+    <string name="slot_booked_message_first">هذه الفتحة محجوزة بواسطتك لأمسية الوالدين. انقر فوق خيار \'إلغاء\' لإلغاء هذا الموعد.</string>
+    <string name="slot_booked_message_second">لقد قمت بالفعل بحجز مكان آخر. إذا كنت ترغب في أخذ موعد في هذا الوقت، يرجى إلغاء الموعد السابق والمحاولة.</string>
+    <string name="require_translator_prompt">هل تحتاج إلى مترجم للاجتماع؟</string>
+    <string name="slot_cancel_success">تم إلغاء الطلب بنجاح!</string>
+    <string name="no_appointments">لا توجد مواعيد متاحة.</string>
+    <string name="slot_cancel_prompt">هل تريد إلغاء هذا الموعد؟</string>
+    <string name="slot_booking_over">انتهى موعد الحجز والإلغاء!</string>
+    <string name="slot_confirm_prompt">هل تريد تأكيد هذا الموعد؟</string>
+    <string name="slot_confirm_success">تم تأكيد الموعد بنجاح.</string>
+    <string name="slot_booking_success">محجوز فقط - يرجى مراجعة الحجز وتأكيده محجوز فقط - يرجى مراجعة الحجز وتأكيده</string>
+    <string name="slot_not_found">لم يتم العثور على فتحة!</string>
+    <string name="select_a_date">حدد تاريخًا:</string>
+    <string name="select_a_slot">حدد فتحة:</string>
+    <string name="student_colon">طالب   :</string>
+    <string name="class_colon">فصل :</string>
+    <string name="staff_colon">طاقم عمل :</string>
+    <string name="choose_a_time_slot">اختر فترة زمنية</string>
+    <string name="information">معلومة</string>
+    <string name="categories">فئات</string>
+    <string name="newsletter">النشرة الإخبارية</string>
+    <string name="payment_details">بيانات الدفع</string>
+    <string name="payment_not_supported">هذا النوع من الدفع غير مدعوم حاليًا.</string>
+    <string name="file_downloaded">تم تنزيل الملف</string>
+    <string name="download">تحميل</string>
+    <string name="trip_status_0">احجز رحلتك</string>
+    <string name="trip_status_1">قيد الانتظار</string>
+    <string name="trip_status_2">مرفوض</string>
+    <string name="trip_status_3">يكمل</string>
+    <string name="trip_status_4">ألغيت</string>
+    <string name="trip_status_5">ادفع الآن</string>
+    <string name="trip_status_6">ادفع الآن</string>
+    <string name="trip_status_7">عرض الفاتورة</string>
+    <string name="trip_status_8">غير متاح</string>
+    <string name="paid">مدفوع</string>
+    <string name="pay">يدفع</string>
+    <string name="trip_status_9">منتهي الصلاحية</string>
+    <string name="no_categories">لا توجد فئات متاحة.</string>
+    <string name="trip_categories">فئات الرحلة</string>
+    <string name="enter_subject">أدخل الموضوع</string>
+    <string name="enter_content">أدخل المحتوى</string>
+    <string name="enter_valid_content">أدخل محتوى صالحًا</string>
+    <string name="enter_valid_subject">أدخل موضوعًا صالحًا</string>
+    <string name="email_invalid">البريد الإلكتروني غير صالح</string>
+    <string name="trip_intention_block">لا يمكنك إرسال أي نوايا أخرى، لأنك وصلت بالفعل إلى الحد الأقصى المسموح به.</string>
+    <string name="trip_slots_filled_block">لم يعد بإمكانك التقديم لهذه الرحلة، حيث تم ملء جميع الخانات.</string>
+    <string name="trip_limit_reached">لا يمكنك إرسال أي دفعات أخرى، لأنك وصلت بالفعل إلى الحد الأقصى لرحلتك.</string>
+    <string name="network_error">حدث خطأ في الشبكة. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى لاحقًا.</string>
+    <string name="credit">ائتمان</string>
+    <string name="debit">دَين</string>
+    <string name="waiting_for_approval">بانتظار الموافقة</string>
+    <string name="trip_cancelled">تم إلغاء الرحلة</string>
+    <string name="upload_documents">يرجى تحميل جميع الوثائق.</string>
+    <string name="enter_signature_prompt">يرجى تقديم توقيعك!</string>
+    <string name="agree_to_terms_prompt">يرجى الموافقة على الشروط والأحكام</string>
+    <string name="enter_passport">الرجاء إدخال رقم جواز السفر.</string>
+    <string name="visa">الرجاء إدخال رقم التأشيرة.</string>
+    <string name="enter_QID">الرجاء إدخال رقم البطاقة الشخصية.</string>
+    <string name="transaction_failed">فشل الاجراء.</string>
+    <string name="enter_visa">الرجاء إدخال رقم التأشيرة.</string>
+    <string name="trip_payment_block">لا يمكنك إرسال أي دفعات أخرى، لأنك وصلت بالفعل إلى الحد الأقصى لرحلتك.</string>
+    <string name="provide_intention_prompt">يرجى تقديم نيتك!</string>
+    <string name="trip_intention_submit_success">تم إرسال النية بنجاح.</string>
+    <string name="trip_intention_already_submitted">النية قدمت بالفعل.</string>
+    <string name="trip_intention_submit_failed">فشل إرسال النية.</string>
+    <string name="document_submit_failed">فشل إرسال المستند.</string>
+    <string name="description">وصف</string>
+    <string name="register_trip">سجل الرحلة</string>
+    <string name="payment">قسط</string>
+    <string name="settings">إعدادات</string>
+    <string name="change_app_settings">تغيير إعدادات التطبيق</string>
+    <string name="terms_of_service">شروط الخدمة</string>
+    <string name="email_us">ارسل لنا عبر البريد الإلكتروني</string>
+    <string name="tutorial">درس تعليمي</string>
+    <string name="logout">تسجيل خروج</string>
+    <string name="change_password">تغيير كلمة المرور</string>
+    <string name="delete_my_account">احذف حسابي</string>
+    <string name="change_password_success">تم تغيير كلمة المرور بنجاح.</string>
+    <string name="reports">التقارير</string>
+    <string name="parent_essentials">أساسيات الوالدين</string>
+</resources>

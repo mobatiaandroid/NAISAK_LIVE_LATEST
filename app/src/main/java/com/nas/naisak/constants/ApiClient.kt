@@ -7,8 +7,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
-    var BASE_URL = "https://core-naisak.nais.qa/"
-  //  var BASE_URL = " http://naisakv2.mobatia.in:8081/"
+    //Live
+   // var BASE_URL = "https://core-naisak.nais.qa/"
+    //Dev
+    var BASE_URL = " http://naisakv2.mobatia.in:8081/"
 
 
     val getClient: ApiInterface

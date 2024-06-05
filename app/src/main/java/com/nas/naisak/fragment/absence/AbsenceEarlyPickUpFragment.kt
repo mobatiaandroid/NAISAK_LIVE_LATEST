@@ -109,7 +109,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
         if (CommonMethods.isInternetAvailable(mContext)) {
             callStudentListApi()
         } else {
-            Toast.makeText(mContext, "Network Error!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mContext, resources.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
             //DialogFunctions.showInternetAlertDialog(mContext)
         }
 
@@ -125,7 +125,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
             absence_btn.setTextColor(Color.BLACK)
             pickup_btn.setBackgroundResource(R.drawable.event_greyfill)
             pickup_btn.setTextColor(Color.BLACK)
-            heading.text = "App Registered Absences"
+            heading.text = resources.getString(R.string.app_registered_absence)
             mAbsenceListView.visibility = View.VISIBLE
             newRequestAbsence.visibility = View.VISIBLE
             mPickupListView.visibility = View.GONE
@@ -139,14 +139,14 @@ class AbsenceEarlyPickUpFragment : Fragment() {
                 callpickuplist_api()
             } else {
 //                DialogFunctions.showInternetAlertDialog(mContext)
-                Toast.makeText(context, "Network Error!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, resources.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
             }
 
             absence_btn.setBackgroundResource(R.drawable.event_greyfill)
             absence_btn.setTextColor(Color.BLACK)
             pickup_btn.setBackgroundResource(R.drawable.event_spinnerfill)
             pickup_btn.setTextColor(Color.BLACK)
-            heading.text = "App Registered Early Pickup"
+            heading.text = resources.getString(R.string.app_registered_early)
             mAbsenceListView.visibility = View.GONE
             newRequestAbsence.visibility = View.GONE
             mPickupListView.visibility = View.VISIBLE
@@ -290,7 +290,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
                             } else {
                                 Toast.makeText(
                                     mContext,
-                                    "No Registered Absence Found",
+                                    resources.getString(R.string.no_registered_absence_found),
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 mAbsenceListView.visibility = View.GONE
@@ -304,13 +304,13 @@ class AbsenceEarlyPickUpFragment : Fragment() {
                             //callStudentLeaveInfo()
                             Toast.makeText(
                                 mContext,
-                                "No Registered Absence Found",
+                                resources.getString(R.string.no_registered_absence_found),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
                         else {
 
-                            Toast.makeText(mContext, "Some Error Occurred!", Toast.LENGTH_SHORT)
+                            Toast.makeText(mContext, resources.getString(R.string.some_error_occurred), Toast.LENGTH_SHORT)
                                 .show()
                         }
 
@@ -374,13 +374,13 @@ class AbsenceEarlyPickUpFragment : Fragment() {
                                 mPickupListView.adapter = pickuplistAdapter
                                 Toast.makeText(
                                     mContext,
-                                    "No Registered Early Pickup Found",
+                                    resources.getString(R.string.no_registered_earlypickup_found),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
 
                         } else {
-                            Toast.makeText(mContext, "Some Error Occurred!", Toast.LENGTH_SHORT)
+                            Toast.makeText(mContext, resources.getString(R.string.some_error_occurred), Toast.LENGTH_SHORT)
                                 .show()
                         }
 
@@ -402,7 +402,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
         studImg = requireView().findViewById<ImageView>(R.id.imagicon)
         studentNameTxt = requireView().findViewById<TextView>(R.id.studentName)
         titleTextView = requireView().findViewById(R.id.titleTextView)
-        titleTextView.text = "Absence & Early Pick-Up"
+        titleTextView.text =resources.getString(R.string.absence_earlypickup)
         newRequestAbsence = requireView().findViewById(R.id.newRequestAbsence)
         newRequestPickup = requireView().findViewById(R.id.newRequestEarly)
         mAbsenceListView = requireView().findViewById(R.id.mAbsenceListView) as RecyclerView
@@ -453,7 +453,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
         newRequestAbsence.setOnClickListener(View.OnClickListener {
             showSuccessmailAlert(
                 mContext,
-                "For planned absences please email your head of school", "Alert"
+                resources.getString(R.string.for_planned_absences_prompt), resources.getString(R.string.alert)
             )
 
 
@@ -587,7 +587,7 @@ class AbsenceEarlyPickUpFragment : Fragment() {
                     if (CommonMethods.isInternetAvailable(mContext)) {
                         callpickuplist_api()
                     } else {
-                        Toast.makeText(mContext, "No internet connection!", Toast.LENGTH_SHORT)
+                        Toast.makeText(mContext, resources.getString(R.string.network_error), Toast.LENGTH_SHORT)
                             .show()
                     }
 

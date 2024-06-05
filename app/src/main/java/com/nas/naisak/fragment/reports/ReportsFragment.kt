@@ -86,7 +86,7 @@ class ReportsFragment : Fragment() {
         if (CommonMethods.isInternetAvailable(mContext)) {
             getStudentList()
         } else {
-            Toast.makeText(mContext, "No internet available!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mContext, resources.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -159,28 +159,28 @@ class ReportsFragment : Fragment() {
                             } else {
 
                                 //CustomStatusDialog();
-                                Toast.makeText(mContext, "No Student Found.", Toast.LENGTH_SHORT)
+                                Toast.makeText(mContext, resources.getString(R.string.no_student), Toast.LENGTH_SHORT)
                                     .show()
                             }
                         } else {
                             CommonMethods.showDialogueWithOk(
                                 mContext,
                                 getString(R.string.common_error),
-                                "Alert"
+                                resources.getString(R.string.alert)
                             )
                         }
                     } else {
                         CommonMethods.showDialogueWithOk(
                             mContext,
                             getString(R.string.common_error),
-                            "Alert"
+                            resources.getString(R.string.alert)
                         )
                     }
                 } else {
                     CommonMethods.showDialogueWithOk(
                         mContext,
                         getString(R.string.common_error),
-                        "Alert"
+                        resources.getString(R.string.alert)
                     )
                 }
             }
@@ -190,7 +190,7 @@ class ReportsFragment : Fragment() {
                 CommonMethods.showDialogueWithOk(
                     mContext,
                     getString(R.string.common_error),
-                    "Alert"
+                    resources.getString(R.string.alert)
                 )
             }
 
@@ -208,7 +208,7 @@ class ReportsFragment : Fragment() {
         reportsRecycler = requireView().findViewById(R.id.recycler_view_list) as RecyclerView
 
 
-        titleTextView.text = "Reports"
+        titleTextView.text = resources.getString(R.string.reports)
 
 
 
@@ -330,15 +330,15 @@ class ReportsFragment : Fragment() {
 
                             CommonMethods.showDialogueWithOk(
                                 mContext,
-                                "No reports available",
-                                "Alert"
+                                resources.getString(R.string.no_reports_available),
+                                resources.getString(R.string.alert)
                             )
                         }
 
                     }
 
                     132 -> {
-                        CommonMethods.showDialogueWithOk(mContext, "No reports available", "Alert")
+                        CommonMethods.showDialogueWithOk(mContext, resources.getString(R.string.no_reports_available), resources.getString(R.string.alert))
                     }
 
                     116 -> {
@@ -351,8 +351,8 @@ class ReportsFragment : Fragment() {
 
                             CommonMethods.showDialogueWithOk(
                                 mContext,
-                                "Something went wrong.Please try again later",
-                                "Alert"
+                                resources.getString(R.string.some_error_occurred),
+                                resources.getString(R.string.alert)
                             )
 
                         }

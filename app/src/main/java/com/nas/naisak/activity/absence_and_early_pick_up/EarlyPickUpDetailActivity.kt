@@ -90,15 +90,15 @@ class EarlyPickUpDetailActivity : AppCompatActivity() {
         reasonRejectionTxt = findViewById(R.id.reasonRejectValue)
 
         if (status_pickup.equals("1")) {
-            status_txt.text = "PENDING"
+            status_txt.text = resources.getString(R.string.pending)
             reasonRejectionLinear.visibility = View.GONE
             reasonRejectionScroll.visibility = View.GONE
         } else if (status_pickup.equals("2")) {
-            status_txt.text = "APPROVED"
+            status_txt.text = resources.getString(R.string.approved)
             reasonRejectionLinear.visibility = View.GONE
             reasonRejectionScroll.visibility = View.GONE
         } else {
-            status_txt.text = "REJECTED"
+            status_txt.text = resources.getString(R.string.rejected)
             reasonRejectionLinear.visibility = View.VISIBLE
             reasonRejectionScroll.visibility = View.VISIBLE
             reasonRejectionTxt.text = reason_for_rejection

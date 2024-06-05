@@ -62,7 +62,7 @@ class NotificationFragment : Fragment() {
         mContext = requireContext()
         titleTextView = view?.findViewById(R.id.titleTextView) as TextView
         noDataImg = view?.findViewById(R.id.noDataImg) as ImageView
-        titleTextView.text = "Notifications"
+        titleTextView.text = (resources.getString(R.string.notifications))
         notificationRecycler = view?.findViewById(R.id.notificationRecycler) as RecyclerView
         progressDialog = view?.findViewById(R.id.progressDialog) as RelativeLayout
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout) as SwipeRefreshLayout
@@ -199,7 +199,7 @@ class NotificationFragment : Fragment() {
 
                         notificationRecycler.visibility = View.GONE
                         noDataImg.visibility = View.VISIBLE
-                        Toast.makeText(mContext, "No Messages Available", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext, resources.getString(R.string.no_message_available), Toast.LENGTH_SHORT).show()
                     }
                 } else if (response.body()!!.status == 116) {
                     PreferenceManager.setUserCode(mContext, "")

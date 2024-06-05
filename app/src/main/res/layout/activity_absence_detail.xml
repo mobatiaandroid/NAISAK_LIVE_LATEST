@@ -68,7 +68,7 @@
             android:gravity="center"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:text="Absence Detail"
+            android:text="@string/absence_detail"
             android:textColor="@color/white"
             android:textSize="17dp" />
 
@@ -113,14 +113,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="45"
-                    android:text="Name"
+                    android:text="@string/name"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=":"
+                    android:text="@string/colon"
                     android:textColor="@color/black" />
 
                 <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
@@ -150,7 +150,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="45"
-                    android:text="Class"
+                    android:text="@string/class_text"
 
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -158,7 +158,7 @@
                 <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=":"
+                    android:text="@string/colon"
                     android:textColor="@color/black" />
 
                 <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
@@ -188,7 +188,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="45"
-                    android:text="First day of absence"
+                    android:text="@string/first_day_of_absence"
 
                     android:textColor="@color/black"
                     android:textSize="14sp" />
@@ -196,7 +196,7 @@
                 <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=":"
+                    android:text="@string/colon"
                     android:textColor="@color/black" />
 
                 <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
@@ -226,14 +226,14 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="45"
-                    android:text="Return to school"
+                    android:text="@string/return_to_school"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
                 <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=":"
+                    android:text="@string/colon"
                     android:textColor="@color/black" />
 
                 <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
@@ -264,7 +264,7 @@
                     android:layout_gravity="top"
                     android:layout_marginLeft="7dp"
                     android:layout_weight="45"
-                    android:text="Reason for absence"
+                    android:text="@string/reason_for_absence"
                     android:textColor="@color/black"
                     android:textSize="14sp" />
 
@@ -272,7 +272,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
-                    android:text=":"
+                    android:text="@string/colon"
                     android:textColor="@color/black" />
 
                 <!--<com.algubra.manager.CustomTextViewNormal

@@ -71,27 +71,27 @@ class SettingsFragment : Fragment() {
         titleTextView = view?.findViewById(R.id.titleTextView) as TextView
         versionText = view?.findViewById(R.id.versionText) as TextView
         notificationRecycler = view?.findViewById(R.id.notificationRecycler) as RecyclerView
-        titleTextView.text="Settings"
+        titleTextView.text=resources.getString(R.string.settings)
         var version:String=BuildConfig.VERSION_NAME
         versionText.text = "V " + version
         linearLayoutManager = LinearLayoutManager(mContext)
         notificationRecycler.layoutManager = linearLayoutManager
         if(PreferenceManager.getUserCode(mContext).equals(""))
         {
-            mSettingsArrayListGuest.add("Change App Settings")
-            mSettingsArrayListGuest.add("Terms of Service")
-            mSettingsArrayListGuest.add("Email Us")
-            mSettingsArrayListGuest.add("Tutorial")
-            mSettingsArrayListGuest.add("Logout")
+            mSettingsArrayListGuest.add(resources.getString(R.string.change_app_settings))
+            mSettingsArrayListGuest.add(resources.getString(R.string.terms_of_service))
+            mSettingsArrayListGuest.add(resources.getString(R.string.email_us))
+            mSettingsArrayListGuest.add(resources.getString(R.string.tutorial))
+            mSettingsArrayListGuest.add(resources.getString(R.string.logout))
         }
         else{
-            mSettingsArrayListRegistered.add("Change App Settings")
-            mSettingsArrayListRegistered.add("Terms of Service")
-            mSettingsArrayListRegistered.add("Email Us")
-            mSettingsArrayListRegistered.add("Tutorial")
-            mSettingsArrayListRegistered.add("Change Password")
-            mSettingsArrayListRegistered.add("Delete My Account")
-            mSettingsArrayListRegistered.add("Logout")
+            mSettingsArrayListRegistered.add(resources.getString(R.string.change_app_settings))
+            mSettingsArrayListRegistered.add(resources.getString(R.string.terms_of_service))
+            mSettingsArrayListRegistered.add(resources.getString(R.string.email_us))
+            mSettingsArrayListRegistered.add(resources.getString(R.string.tutorial))
+            mSettingsArrayListRegistered.add(resources.getString(R.string.change_password))
+            mSettingsArrayListRegistered.add(resources.getString(R.string.delete_my_account))
+            mSettingsArrayListRegistered.add(resources.getString(R.string.logout))
         }
 
         if (PreferenceManager.getUserCode(mContext).equals(""))
@@ -474,7 +474,7 @@ class SettingsFragment : Fragment() {
             imo.hideSoftInputFromWindow(text_confirmpassword.windowToken, 0)
             if (text_currentpassword.text.toString().trim().equals("")) {
                 Toast(mContext).showCustomToastError(
-                    "Please enter Current Password.",
+                    resources.getString(R.string.please_enter_current_psswrd),
                     requireActivity()
                 )
 
@@ -482,14 +482,14 @@ class SettingsFragment : Fragment() {
             } else {
                 if (text_currentnewpassword.text.toString().trim().equals("")) {
                     Toast(mContext).showCustomToastError(
-                        "Please enter New Password.",
+                        resources.getString(R.string.please_enter_new_psswrd),
                         requireActivity()
                     )
                     // CommonMethods.showDialogueWithOk(mContext, "Please enter New Password.", "Alert")
                 } else {
                     if (text_confirmpassword.text.toString().trim().equals("")) {
                         Toast(mContext).showCustomToastError(
-                            "Please enter Current Password.",
+                            resources.getString(R.string.please_enter_current_psswrd),
                             requireActivity()
                         )
                         //  CommonMethods.showDialogueWithOk(mContext, "Please enter Current Password.", "Alert")
@@ -528,7 +528,7 @@ class SettingsFragment : Fragment() {
                         if (response.body()!!.status == 100) {
                             //   showChangePasswordSuccessDialogue(mContext,dialog)
                             Toast(mContext).showCustomToastSuccess(
-                                "Password successfully changed",
+                                resources.getString(R.string.change_password_success),
                                 requireActivity()
                             )
                             dialog.dismiss()
@@ -575,8 +575,8 @@ class SettingsFragment : Fragment() {
         var alertHead = dialog.findViewById(R.id.alertHead) as? TextView
         var text_dialog = dialog.findViewById(R.id.text_dialog) as? TextView
         var btn_Ok = dialog.findViewById(R.id.btn_Ok) as Button
-        text_dialog?.text = "Password successfully changed"
-        alertHead?.text = "Success"
+        text_dialog?.text = resources.getString(R.string.change_password_success)
+        alertHead?.text = resources.getString(R.string.success)
         iconImageView?.setImageResource(R.drawable.tick)
         btn_Ok.setOnClickListener()
         {
@@ -653,7 +653,7 @@ class SettingsFragment : Fragment() {
 
                 } else {
                     if (response.body()!!.status == 101) {
-                        CommonMethods.showDialogueWithOk(com.nas.naisak.fragment.home.mContext, "Some error occured", "Alert")
+                        CommonMethods.showDialogueWithOk(com.nas.naisak.fragment.home.mContext, resources.getString(R.string.some_error_occurred), resources.getString(R.string.alert))
                     }
                 }
 
@@ -720,7 +720,7 @@ class SettingsFragment : Fragment() {
                             CommonMethods.showDialogueWithOk(
                                 mContext,
                                 getString(R.string.common_error),
-                                "Alert"
+                                resources.getString(R.string.alert)
                             )
                         }
 
@@ -733,7 +733,7 @@ class SettingsFragment : Fragment() {
                     CommonMethods.showDialogueWithOk(
                         mContext,
                         getString(R.string.common_error),
-                        "Alert"
+                        resources.getString(R.string.alert)
                     )
                 }
 

@@ -69,7 +69,7 @@
             android:gravity="center"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:text="Submit Absence"
+            android:text="@string/submit_absence"
             android:textColor="@color/white"
             android:textSize="17dp" />
 
@@ -133,7 +133,7 @@
                     android:layout_weight="80"
                     android:gravity="left|center"
                     android:paddingLeft="10dp"
-                    android:text="Select a child"
+                    android:text="@string/select_a_child"
                     android:textSize="14sp" />
 
                 <View
@@ -163,7 +163,7 @@
                 android:clickable="true"
                 android:editable="false"
                 android:gravity="left|center"
-                android:hint="First day of absence"
+                android:hint="@string/first_day_of_absence"
                 android:imeOptions="actionNext"
                 android:paddingLeft="20dp"
 
@@ -184,7 +184,7 @@
                 android:clickable="true"
                 android:editable="false"
                 android:gravity="left|center"
-                android:hint="Return to school if known"
+                android:hint="@string/return_to_school_if_known"
                 android:imeOptions="actionNext"
                 android:paddingLeft="20dp"
                 android:singleLine="true"
@@ -204,7 +204,7 @@
                 android:background="@drawable/edittext_greybg"
                 android:focusableInTouchMode="true"
                 android:gravity="top"
-                android:hint="Reason for absence"
+                android:hint="@string/reason_for_absence"
                 android:imeOptions="actionDone"
                 android:inputType="textMultiLine"
                 android:lines="5"
@@ -230,7 +230,7 @@
                     android:background="@drawable/button_new"
                     android:filterTouchesWhenObscured="true"
                     android:gravity="center"
-                    android:text="Submit"
+                    android:text="@string/submit"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:visibility="visible" />

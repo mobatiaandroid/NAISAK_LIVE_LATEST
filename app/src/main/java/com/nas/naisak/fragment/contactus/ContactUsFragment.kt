@@ -88,7 +88,7 @@ class ContactUsFragment : Fragment(), LocationListener,
         contactusRecycler = view?.findViewById(R.id.contactusRecycler) as RecyclerView
         progress = view?.findViewById(R.id.progress) as ProgressBar
         contactusRecycler.layoutManager = linearLayoutManager
-        titleTextView.text = "Contact Us"
+        titleTextView.text = resources.getString(R.string.contact_us)
         if (Build.VERSION.SDK_INT >= 23 &&
             ContextCompat.checkSelfPermission(
                 mContext,
@@ -191,7 +191,7 @@ class ContactUsFragment : Fragment(), LocationListener,
                         contactusRecycler.visibility = View.VISIBLE
                     } else {
                         contactusRecycler.visibility = View.GONE
-                        CommonMethods.showDialogueWithOk(mContext, "No Data Available.", "Alert")
+                        CommonMethods.showDialogueWithOk(mContext, resources.getString(R.string.no_data), resources.getString(R.string.alert))
 
                     }
                     val contact_usadapter = ContactUsAdapter(contact_uslist)
@@ -199,7 +199,7 @@ class ContactUsFragment : Fragment(), LocationListener,
 
                 } else {
                     if (response.body()!!.status == 101) {
-                        CommonMethods.showDialogueWithOk(mContext, "Some error occured", "Alert")
+                        CommonMethods.showDialogueWithOk(mContext, resources.getString(R.string.some_error_occurred), resources.getString(R.string.alert))
                     }
                 }
                 mapFragment.getMapAsync { googleMap ->

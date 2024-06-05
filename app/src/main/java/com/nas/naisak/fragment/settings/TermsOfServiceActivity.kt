@@ -55,7 +55,7 @@ class TermsOfServiceActivity : AppCompatActivity(){
         logoClickImgView = findViewById(R.id.logoClickImgView)
         progressDialog = findViewById(R.id.progressDialog)
         webView = findViewById(R.id.webView)
-        heading.text = "Terms of Services"
+        heading.text = resources.getString(R.string.terms_of_service)
         btn_left.setOnClickListener(View.OnClickListener {
             finish()
         })

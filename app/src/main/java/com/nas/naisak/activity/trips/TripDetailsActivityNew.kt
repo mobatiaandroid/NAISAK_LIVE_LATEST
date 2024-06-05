@@ -2012,6 +2012,7 @@ private fun uploadmedicalConsentApi(dial: Dialog, preference: String, reason: St
 
 
         val action = RequestBody.create("text/plain".toMediaTypeOrNull(), documentType)
+        Log.e("action", action.toString())
         val student_id = RequestBody.create(
             "text/plain".toMediaTypeOrNull(),
             PreferenceManager.getStudentID(context).toString()

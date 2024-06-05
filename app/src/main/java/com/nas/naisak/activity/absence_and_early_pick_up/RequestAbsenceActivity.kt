@@ -87,7 +87,7 @@ class RequestAbsenceActivity : AppCompatActivity() {
 //            progressDialog.visibility= View.VISIBLE
             callStudentListApi()
         } else {
-            Toast.makeText(mContext, "No internet available!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mContext, resources.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -128,17 +128,18 @@ class RequestAbsenceActivity : AppCompatActivity() {
                 if (enterStratDate.text.equals("")) {
                     CommonMethods.showDialogueWithOk(
                         mContext,
-                        "Please select First day of absence",
-                        "Alert"
+                        resources.getString(R.string.select_first_day_prompt),
+                        resources.getString(R.string.alert)
                     )
                 } else if (enterEndDate.text.equals("")) {
-                    CommonMethods.showDialogueWithOk(mContext, "Please select Return day", "Alert")
+                    CommonMethods.showDialogueWithOk(mContext,  resources.getString(R.string.select_return_day_prompt),
+                        resources.getString(R.string.alert))
                 } else {
                     if (enterMessage.text.toString().trim().equals("")) {
                         CommonMethods.showDialogueWithOk(
                             mContext,
-                            "Please enter reason for your absence",
-                            "Alert"
+                            resources.getString(R.string.enter_reason_prompt),
+                            resources.getString(R.string.alert)
                         )
 
                     } else {
@@ -172,8 +173,8 @@ class RequestAbsenceActivity : AppCompatActivity() {
             if (enterStratDate.text.equals("")) {
                 CommonMethods.showDialogueWithOk(
                     mContext,
-                    "Please select First day of absence",
-                    "Alert"
+                    resources.getString(R.string.select_first_day_prompt),
+                    resources.getString(R.string.alert)
                 )
 
             } else {
@@ -376,8 +377,8 @@ class RequestAbsenceActivity : AppCompatActivity() {
                         if (response.body()!!.status == 100) {
 
                             commonSuccessAlertDialog(
-                                "Success",
-                                "Successfully submitted your absence.",
+                                resources.getString(R.string.success),
+                                resources.getString(R.string.submit_successful_prompt),
                                 mContext
                             )
                             //Toast.makeText(nContext, "Transaction successfully completed", Toast.LENGTH_SHORT).show()
@@ -385,22 +386,22 @@ class RequestAbsenceActivity : AppCompatActivity() {
                         } else if (response.body()!!.status == 136) {
                             CommonMethods.showDialogueWithOk(
                                 mContext,
-                                "Date already registered!",
-                                "Alert"
+                                resources.getString(R.string.date_already_registered),
+                                resources.getString(R.string.alert)
                             )
 
                         } else if (response.body()!!.status == 103) {
                             CommonMethods.showDialogueWithOk(
                                 mContext,
-                                "Some Error Occurred!",
-                                "Alert"
+                                resources.getString(R.string.some_error_occurred),
+                                resources.getString(R.string.alert)
                             )
 
                         } else {
                             CommonMethods.showDialogueWithOk(
                                 mContext,
-                                "Some error occurred!",
-                                "Alert"
+                                resources.getString(R.string.some_error_occurred),
+                                resources.getString(R.string.alert)
                             )
 
 

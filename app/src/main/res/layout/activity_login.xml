@@ -44,7 +44,7 @@
                     android:layout_toRightOf="@+id/userImage"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:hint="USER EMAIL"
+                    android:hint="@string/user_email"
                     android:inputType="textEmailAddress"
                     android:singleLine="true" />
             </RelativeLayout>
@@ -73,7 +73,7 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"
                     android:layout_toRightOf="@+id/passwordImage"
-                    android:hint="PASSWORD"
+                    android:hint="@string/password"
                     android:inputType="textPassword"
                     android:singleLine="true" />
             </RelativeLayout>

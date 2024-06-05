@@ -61,7 +61,7 @@ class GalleryFragmentNew : Fragment() {
 
     private fun initialiseUI() {
         mTitleTextView = mRootView!!.findViewById<View>(R.id.titleTextView) as TextView
-        mTitleTextView!!.text = ClassNameConstants.GALLERY
+        mTitleTextView!!.text = resources.getString(R.string.gallery)
         progressDialog = mRootView!!.findViewById(R.id.progressDialog)
         val aniRotate: Animation =
             AnimationUtils.loadAnimation(mContext, R.anim.linear_interpolator)
@@ -113,23 +113,23 @@ class GalleryFragmentNew : Fragment() {
                                 recycler_view_photos!!.adapter = mPhotosRecyclerviewAdapter
                             }else{
 
-                                Toast.makeText(mContext, "Gallery is empty", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(mContext, resources.getString(R.string.gallery_is_empty), Toast.LENGTH_SHORT).show()
                             }
                         }else{
-                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),resources.getString(R.string.alert))
                         }
                     }else{
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),resources.getString(R.string.alert))
                     }
                 }else{
                     progressDialog.visibility=View.GONE
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),resources.getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<GetAlbumResponseModelnew>, t: Throwable) {
                 progressDialog.visibility=View.GONE
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),resources.getString(R.string.alert))
             }
 
         })

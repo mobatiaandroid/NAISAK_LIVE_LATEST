@@ -95,7 +95,7 @@ class RequestEarlyPickUpActivity : AppCompatActivity() {
 //            progressDialog.visibility= View.VISIBLE
             callStudentListApi()
         } else {
-            Toast.makeText(mContext, "No internet available!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(mContext, resources.getString(R.string.network_error), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -221,22 +221,22 @@ class RequestEarlyPickUpActivity : AppCompatActivity() {
                 if (enterStratDate.text.equals("")) {
                     CommonMethods.showDialogueWithOk(
                         mContext,
-                        "Please select Date of Early Pickup",
-                        "Alert"
+                        resources.getString(R.string.select_early_pickup_date_prompt),
+                        resources.getString(R.string.alert)
                     )
                 } else {
                     if (enterTime.text.equals("")) {
                         CommonMethods.showDialogueWithOk(
                             mContext,
-                            "Please select your Pickup Time",
-                            "Alert"
+                            resources.getString(R.string.select_early_pickup_time_prompt),
+                            resources.getString(R.string.alert)
                         )
                     } else {
                         if (pickupName.text.isEmpty()) {
                             CommonMethods.showDialogueWithOk(
                                 mContext,
-                                "Please enter pickup person name",
-                                "Alert"
+                                resources.getString(R.string.select_early_pickup_person_prompt),
+                                resources.getString(R.string.alert)
                             )
 
 
@@ -245,8 +245,8 @@ class RequestEarlyPickUpActivity : AppCompatActivity() {
                             if (enterMessage.text.isEmpty()) {
                                 CommonMethods.showDialogueWithOk(
                                     mContext,
-                                    "Please enter reason for early pickup",
-                                    "Alert"
+                                    resources.getString(R.string.select_early_pickup_reason_prompt),
+                                    resources.getString(R.string.alert)
                                 )
 
 
@@ -283,8 +283,8 @@ class RequestEarlyPickUpActivity : AppCompatActivity() {
                 if (enterStratDate.text.equals("")) {
                     CommonMethods.showDialogueWithOk(
                         mContext,
-                        "Please select Date of Early Pickup",
-                        "Alert"
+                        resources.getString(R.string.select_early_pickup_date_prompt),
+                        resources.getString(R.string.alert)
                     )
 
 
@@ -430,8 +430,8 @@ class RequestEarlyPickUpActivity : AppCompatActivity() {
                         if (response.body()!!.status == 100) {
 
                             commonSuccessAlertDialog(
-                                "Success",
-                                "Successfully submitted your early pickup request. Please wait for approval.",
+                                resources.getString(R.string.success),
+                                resources.getString(R.string.early_pickup_submit_success),
                                 mContext
                             )
                             //Toast.makeText(nContext, "Transaction successfully completed", Toast.LENGTH_SHORT).show()
@@ -439,14 +439,14 @@ class RequestEarlyPickUpActivity : AppCompatActivity() {
                         } else if (response.body()!!.status == 136) {
                             CommonMethods.showDialogueWithOk(
                                 mContext,
-                                "Date already Registered!",
-                                "Alert"
+                                resources.getString(R.string.date_already_registered),
+                                resources.getString(R.string.alert)
                             )
                         } else {
                             CommonMethods.showDialogueWithOk(
                                 mContext,
-                                "Some Error Occurred",
-                                "Alert"
+                                resources.getString(R.string.some_error_occurred),
+                                resources.getString(R.string.alert)
                             )
                         }
 

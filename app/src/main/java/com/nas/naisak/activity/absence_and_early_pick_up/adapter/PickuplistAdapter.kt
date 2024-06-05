@@ -45,15 +45,15 @@ internal class PickuplistAdapter(
         var status = list.status
         if (status == 1) {
             holder.listStatus.visibility = View.VISIBLE
-            holder.listStatus.text = "PENDING"
+            holder.listStatus.text = Context.resources.getString(R.string.pending)
             //label pending
         } else if (status == 2) {
             holder.listStatus.visibility = View.VISIBLE
-            holder.listStatus.text = "APPROVED"
+            holder.listStatus.text = Context.resources.getString(R.string.approved)
             //label approved
         } else {
             holder.listStatus.visibility = View.VISIBLE
-            holder.listStatus.text = "REJECTED"
+            holder.listStatus.text = Context.resources.getString(R.string.rejected)
             //label rejected
         }
 
