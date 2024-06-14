@@ -52,7 +52,7 @@ class NordAngliaEductaionFragment : Fragment() {
     private fun initialiseUI() {
         mContext = requireContext()
         titleTextView = view?.findViewById(R.id.titleTextView) as TextView
-        titleTextView.text = "Nord Anglia Education"
+        titleTextView.text = getString(R.string.nord_angila_education)
         progressDialog = view?.findViewById(R.id.progressDialog) as RelativeLayout
         webview = view?.findViewById(R.id.webview) as WebView
         webview.settings.javaScriptEnabled = true
@@ -74,7 +74,7 @@ class NordAngliaEductaionFragment : Fragment() {
         progressDialog.visibility= View.VISIBLE
         val token = PreferenceManager.getUserCode(mContext)
         val call: Call<NAEResponseModel> =
-            ApiClient.getClient.naeDetails( "Bearer " + token)
+            ApiClient.getClient.naeDetails( "Bearer " + token, PreferenceManager().getLanguage(mContext)!!)
         call.enqueue(object : Callback<NAEResponseModel> {
             override fun onFailure(call: Call<NAEResponseModel>, t: Throwable) {
                 progressDialog.visibility= View.GONE

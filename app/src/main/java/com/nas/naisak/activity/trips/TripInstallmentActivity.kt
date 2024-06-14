@@ -82,7 +82,7 @@ class TripInstallmentActivity : AppCompatActivity() {
         primaryRecyclerdetails = findViewById(R.id.primaryRecyclerdetails)
         progress = findViewById(R.id.progress)
         primaryRecyclerdetails.layoutManager = linearLayoutManager
-        titleTextView.text = "Installments"
+        titleTextView.text = getString(R.string.installments)
         back.setOnClickListener {
             finish()
         }
@@ -295,6 +295,8 @@ class TripInstallmentActivity : AppCompatActivity() {
        // Log.e("tripID name", tripID)
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(mContext))
         paramObject.addProperty("trip_id", tripID)
+        paramObject.addProperty("language_type", PreferenceManager().getLanguage(mContext!!)!!)
+
         val call: Call<TripDetailsResponseModel> = ApiClient.getClient.tripDetail(
             "Bearer " + PreferenceManager.getUserCode(mContext), paramObject
         )
@@ -315,7 +317,7 @@ class TripInstallmentActivity : AppCompatActivity() {
                     } else {
 //                        val ib_detailsadapter = TripInstallmentsAdapter(mContext, ArrayList())
 //                        primaryRecyclerdetails.adapter = ib_detailsadapter
-                        Toast.makeText(mContext, "No Installments to be Paid", Toast.LENGTH_SHORT)
+                        Toast.makeText(mContext, getString(R.string.no_installments_Paid), Toast.LENGTH_SHORT)
                             .show()
                     }
 
@@ -327,7 +329,7 @@ class TripInstallmentActivity : AppCompatActivity() {
             override fun onFailure(call: Call<TripDetailsResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
                 CommonMethods.showDialogueWithOk(
-                    mContext as Activity, getString(R.string.common_error), "Alert"
+                    mContext as Activity, getString(R.string.common_error), getString(R.string.alert)
                 )
             }
         })

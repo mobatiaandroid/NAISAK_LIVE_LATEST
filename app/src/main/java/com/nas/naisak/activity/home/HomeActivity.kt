@@ -7,6 +7,7 @@ import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.content.res.TypedArray
 import android.graphics.Color
 import android.os.Build
@@ -16,10 +17,12 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.AbsListView
 import android.widget.AdapterView
+import android.widget.CompoundButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ListView
 import android.widget.ProgressBar
+import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
@@ -41,9 +44,11 @@ import com.nas.naisak.constants.AppController
 import com.nas.naisak.constants.CommonMethods
 import com.nas.naisak.constants.MyDragShadowBuilder
 import com.nas.naisak.constants.PreferenceManager
+import com.nas.naisak.constants.PreferenceManagerJava
 import com.nas.naisak.fragment.aboutus.NordAngliaEductaionFragment
 import com.nas.naisak.fragment.absence.AbsenceEarlyPickUpFragment
 import com.nas.naisak.fragment.calendar.CalendarFragment
+import com.nas.naisak.fragment.cca.CCAFragment
 import com.nas.naisak.fragment.communications.CommunicationFragment
 import com.nas.naisak.fragment.contactus.ContactUsFragment
 import com.nas.naisak.fragment.gallerynew.GalleryFragmentNew
@@ -59,6 +64,7 @@ import com.nas.naisak.fragment.trips.TripsFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.Locale
 
 class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
@@ -77,6 +83,8 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
     lateinit var logoClickImgView: ImageView
     lateinit var homelist: ListView
     lateinit var homeprogress:ProgressBar
+    lateinit var lang_switch: Switch
+
     var mFragment: Fragment? = null
     var sPosition: Int = 0
     var previousTriggerTypeNew: Int = 0
@@ -90,6 +98,9 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
         )
         setContentView(R.layout.activity_main)
         Intent.FLAG_ACTIVITY_CLEAR_TASK
+        context = this
+        activity = this
+        loadLocate()
         initializeUI()
         showfragmenthome()
     }
@@ -105,8 +116,7 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initializeUI() {
 
-        context = this
-        activity = this
+
         homelist = findViewById<ListView>(R.id.homelistview)
         drawer_layout = findViewById(R.id.drawer_layout)
         linear_layout = findViewById(R.id.linear_layout)
@@ -266,7 +276,7 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
                 }
                 else if (position == 2) {
-                    mFragment = NotificationFragment()
+                    mFragment = CCAFragment()
                     replaceFragmentsSelected(position)
                 }
                 else if (position == 3 )
@@ -405,6 +415,7 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
         navigation_menu = view.findViewById(R.id.action_bar_back)
         settings_icon = view.findViewById(R.id.action_bar_forward)
+        lang_switch = findViewById<View>(R.id.switchlang) as Switch
         logoClickImgView = view.findViewById(R.id.logoClickImgView)
         settings_icon.visibility = View.INVISIBLE
         homelist.setBackgroundColor(getColor(R.color.split_bg))
@@ -468,10 +479,86 @@ class HomeActivity : AppCompatActivity(), AdapterView.OnItemLongClickListener {
 
             }
         }
+        showChangeLang()
+    }
+    @SuppressLint("ObsoleteSdkInt")
+    fun setLocate(Lang: String) {
+
+        val locale = Locale(Lang)
+
+        Locale.setDefault(locale)
+
+        val config = Configuration()
+
+        config.locale = locale
+        baseContext.resources.updateConfiguration(config, baseContext.resources.displayMetrics)
+        val locale1 = Locale.getDefault().language
+        Log.e("localelang", locale1)
+        PreferenceManager().setLanguage(context, locale1)
+        PreferenceManagerJava.setlanguagejava(context, locale1)
+
+        if (locale1 == "ar") {
+            /* name.gravity = Gravity.RIGHT
+             password.gravity = Gravity.RIGHT*/
+        } else {
+            /* name.gravity = Gravity.LEFT
+             password.gravity = Gravity.LEFT*/
+        }
+
+
+        val editor = getSharedPreferences("Settings", Context.MODE_PRIVATE).edit()
+        editor.putString("My_Lang", Lang)
+        editor.apply()
 
     }
+    fun showChangeLang() {
 
 
+        if (PreferenceManager().getLanguage(context).equals("ar")) {
+            PreferenceManager().setLanguagetype(context, "2")
+
+            lang_switch.isChecked = false
+            /* setLocate("ar")
+             recreate()*/
+        } else if (PreferenceManager().getLanguage(context).equals("en")) {
+            PreferenceManager().setLanguagetype(context, "1")
+
+            lang_switch.isChecked = true
+            /*setLocate("en")
+            recreate()*/
+        }
+        lang_switch.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+
+
+            if (lang_switch.isChecked) {
+                Log.e("english", "english")
+                PreferenceManager().setLanguagetype(context, "1")
+                setLocate("en")
+                restartActivity()
+                lang_switch.isChecked = true
+
+            } else {
+                Log.e("arabic", "arabic")
+                PreferenceManager().setLanguagetype(context, "2")
+                setLocate("ar")
+                restartActivity()
+                lang_switch.isChecked = false
+            }
+        })
+
+
+    }
+    fun loadLocate() {
+        val sharedPreferences = getSharedPreferences("Settings", Activity.MODE_PRIVATE)
+        val language = sharedPreferences.getString("My_Lang", "")
+        setLocate(language.toString())
+    }
+    private fun restartActivity() {
+        val intent = Intent(context, HomeActivity::class.java)
+        startActivity(intent)
+        finish()
+        startActivity(intent)
+    }
     override fun onItemLongClick(
         parent: AdapterView<*>?,
         view: View?,

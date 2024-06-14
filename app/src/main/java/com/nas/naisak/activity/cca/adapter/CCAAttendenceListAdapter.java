@@ -61,19 +61,19 @@ public class CCAAttendenceListAdapter extends  RecyclerView.Adapter<CCAAttendenc
         holder.ccaDate.setText(dateParsingTodd_MMM_yyyy(mSocialMediaModels.get(position).getDateAttend()));
         if (mSocialMediaModels.get(position).getStatusCCA().equalsIgnoreCase("u"))
         {
-            holder.ccaDateStatus.setText("Upcoming");
+            holder.ccaDateStatus.setText(mContext.getString(R.string.upcoming));
             holder.ccaDateStatus.setTextColor(mContext.getResources().getColor(R.color.rel_six));
 
         }
         else  if (mSocialMediaModels.get(position).getStatusCCA().equalsIgnoreCase("p"))
         {
-            holder.ccaDateStatus.setText("Present");
+            holder.ccaDateStatus.setText(mContext.getString(R.string.present));
             holder.ccaDateStatus.setTextColor(mContext.getResources().getColor(R.color.nas_green));
 
 
         } else  if (mSocialMediaModels.get(position).getStatusCCA().equalsIgnoreCase("a"))
         {
-            holder.ccaDateStatus.setText("Absent");
+            holder.ccaDateStatus.setText(mContext.getString(R.string.absent));
             holder.ccaDateStatus.setTextColor(mContext.getResources().getColor(R.color.rel_nine));
 
         }

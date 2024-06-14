@@ -147,11 +147,13 @@ class CalendarListAdapter(
         var iconImageView = dialog.findViewById(R.id.iconImageView) as? ImageView
         var eventType = dialog.findViewById(R.id.eventType) as? TextView
         var eventDate = dialog.findViewById(R.id.eventDate) as? TextView
+        var eventName = dialog.findViewById(R.id.eventName) as? TextView
         var dismiss = dialog.findViewById(R.id.dismiss) as Button
         var linkBtn = dialog.findViewById(R.id.linkBtn) as Button
         var deleteCalendar = dialog.findViewById(R.id.deleteCalendar) as Button
         var addToCalendar = dialog.findViewById(R.id.addToCalendar) as Button
         eventDate?.text =eventDateStr
+        eventName?.text =eventNameStr
         eventType?.text = "( "+eventTypeStr+" )"
         dismiss.setOnClickListener()
         {
@@ -265,12 +267,12 @@ class CalendarListAdapter(
                     //Log.e("It Enters","Fifth Condition")
                     Toast.makeText(
                         mContext,
-                        "Not enough details to add to calendar",
+                        mContext.getString(R.string.no_evnt_details),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             } else {
-                Toast.makeText(mContext, "Event added to device calendar", Toast.LENGTH_SHORT)
+                Toast.makeText(mContext,  mContext.getString(R.string.add_cal_success), Toast.LENGTH_SHORT)
                     .show()
             }
             notifyDataSetChanged()
@@ -291,7 +293,7 @@ class CalendarListAdapter(
                 mCalendarEventModels[eventPosition].id = 0
                 Toast.makeText(
                     mContext,
-                    "Event removed from device calendar", Toast.LENGTH_SHORT
+                    mContext.getString(R.string.del_cal_success), Toast.LENGTH_SHORT
                 ).show()
             }
             dialog.dismiss()
@@ -408,7 +410,7 @@ class CalendarListAdapter(
         )
         if (count == 0) {
             Toast.makeText(
-                mContext,"Event added to device calendar", Toast.LENGTH_SHORT
+                mContext,mContext.getString(R.string.add_cal_success), Toast.LENGTH_SHORT
             ).show()
         }
         /***************** Event: Reminder(with alert) Adding reminder to event  */

@@ -217,6 +217,8 @@ class TripListingActivity : AppCompatActivity() {
         paramObject.addProperty("trip_category_id", categoryID)
         paramObject.addProperty("limit", "100")
         paramObject.addProperty("skip", "0")
+        paramObject.addProperty("language_type", PreferenceManager().getLanguage(context!!)!!)
+
         val call: Call<TripListResponseModel> =
             ApiClient.getClient.tripList("Bearer " + PreferenceManager.getUserCode(context), paramObject)
         call.enqueue(object : Callback<TripListResponseModel> {
@@ -247,7 +249,7 @@ class TripListingActivity : AppCompatActivity() {
                                 tripListRecycler.adapter = tripsCategoryAdapter
                                 Toast.makeText(
                                     this@TripListingActivity,
-                                    "No trips available.",
+                                    getString(R.string.no_trip_available),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
@@ -258,7 +260,7 @@ class TripListingActivity : AppCompatActivity() {
                             tripListRecycler.adapter = tripsCategoryAdapter
                             Toast.makeText(
                                 this@TripListingActivity,
-                                "No trips available.",
+                                getString(R.string.no_trip_available),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -271,7 +273,7 @@ class TripListingActivity : AppCompatActivity() {
                     tripListRecycler.adapter = tripsCategoryAdapter
                     Toast.makeText(
                         this@TripListingActivity,
-                        "No trips available.",
+                        getString(R.string.no_trip_available),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

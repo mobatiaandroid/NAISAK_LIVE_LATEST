@@ -72,7 +72,7 @@ class SocialMediaActivity : AppCompatActivity() {
         twitterButton = findViewById(R.id.twitterButton)
         instagramButton = findViewById(R.id.instagramButton)
         bannerImageViewPager = findViewById(R.id.bannerImageViewPager)
-        titleTextView.text = "Social Media"
+        titleTextView.text = getString(R.string.social_media)
 
         if (CommonMethods.isInternetAvailable(mContext)) {
             callSocialMediaApi()
@@ -146,7 +146,8 @@ class SocialMediaActivity : AppCompatActivity() {
         twitterArrayList=ArrayList()
         instagramArrayList=ArrayList()
         socialMediaArrayList=ArrayList()
-        val call: Call<SocialMediaResponse> = ApiClient.getClient.socialmedia("Bearer "+PreferenceManager.getUserCode(mContext))
+        val call: Call<SocialMediaResponse> = ApiClient.getClient.socialmedia("Bearer "+PreferenceManager.getUserCode(mContext),
+            PreferenceManager().getLanguage(mContext!!)!!)
         call.enqueue(object : Callback<SocialMediaResponse> {
             override fun onFailure(call: Call<SocialMediaResponse>, t: Throwable) {
 
@@ -208,7 +209,7 @@ class SocialMediaActivity : AppCompatActivity() {
 
                 else {
                     if (response.body()!!.status == 101) {
-                        CommonMethods.showDialogueWithOk(mContext, "Some error occured", "Alert")
+                        CommonMethods.showDialogueWithOk(mContext, getString(R.string.some_error_occurred), getString(R.string.alert))
                     }
                 }
             }

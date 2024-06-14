@@ -300,12 +300,14 @@ class ReportsFragment : Fragment() {
         val token = PreferenceManager.getUserCode(mContext)
         val paramObject = JsonObject()
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(mContext))
+        paramObject.addProperty("language_type",PreferenceManager().getLanguage(mContext!!)!!)
+
         val call: Call<ReportsResponseModel> =
             ApiClient.getClient.progressReports("Bearer " + token, paramObject)
         call.enqueue(object : Callback<ReportsResponseModel> {
             override fun onFailure(call: Call<ReportsResponseModel>, t: Throwable) {
                 progressBar.visibility = View.GONE
-                Log.e("Error", t.localizedMessage)
+
             }
 
             override fun onResponse(

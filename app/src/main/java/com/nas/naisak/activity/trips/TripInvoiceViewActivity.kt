@@ -203,7 +203,7 @@ class TripInvoiceViewActivity : AppCompatActivity() {
             override fun onFailure(call: Call<TripInvoiceResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
                 CommonMethods.showDialogueWithOk(
-                    mContext as Activity, getString(R.string.common_error), "Alert"
+                    mContext as Activity, getString(R.string.common_error), getString(R.string.alert)
                 )
             }
         })

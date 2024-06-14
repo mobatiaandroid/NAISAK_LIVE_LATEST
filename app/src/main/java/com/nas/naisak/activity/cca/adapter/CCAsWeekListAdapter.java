@@ -1,6 +1,7 @@
 package com.nas.naisak.activity.cca.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,16 +72,21 @@ public class CCAsWeekListAdapter extends RecyclerView.Adapter<CCAsWeekListAdapte
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.listTxtView.setText(mWeekListModelArrayList.get(position).getWeekDayMMM());
         if (AppController.weekList.get(position).getChoiceStatus().equalsIgnoreCase("0") || AppController.weekList.get(position).getChoiceStatus1().equalsIgnoreCase("0")) {
+            Log.e("yellow","yellow");
             holder.selectionCompletedView.setBackgroundResource(R.drawable.curve_filled_cca_pending);
             holder.linearBg.setBackgroundResource(R.color.white);
             holder.linearChoice.setBackgroundResource(R.color.white);
 
         } else if (AppController.weekList.get(position).getChoiceStatus().equalsIgnoreCase("2") && AppController.weekList.get(position).getChoiceStatus1().equalsIgnoreCase("2")) {
+            Log.e("grey","grey");
+
             holder.selectionCompletedView.setBackgroundResource(R.drawable.curve_filled_cca_not_available);
             holder.linearBg.setBackgroundResource(R.color.light_grey);
             holder.linearChoice.setBackgroundResource(R.color.light_grey);
 
         } else {
+            Log.e("blue","blue");
+
             holder.selectionCompletedView.setBackgroundResource(R.drawable.curve_filled_cca_completed);
 
             holder.linearBg.setBackgroundResource(R.color.white);

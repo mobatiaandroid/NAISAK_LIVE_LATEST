@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.nas.naisak.R
 import com.nas.naisak.activity.cca.model.CCAInfoResponseModel
+import com.nas.naisak.constants.PreferenceManager
 import kotlinx.android.synthetic.main.custom_pdf_adapter_row_new.view.*
 
 class InformationRecyclerAdapter(mContext: Context, mListViewArray: ArrayList<CCAInfoResponseModel.Data.Lists>)
@@ -23,12 +24,18 @@ class InformationRecyclerAdapter(mContext: Context, mListViewArray: ArrayList<CC
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var imageIcon: ImageView
         var pdfTitle: TextView
+        var arrowImgarab : ImageView
+        var arrowImg : ImageView
 //        private val statusLayout: RelativeLayout
 //        private val status: TextView
 
         init {
             imageIcon = view.findViewById<View>(R.id.imageIcon) as ImageView
             pdfTitle = view.findViewById<View>(R.id.pdfTitle) as TextView
+             arrowImgarab  = view.findViewById(R.id.arrowImgarab)as ImageView
+             arrowImg = view.findViewById(R.id.arrowImg)as ImageView
+
+
 //            status = view.findViewById<View>(R.id.status) as TextView
 //            statusLayout = view.findViewById<View>(R.id.statusLayout) as RelativeLayout
         }
@@ -45,6 +52,20 @@ class InformationRecyclerAdapter(mContext: Context, mListViewArray: ArrayList<CC
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
 //        holder.submenu.setText(mnNewsLetterModelArrayList.get(position).getSubmenu());
+        if (PreferenceManager().getLanguage(mContext!!).equals("ar"))
+        {
+
+            holder.itemView.arrowImg.visibility= View.GONE
+            holder.itemView.arrowImgarab.visibility= View.VISIBLE
+
+
+
+        }
+        else
+        {
+            holder.itemView.arrowImg.visibility= View.VISIBLE
+            holder.itemView.arrowImgarab.visibility= View.GONE
+        }
         holder.itemView.pdfTitle.text = mnNewsLetterModelArrayList[position].title
         holder.itemView.imageIcon.visibility = View.GONE
 /*

@@ -41,13 +41,13 @@ var tripsDateTxt: TextView = view.findViewById(R.id.tripsDateTxt)
         if (repoetDetailArray[position].status==1)
         {
             holder.statusLayout.visibility=View.VISIBLE
-            holder.status.text="Paid"
+            holder.status.text=mContext.getString(R.string.paid)
             holder.statusLayout.setBackgroundResource(R.drawable.rect_green)
         }
         else
         {
             holder.statusLayout.visibility=View.VISIBLE
-            holder.status.text="Pay"
+            holder.status.text=mContext.getString(R.string.pay)
             holder.statusLayout.setBackgroundResource(R.drawable.rectangle_blue_update)
         }
 

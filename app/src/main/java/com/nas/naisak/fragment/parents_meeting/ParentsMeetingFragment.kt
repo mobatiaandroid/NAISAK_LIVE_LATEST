@@ -113,26 +113,26 @@ class ParentsMeetingFragment : Fragment() {
                             }else{
                                 progressDialog.visibility=View.GONE
                                 //CustomStatusDialog();
-                                Toast.makeText(mContext, "No Student Found.", Toast.LENGTH_SHORT)
+                                Toast.makeText(mContext, getString(R.string.no_student), Toast.LENGTH_SHORT)
                                     .show()
                             }
                         }else{
                             progressDialog.visibility=View.GONE
-                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                         }
                     }else{
                         progressDialog.visibility=View.GONE
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                     }
                 }else{
                     progressDialog.visibility=View.GONE
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<StudentListReponseModel>, t: Throwable) {
                 progressDialog.visibility=View.GONE
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
             }
 
         })
@@ -150,7 +150,7 @@ class ParentsMeetingFragment : Fragment() {
         selectStudentImgView = requireView().findViewById<View>(R.id.selectStudentImgView) as ImageView
         studentRelative = requireView().findViewById<View>(R.id.studentRelative) as RelativeLayout
         staffRelative = requireView().findViewById<View>(R.id.staffRelative) as RelativeLayout
-        mTitleTextView.setText(ClassNameConstants.PARENTS_MEETING)
+        mTitleTextView.setText(getString(R.string.parents_meeting))
         relativeMain = requireView().findViewById<View>(R.id.relMain) as RelativeLayout
         reviewImageView = requireView().findViewById<View>(R.id.reviewImageView) as ImageView
         infoImg = requireView().findViewById<View>(R.id.infoImg) as ImageView
@@ -172,7 +172,7 @@ class ParentsMeetingFragment : Fragment() {
             if (mListViewStaffArray!!.size > 0) {
                 showStaffList()
             } else {
-                Toast.makeText(mContext, "No Staff Found.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext, getString(R.string.no_staff), Toast.LENGTH_SHORT).show()
             }
         }
         selectStudentImgView.setOnClickListener {
@@ -180,7 +180,7 @@ class ParentsMeetingFragment : Fragment() {
             if (mListViewArray!!.size > 0) {
                 showStudentList()
             } else {
-                Toast.makeText(mContext, "No Student Found.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(mContext, getString(R.string.no_student), Toast.LENGTH_SHORT).show()
             }
         }
         next.setOnClickListener {
@@ -243,7 +243,7 @@ class ParentsMeetingFragment : Fragment() {
                 mClass = mListViewArray!![position].student_class.toString()
                 staffRelative.visibility = View.INVISIBLE
                 selectStaffImgView.setImageResource(R.drawable.addiconinparentsevng)
-                staffNameTV.text = "Staff Name:-"
+                staffNameTV.text =getString(R.string.staff_name)+":-"
                 next.visibility = View.GONE
                 if (!mListViewArray!![position].photo.equals("")) {
                     Glide.with(mContext).load(
@@ -288,21 +288,21 @@ class ParentsMeetingFragment : Fragment() {
 
                                 //CustomStatusDialog();
                                 staffRelative.visibility = View.INVISIBLE
-                                CommonMethods.showDialogueWithOk(mContext,"No staff found","Alert")
+                                CommonMethods.showDialogueWithOk(mContext,getString(R.string.no_staff),getString(R.string.alert))
                             }
                         }else{
-                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                         }
                     }else{
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                     }
                 }else{
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<StaffListByStudentResponseModel>, t: Throwable) {
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
             }
 
         })

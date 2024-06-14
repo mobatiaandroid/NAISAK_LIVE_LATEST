@@ -63,7 +63,7 @@
                             android:maxLines="1"
                             android:textSize="16dp"
 
-                            android:text="Student" />
+                            android:text="@string/Student_nocolon" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -121,7 +121,7 @@
                             android:maxLines="1"
                             android:textSize="16dp"
 
-                            android:text="Class" />
+                            android:text="@string/class_text" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -179,7 +179,7 @@
                             android:maxLines="1"
                             android:textSize="16dp"
 
-                            android:text="Staff" />
+                            android:text="@string/Staff_nocolon" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -277,7 +277,7 @@
                     android:layout_height="wrap_content"
                     android:maxLines="1"
                     android:textSize="16dp"
-                    android:text="Reserved date and time :" />
+                    android:text="@string/reserved_date_and_time" />
 
                 <!--  <com.mobatia.naisapp.manager.CustomFontSansProTextBlackSemiBold
                       android:id="@+id/reserveDateTimeTextView"
@@ -313,7 +313,7 @@
                 android:layout_below="@+id/reserveDateTimeTextView"
 
                 android:layout_toLeftOf="@+id/addTocalendar"
-                android:text="Translator Requested : Yes" />
+                android:text="@string/translator_requested_yes" />
 
             <TextView
                 android:id="@+id/expireDateTimeTextView"

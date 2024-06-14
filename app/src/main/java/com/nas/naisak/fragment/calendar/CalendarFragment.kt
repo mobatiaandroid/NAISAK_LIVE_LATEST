@@ -1151,48 +1151,48 @@ class CalendarFragment  : Fragment() {
             cal[Calendar.DATE] = 5
             cal[Calendar.MONTH] = months[i]
             var month_name = month_date.format(cal.time)
-            if (month_name.equals("January"))
+            if (month_name.equals(R.string.january))
             {
-                month_name= "JAN"
+                month_name= getString(R.string.jan)
             }
-            else  if (month_name.equals("February"))
+            else  if (month_name.equals(R.string.february))
             {
-                month_name= "FEB"
+                month_name=getString(R.string.feb)
             }
-            else  if (month_name.equals("March"))
+            else  if (month_name.equals(R.string.march))
             {
-                month_name= "MAR"
+                month_name= getString(R.string.mar)
             }
-            else  if (month_name.equals("April"))
+            else  if (month_name.equals(R.string.april))
             {
-                month_name= "APR"
+                month_name=getString(R.string.apr)
             }
-            else  if (month_name.equals("May"))
+            else  if (month_name.equals(R.string.may))
             {
-                month_name= "MAY"
+                month_name= getString(R.string.ma)
             }
-            else  if (month_name.equals("June"))
+            else  if (month_name.equals(R.string.june))
             {
-                month_name= "JUN"
+                month_name= getString(R.string.jun)
             }
-            else  if (month_name.equals("July"))
+            else  if (month_name.equals(R.string.july))
             {
-                month_name= "JUL"
+                month_name= getString(R.string.jul)
             }
-            else  if (month_name.equals("August"))
+            else  if (month_name.equals(R.string.august))
             {
-                month_name= "AUG"
+                month_name= getString(R.string.aug)
             }
-            else  if (month_name.equals("September"))
+            else  if (month_name.equals(R.string.september))
             {
-                month_name= "SEP"
+                month_name= getString(R.string.sep)
             }
-            else if (month_name.equals("October")) {
-                month_name = "OCT"
-            } else if (month_name.equals("November")) {
-                month_name = "NOV"
-            } else if (month_name.equals("December")) {
-                month_name = "DEC"
+            else if (month_name.equals(R.string.october)) {
+                month_name = getString(R.string.oct)
+            } else if (month_name.equals(R.string.november)) {
+                month_name = getString(R.string.nov)
+            } else if (month_name.equals(R.string.december)) {
+                month_name = getString(R.string.dec)
             }
             monthValues.add(month_name)
         }
@@ -1260,7 +1260,7 @@ class CalendarFragment  : Fragment() {
         val call: Call<CalendarResponseModel> = ApiClient.getClient.calendar(
             "Bearer " + PreferenceManager.getUserCode(
                 mContext
-            )
+            ),PreferenceManager().getLanguage(mContext)!!
         )
         call.enqueue(object : Callback<CalendarResponseModel> {
             override fun onFailure(call: Call<CalendarResponseModel>, t: Throwable) {
@@ -1378,7 +1378,7 @@ class CalendarFragment  : Fragment() {
 
                 } else {
                     if (response.body()!!.status == 101) {
-                        CommonMethods.showDialogueWithOk(mContext, "Some error occured", "Alert")
+                        CommonMethods.showDialogueWithOk(mContext, getString(R.string.some_error_occurred), getString(R.string.alert))
                     }
                 }
 

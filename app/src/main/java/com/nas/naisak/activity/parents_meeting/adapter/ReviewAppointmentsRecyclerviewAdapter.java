@@ -62,7 +62,7 @@ public class ReviewAppointmentsRecyclerviewAdapter extends RecyclerView.Adapter<
         holder.classNameTV.setText(mVideosModelArrayList.get(position).getClassName());
         holder.staffNameTV.setText(mVideosModelArrayList.get(position).getStaffName());
         if (!(mVideosModelArrayList.get(position).getBook_end_date().trim().equalsIgnoreCase(""))) {
-            holder.expireDateTimeTextView.setText("Confirm/Cancellation closes at " + dateParsingToDdMmmYyyy(mVideosModelArrayList.get(position).getBook_end_date()));
+            holder.expireDateTimeTextView.setText(mContext.getString(R.string.confirm_cancellation_closes) + dateParsingToDdMmmYyyy(mVideosModelArrayList.get(position).getBook_end_date()));
         } else {
             holder.expireDateTimeTextView.setText("");
         }
@@ -77,9 +77,9 @@ public class ReviewAppointmentsRecyclerviewAdapter extends RecyclerView.Adapter<
                     .into(holder.photoImageView);
         }
         if (mVideosModelArrayList.get(position).getTranslator().equalsIgnoreCase("1")) {
-            holder.translatorRequiredTextView.setText("Translator Requested : Yes");
+            holder.translatorRequiredTextView.setText(mContext.getString(R.string.translator_requested_yes));
         } else {
-            holder.translatorRequiredTextView.setText("Translator Requested : No");
+            holder.translatorRequiredTextView.setText(mContext.getString(R.string.translator_requested_yes));
         }
         if (mVideosModelArrayList.get(position).getStatus().equalsIgnoreCase("3") && mVideosModelArrayList.get(position).getBooking_open().equalsIgnoreCase("y")) {
             holder.confirmationImageview.setBackgroundResource(R.drawable.tick_icon);
@@ -96,7 +96,7 @@ public class ReviewAppointmentsRecyclerviewAdapter extends RecyclerView.Adapter<
 
 // holder.confirmAppointment.getBackground().setAlpha(255);
 // holder.cancelAppointmentImg.getBackground().setAlpha(255);
-            System.out.println("1First");
+          //  System.out.println("1First");
 
         } else if (mVideosModelArrayList.get(position).getStatus().equalsIgnoreCase("2") && mVideosModelArrayList.get(position).getBooking_open().equalsIgnoreCase("y")) {
             holder.confirmationImageview.setBackgroundResource(R.drawable.doubtinparticipatingsmallicon);
@@ -171,7 +171,7 @@ public class ReviewAppointmentsRecyclerviewAdapter extends RecyclerView.Adapter<
                                         Uri.parse(mVideosModelArrayList.get(position).getVpml()));
                         mContext.startActivity(viewIntent);
                     }catch (Exception e){
-                        Toast.makeText(mContext, "No app found to open URL", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getString(R.string.no_app_found), Toast.LENGTH_SHORT).show();
                     }
 
                 }

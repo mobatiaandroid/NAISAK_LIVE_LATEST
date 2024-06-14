@@ -72,7 +72,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/external"
                                 android:layout_centerHorizontal="true"
-                                android:text="Pay Here"
+                                android:text="@string/pay_here"
                                 android:textColor="@color/white" />
                         </RelativeLayout>
                         <RelativeLayout
@@ -96,7 +96,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/information"
                                 android:layout_centerHorizontal="true"
-                                android:text="Information"
+                                android:text="@string/information"
                                 android:layout_marginTop="5dp"
                                 android:textColor="@color/white" />
                         </RelativeLayout>
@@ -115,6 +115,13 @@
                             android:layout_alignParentRight="true"
                             android:src="@drawable/mailiconpe"
                             android:visibility="invisible" />
+                        <ImageView
+                            android:id="@+id/sendEmailArab"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_alignParentLeft="true"
+                            android:src="@drawable/mailiconpe"
+                            android:visibility="gone" />
 
                         <com.nas.naisak.customviews.textview.CustomFontTextViewSemiBoldBlack
                             android:id="@+id/descriptionTitle"

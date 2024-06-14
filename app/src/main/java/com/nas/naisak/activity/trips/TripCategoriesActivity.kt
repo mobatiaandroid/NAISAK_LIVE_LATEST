@@ -59,6 +59,7 @@ class TripCategoriesActivity : AppCompatActivity() {
     lateinit var contactEmail: String
     lateinit var back: ImageView
     private lateinit var backRelative: RelativeLayout
+    private lateinit var sendEmailArab:ImageView
 
     //    lateinit var btn_history: ImageView
     lateinit var home: ImageView
@@ -88,7 +89,7 @@ class TripCategoriesActivity : AppCompatActivity() {
     private fun callTripCategories() {
         progressDialogP.show()
         val call: Call<TripCategoriesResponseModel> =
-            ApiClient.getClient.tripCategories("Bearer " + PreferenceManager.getUserCode(context))
+            ApiClient.getClient.tripCategories("Bearer " + PreferenceManager.getUserCode(context),PreferenceManager().getLanguage(context!!)!!)
         call.enqueue(object : Callback<TripCategoriesResponseModel> {
             override fun onFailure(call: Call<TripCategoriesResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
@@ -113,8 +114,25 @@ class TripCategoriesActivity : AppCompatActivity() {
                         descriptionTextView.text = response.body()!!.data.bannerDescription
                     } else descriptionTextView.visibility = View.GONE
                     if (!response.body()!!.data.bannerContactEmail.equals("")) {
+                        if (PreferenceManager().getLanguage(context).equals("ar"))
+                        {
+
+                            sendEmailImageView.visibility = View.GONE
+                            sendEmailArab.visibility = View.VISIBLE
+
+                        }
+                        else
+                        {
+                            sendEmailImageView.visibility = View.VISIBLE
+                            sendEmailArab.visibility = View.GONE
+                        }
                         contactEmail = response.body()!!.data.bannerContactEmail
-                    } else sendEmailImageView.visibility = View.GONE
+                    } else
+                    {
+                        sendEmailImageView.visibility = View.GONE
+                        sendEmailArab.visibility = View.GONE
+
+                    }
                     categoriesList = response.body()!!.data.tripCategories
                     if (categoriesList.size > 0) {
                        // Log.e("Here", "Here")
@@ -124,7 +142,7 @@ class TripCategoriesActivity : AppCompatActivity() {
                      //   Log.e("Here", "not")
                         Toast.makeText(
                             this@TripCategoriesActivity,
-                            "No categories available.",
+                           getString(R.string.no_categories),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -141,7 +159,7 @@ class TripCategoriesActivity : AppCompatActivity() {
 
                 } else {
                     if (response.body()!!.status == 101) {
-                        CommonMethods.showDialogueWithOk(context, "Some error occurred", "Alert")
+                        CommonMethods.showDialogueWithOk(context, getString(R.string.some_error_occurred), getString(R.string.alert))
                     }
                 }
 
@@ -158,11 +176,13 @@ class TripCategoriesActivity : AppCompatActivity() {
         heading = findViewById(R.id.heading)
         btn_left = findViewById(R.id.btn_left)
         logoClickImgView = findViewById(R.id.logoClickImgView)
-        heading.text = "Trip Categories"
+        heading.text = getString(R.string.trip_categories)
         progressDialogP = ProgressBarDialog(context, R.drawable.spinner)
         bannerImageView = findViewById<ImageView>(R.id.bannerImage)
         descriptionTextView = findViewById<TextView>(R.id.descriptionTextView)
         sendEmailImageView = findViewById<ImageView>(R.id.sendEmailImageView)
+        sendEmailArab = findViewById<View>(R.id.sendEmailArab) as ImageView
+
         relativeHeader = findViewById(R.id.relativeHeader)
 //        headermanager = HeaderManager(this@TripCategoriesActivity, tab_type)
 //        headermanager.getHeader(relativeHeader, 6)
@@ -225,13 +245,13 @@ class TripCategoriesActivity : AppCompatActivity() {
             submitButton.setOnClickListener {
                 if (text_dialog.text.toString().trim { it <= ' ' } == "") {
                     val toast = Toast.makeText(
-                        context, "Enter Subject", Toast.LENGTH_SHORT
+                        context, getString(R.string.enter_subject), Toast.LENGTH_SHORT
                     )
                     toast.show()
                 } else {
                     if (text_content.text.toString().trim { it <= ' ' } == "") {
                         val toast = Toast.makeText(
-                            context, "Enter Content", Toast.LENGTH_SHORT
+                            context, getString(R.string.enter_content), Toast.LENGTH_SHORT
                         )
                         toast.show()
                     } else if (contactEmail.matches(EMAIL_PATTERN.toRegex())) {
@@ -252,19 +272,19 @@ class TripCategoriesActivity : AppCompatActivity() {
                                 }
                             } else {
                                 val toast = Toast.makeText(
-                                    context, "Enter valid content", Toast.LENGTH_SHORT
+                                    context, getString(R.string.enter_valid_content), Toast.LENGTH_SHORT
                                 )
                                 toast.show()
                             }
                         } else {
                             val toast = Toast.makeText(
-                                context, "Enter valid subject", Toast.LENGTH_SHORT
+                                context, getString(R.string.enter_valid_subject), Toast.LENGTH_SHORT
                             )
                             toast.show()
                         }
                     } else {
                         val toast = Toast.makeText(
-                            context, "Email Invalid", Toast.LENGTH_SHORT
+                            context, getString(R.string.email_invalid), Toast.LENGTH_SHORT
                         )
                         toast.show()
                     }
@@ -272,5 +292,72 @@ class TripCategoriesActivity : AppCompatActivity() {
             }
             dialog.show()
         }
+        sendEmailArab.setOnClickListener {
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.alert_send_email_dialog)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            val dialogCancelButton = dialog.findViewById<View>(R.id.cancelButton) as Button
+            val submitButton = dialog.findViewById<View>(R.id.submitButton) as Button
+            text_dialog = dialog.findViewById<View>(R.id.text_dialog) as EditText
+            text_content = dialog.findViewById<View>(R.id.text_content) as EditText
+//            progressDialog = dialog.findViewById<View>(R.id.progressdialogg) as ProgressBar
+            dialogCancelButton.setOnClickListener { //   AppUtils.hideKeyBoard(mContext);
+                val imm = context.getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(text_dialog.windowToken, 0)
+                imm.hideSoftInputFromWindow(text_content.windowToken, 0)
+                dialog.dismiss()
+            }
+            submitButton.setOnClickListener {
+                if (text_dialog.text.toString().trim { it <= ' ' } == "") {
+                    val toast = Toast.makeText(
+                        context, getString(R.string.enter_subject), Toast.LENGTH_SHORT
+                    )
+                    toast.show()
+                } else {
+                    if (text_content.text.toString().trim { it <= ' ' } == "") {
+                        val toast = Toast.makeText(
+                            context, getString(R.string.enter_content), Toast.LENGTH_SHORT
+                        )
+                        toast.show()
+                    } else if (contactEmail.matches(EMAIL_PATTERN.toRegex())) {
+                        if (text_dialog.text.toString().trim { it <= ' ' }
+                                .matches(pattern.toRegex())) {
+                            if (text_content.text.toString().trim { it <= ' ' }
+                                    .matches(pattern.toRegex())) {
+                                if (CommonMethods.isInternetAvailable(context)) {
+                                    // TODO sendEmailToStaff(URL_SEND_EMAIL_TO_STAFF, dialog)
+                                } else {
+//                                    AppUtils.showDialogAlertDismiss(
+//                                        context as Activity,
+//                                        "Network Error",
+//                                        getString(R.string.no_internet),
+//                                        R.drawable.nonetworkicon,
+//                                        R.drawable.roundred
+//                                    )
+                                }
+                            } else {
+                                val toast = Toast.makeText(
+                                    context, getString(R.string.enter_valid_content), Toast.LENGTH_SHORT
+                                )
+                                toast.show()
+                            }
+                        } else {
+                            val toast = Toast.makeText(
+                                context, getString(R.string.enter_valid_subject), Toast.LENGTH_SHORT
+                            )
+                            toast.show()
+                        }
+                    } else {
+                        val toast = Toast.makeText(
+                            context, getString(R.string.email_invalid), Toast.LENGTH_SHORT
+                        )
+                        toast.show()
+                    }
+                }
+            }
+            dialog.show()
+        }
+
     }
 }

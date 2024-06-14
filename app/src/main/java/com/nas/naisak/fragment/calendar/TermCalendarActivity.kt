@@ -63,7 +63,7 @@ class TermCalendarActivity : AppCompatActivity(){
         btn_left = findViewById(R.id.btn_left)
         logoClickImgView = findViewById(R.id.logoClickImgView)
         bannerImageViewPager = findViewById(R.id.bannerImageViewPager)
-        heading.text = "Term Calendar"
+        heading.text = getString(R.string.term_calendar)
         recycler_view_list = findViewById(R.id.mTermCalendarRecycler)
         progressDialog = findViewById(R.id.progressDialog)
         linearLayoutManager = LinearLayoutManager(mContext)
@@ -112,7 +112,8 @@ class TermCalendarActivity : AppCompatActivity(){
         termListArrayList= ArrayList()
         progressDialog.visibility=View.VISIBLE
         val token = PreferenceManager.getUserCode(mContext)
-        val call: Call<TermCalendarResponseModel> = ApiClient.getClient.termCalendar("Bearer " + token)
+        val call: Call<TermCalendarResponseModel> = ApiClient.getClient.termCalendar("Bearer " + token,
+            PreferenceManager().getLanguage(mContext)!!)
         call.enqueue(object : Callback<TermCalendarResponseModel> {
             override fun onFailure(call: Call<TermCalendarResponseModel>, t: Throwable) {
                 //Log.e("Error", t.localizedMessage)

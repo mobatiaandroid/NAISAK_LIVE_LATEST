@@ -1,9 +1,12 @@
 package com.nas.naisak.fragment.settings.adapter
 
 import android.content.Context
+import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +18,10 @@ internal class SettingsRecyclerAdapter  (private var notificationList: List<Stri
     internal inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var listTxtTitle: TextView = view.findViewById(R.id.listTxtTitle)
         var txtUser: TextView = view.findViewById(R.id.txtUser)
+        var arrowImg:ImageView= view.findViewById(R.id.arrowImg)
+        var arrowImgarab:ImageView = view.findViewById(R.id.arrowImgarab)
+        var relativeheader: RelativeLayout = view.findViewById(R.id.relativeheader)
+
 
     }
     @NonNull
@@ -27,6 +34,22 @@ internal class SettingsRecyclerAdapter  (private var notificationList: List<Stri
         if (PreferenceManager.getUserLogged(context).equals("1"))
         {
 
+            if (PreferenceManager().getLanguage(context).equals("ar"))
+            {
+
+                holder.arrowImg.visibility= View.GONE
+                holder.arrowImgarab.visibility= View.VISIBLE
+                val layoutParams = holder.relativeheader.layoutParams as ViewGroup.MarginLayoutParams
+                val marginrightInPixels = 16 // Adjust this value according to your requirement
+                layoutParams.rightMargin = marginrightInPixels
+                holder. relativeheader.layoutParams = layoutParams
+                val layoutParamsleft = holder.relativeheader.layoutParams as ViewGroup.MarginLayoutParams
+                val marginLeftInPixels = 0 // Adjust this value according to your requirement
+                layoutParamsleft.leftMargin = marginLeftInPixels
+                holder. relativeheader.layoutParams = layoutParamsleft
+
+
+            }
             if (position==6)
             {
 

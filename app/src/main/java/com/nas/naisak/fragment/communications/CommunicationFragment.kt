@@ -49,6 +49,8 @@ class CommunicationFragment  : Fragment() {
     lateinit var sendEmail: ImageView
     lateinit var descriptionTV: TextView
     lateinit var ContactEmail: String
+    private lateinit var sendEmailArab:ImageView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -75,8 +77,10 @@ class CommunicationFragment  : Fragment() {
         titleTextView = view?.findViewById(R.id.titleTextView) as TextView
         bannerImagePager = requireView().findViewById(R.id.bannerImagePager)
         sendEmail = requireView().findViewById(R.id.sendEmail)
+        sendEmailArab = requireView().findViewById<View>(R.id.sendEmailArab) as ImageView
+
         descriptionTV = requireView().findViewById(R.id.descriptionTV)
-        titleTextView.text = "Communications"
+        titleTextView.text = getText(R.string.communications)
         mListView = requireView().findViewById(R.id.mListView)
         title = requireView().findViewById(R.id.title)
         linearLayoutManager = LinearLayoutManager(mContext)
@@ -124,16 +128,91 @@ class CommunicationFragment  : Fragment() {
                 if (text_dialog.text.toString().trim().equals("")) {
                     CommonMethods.showDialogueWithOk(
                         mContext,
-                        "Please enter your subject",
-                        "Alert"
+                        getString(R.string.please_enter_subject),
+                        getString(R.string.alert)
                     )
 
                 } else {
                     if (text_content.text.toString().trim().equals("")) {
                         CommonMethods.showDialogueWithOk(
                             mContext,
-                            "Please enter your content",
-                            "Alert"
+                            getString(R.string.please_enter_content),
+                            getString(R.string.alert)
+                        )
+
+                    } else {
+                        progressDialog.visibility = View.VISIBLE
+                        val aniRotate: Animation =
+                            AnimationUtils.loadAnimation(mContext, R.anim.linear_interpolator)
+                        progressDialog.startAnimation(aniRotate)
+                        var internetCheck = CommonMethods.isInternetAvailable(mContext)
+                        if (internetCheck) {
+                            callSendEmailToStaffApi(
+                                text_dialog.text.toString().trim(),
+                                text_content.text.toString().trim(),
+                                ContactEmail,
+                                dialog,
+                                progressDialog
+                            )
+
+                        } else {
+                            CommonMethods.showSuccessInternetAlert(mContext)
+                        }
+                    }
+                }
+            }
+            dialog.show()
+        })
+        sendEmailArab.setOnClickListener(View.OnClickListener {
+
+            val dialog = Dialog(mContext)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.alert_send_email_dialog)
+            var iconImageView = dialog.findViewById(R.id.iconImageView) as ImageView
+            var cancelButton = dialog.findViewById(R.id.cancelButton) as Button
+            var submitButton = dialog.findViewById(R.id.submitButton) as Button
+            var text_dialog = dialog.findViewById(R.id.text_dialog) as EditText
+            var text_content = dialog.findViewById(R.id.text_content) as EditText
+            iconImageView.setImageResource(R.drawable.roundemail)
+            text_dialog.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    text_dialog.hint = ""
+                    text_dialog.gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
+                    text_dialog.setPadding(5, 5, 0, 0)
+                } else {
+                    text_dialog.hint = "Enter your subject here..."
+                    text_dialog.gravity = Gravity.CENTER
+                }
+            }
+            text_content.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    text_content.gravity = Gravity.LEFT
+                } else {
+                    text_content.gravity = Gravity.CENTER
+                }
+            }
+
+            cancelButton.setOnClickListener()
+            {
+                dialog.dismiss()
+            }
+            submitButton.setOnClickListener()
+            {
+                if (text_dialog.text.toString().trim().equals("")) {
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        getString(R.string.please_enter_subject),
+                        getString(R.string.alert)
+                    )
+
+                } else {
+                    if (text_content.text.toString().trim().equals("")) {
+                        CommonMethods.showDialogueWithOk(
+                            mContext,
+                            getString(R.string.please_enter_content),
+                            getString(R.string.alert)
                         )
 
                     } else {
@@ -183,7 +262,8 @@ class CommunicationFragment  : Fragment() {
         progressDialog.visibility = View.VISIBLE
         parentsEssentialArrayList= ArrayList()
         parentsEssentialArrayListUse= ArrayList()
-        val call: Call<CommunicationResponseModel> = ApiClient.getClient.communication("Bearer "+ PreferenceManager.getUserCode(mContext))
+        val call: Call<CommunicationResponseModel> = ApiClient.getClient.communication("Bearer "+ PreferenceManager.getUserCode(mContext),
+            PreferenceManager().getLanguage(mContext!!)!!)
         call.enqueue(object : Callback<CommunicationResponseModel> {
             override fun onFailure(call: Call<CommunicationResponseModel>, t: Throwable) {
                 progressDialog.visibility = View.GONE
@@ -214,11 +294,25 @@ class CommunicationFragment  : Fragment() {
                     }
                     if (contactEmail.equals("")) {
                         sendEmail.visibility = View.GONE
+                        sendEmailArab.visibility = View.GONE
                         title.visibility = View.INVISIBLE
                     }
                     else {
-                        sendEmail.visibility = View.VISIBLE
                         title.visibility = View.VISIBLE
+                        if (PreferenceManager().getLanguage(mContext).equals("ar"))
+                        {
+
+                            sendEmail.visibility = View.GONE
+                            sendEmailArab.visibility = View.VISIBLE
+
+                        }
+                        else
+                        {
+                            sendEmail.visibility = View.VISIBLE
+                            sendEmailArab.visibility = View.GONE
+                        }
+                        //sendEmail.visibility = View.VISIBLE
+
                     }
                     if (description.equals(""))
                     {
@@ -237,7 +331,7 @@ class CommunicationFragment  : Fragment() {
                             if (i==0)
                             {
                                model.id=1001
-                               model.title="Social Media"
+                               model.title=getString(R.string.social_media)
                                model.url=""
                             }
                             else{
@@ -252,7 +346,7 @@ class CommunicationFragment  : Fragment() {
                     } else {
                         var model = CommunicationListUseModel()
                         model.id = 1001
-                        model.title = "Social Media"
+                        model.title = getString(R.string.social_media)
                         model.url = ""
                         parentsEssentialArrayListUse.add(model)
                     }
@@ -271,7 +365,7 @@ class CommunicationFragment  : Fragment() {
 
                 } else {
                     if (response.body()!!.status == 101) {
-                        CommonMethods.showDialogueWithOk(mContext, "Some error occured", "Alert")
+                        CommonMethods.showDialogueWithOk(mContext, getString(R.string.some_error_occurred), getString(R.string.alert))
                     }
                 }
 
@@ -312,8 +406,8 @@ class CommunicationFragment  : Fragment() {
                                 dialog.dismiss()
                                 CommonMethods.showDialogueWithOk(
                                     mContext,
-                                    "Successfully send the email.",
-                                    "Success"
+                                    getString(R.string.email_success),
+                                    getString(R.string.success)
                                 )
                                 //dialog.dismiss()
 

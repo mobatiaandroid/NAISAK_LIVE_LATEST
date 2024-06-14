@@ -264,7 +264,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                 ) {
                     JsonConstants.EAP
                 } else {
-                    ClassNameConstants.CALENDAR
+                    getString(R.string.calendar)
                 }
             relTxtone.text = relTwoStr
             relTxtone.setTextColor(ContextCompat.getColor(mContext, R.color.white))
@@ -424,7 +424,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
                 ) {
                     JsonConstants.EAP
                 } else {
-                    ClassNameConstants.PARENTS_MEETING
+                    getString(R.string.parents_meeting)
                 }
             relTxttwo.text = relTwoStr
             relTxttwo.setTextColor(ContextCompat.getColor(mContext, R.color.white))
@@ -586,7 +586,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             ) {
                 JsonConstants.EAP
             } else {
-                ClassNameConstants.TRIPS
+               getString(R.string.trips)
             }
             relTxtthree.text = relTwoStr
             relTxtthree.setTextColor(ContextCompat.getColor(mContext, R.color.white))
@@ -751,7 +751,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             ) {
                 JsonConstants.EAP
             } else {
-                ClassNameConstants.COMMUNICATIONS
+                getString(R.string.communications)
             }
             relTxtfour.text = relTwoStr
             relTxtfour.setTextColor(ContextCompat.getColor(mContext, R.color.white))
@@ -912,7 +912,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             ) {
                 JsonConstants.EAP
             } else {
-                ClassNameConstants.NOTIFICATIONS
+                getString(R.string.notification)
             }
             relTxtfive.text = relTwoStr
             relTxtfive.setTextColor(ContextCompat.getColor(mContext, R.color.white))
@@ -1075,7 +1075,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             ) {
                 JsonConstants.EAP
             } else {
-                ClassNameConstants.PARENT_ESSENTIALS
+                getString(R.string.parent_essentials)
             }
             relTxtsix.text = relTwoStr
             relTxtsix.setTextColor(ContextCompat.getColor(mContext, R.color.white))
@@ -1238,7 +1238,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             ) {
                 JsonConstants.EAP
             } else {
-                ClassNameConstants.GALLERY
+                getString(R.string.gallery)
             }
             relTxtseven.text = relTwoStr
             relTxtseven.setTextColor(ContextCompat.getColor(mContext, R.color.white))
@@ -1404,7 +1404,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             ) {
                 JsonConstants.EAP
             } else {
-                ClassNameConstants.PAYMENT
+                getString(R.string.payments)
             }
             relTxteight.text = relTwoStr
             relTxteight.setTextColor(ContextCompat.getColor(mContext, R.color.white))
@@ -1570,7 +1570,7 @@ class HomeScreenFragment : Fragment(), View.OnClickListener {
             ) {
                 JsonConstants.EAP
             } else {
-                ClassNameConstants.ABOUT_US
+               getString(R.string.nord_angila_education)
             }
             reltxtnine.text = relTwoStr
             reltxtnine.setTextColor(ContextCompat.getColor(mContext, R.color.white))

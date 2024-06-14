@@ -89,25 +89,25 @@ class ParentsMeetingCalendarActivity: AppCompatActivity() {
 
                                 //CustomStatusDialog();
                                 calendarView!!.setMonthPrevNextVisibility(1)
-                                Toast.makeText(mContext, "No Dates Available", Toast.LENGTH_SHORT)
+                                Toast.makeText(mContext, getString(R.string.no_dates), Toast.LENGTH_SHORT)
                                     .show()
 
                             }
                         }else{
-                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                         }
                     }else{
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                     }
                 }else{
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<AllottedDatesResponseModel>, t: Throwable) {
                 progressBar.visibility = View.GONE
 
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
             }
 
         })

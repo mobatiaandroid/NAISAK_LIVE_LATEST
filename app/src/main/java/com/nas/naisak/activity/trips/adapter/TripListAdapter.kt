@@ -1,14 +1,17 @@
 package com.nas.naisak.activity.trips.adapter
 
+import android.app.ActionBar
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +21,8 @@ import com.nas.naisak.R
 import com.nas.naisak.activity.trips.TripDetailsActivityNew
 import com.nas.naisak.activity.trips.model.TripListResponseModel
 import com.nas.naisak.constants.CommonMethods
+import com.nas.naisak.constants.PreferenceManager
+import com.nas.naisak.fragment.home.mContext
 
 
 class TripListAdapter(
@@ -36,6 +41,9 @@ class TripListAdapter(
         var tripBookButton: Button
         var tripPreference: TextView? = null
         var endateTextview: TextView
+        var endadteTextviewArab : TextView
+        var bookEndLinear : LinearLayout
+        var bookEndLinearArab : LinearLayout
 
 
         init {
@@ -46,6 +54,9 @@ class TripListAdapter(
             tripBookButton = view.findViewById(R.id.bookNowButton)
             tripPreference = view.findViewById(R.id.choicePreference)
             endateTextview = view.findViewById(R.id.endateTextview)
+            endadteTextviewArab =  view.findViewById(R.id.endateTextviewarab)
+            bookEndLinear = view.findViewById(R.id.bookEndLinear)
+            bookEndLinearArab = view.findViewById(R.id.bookEndLinearArab)
 
 
         }
@@ -79,51 +90,51 @@ class TripListAdapter(
         if (tripList[position].triptype.equals("international"))
         {
             if (tripList[position].tripStatus === 0) {
-                holder.tripBookButton.text = "Book Now"
+                holder.tripBookButton.text = mContext.getString(R.string.book_now)
             } else if (tripList[position].tripStatus === 1) {
-                holder.tripBookButton.text = "Pending"
+                holder.tripBookButton.text = mContext.getString(R.string.trip_status_1)
             } else if (tripList[position].tripStatus === 2) {
-                holder.tripBookButton.text = "Rejected"
+                holder.tripBookButton.text = mContext.getString(R.string.trip_status_2)
             } else if (tripList[position].tripStatus === 3) {
-                holder.tripBookButton.text = "Approved"
+                holder.tripBookButton.text = mContext.getString(R.string.trip_approved)
             } else if (tripList[position].tripStatus === 4) {
-                holder.tripBookButton.text = "Cancelled"
+                holder.tripBookButton.text =  mContext.getString(R.string.trip_status_4)
             } else if (tripList[position].tripStatus === 5) {
-                holder.tripBookButton.text = "Pay now"
+                holder.tripBookButton.text =  mContext.getString(R.string.trip_status_5)
             } else if (tripList[position].tripStatus === 6) {
-                holder.tripBookButton.text = "Pay now"
+                holder.tripBookButton.text =  mContext.getString(R.string.trip_status_6)
             } else if (tripList[position].tripStatus === 7) {
-                holder.tripBookButton.text = "Paid"
+                holder.tripBookButton.text =  mContext.getString(R.string.paid)
             } else if (tripList[position].tripStatus === 9) {
-                holder.tripBookButton.text = "Expired"
+                holder.tripBookButton.text =  mContext.getString(R.string.trip_status_9)
             }
             else {
-                holder.tripBookButton.text = "Not Available"
+                holder.tripBookButton.text =  mContext.getString(R.string.trip_status_8)
             }
         }
         else if(tripList[position].triptype.equals("domestic"))
         {
             if (tripList[position].tripStatus === 0) {
-                holder.tripBookButton.text = "Book Now"
+                holder.tripBookButton.text =  mContext.getString(R.string.book_now)
             } else if (tripList[position].tripStatus === 1) {
-                holder.tripBookButton.text = "Pending"
+                holder.tripBookButton.text = mContext.getString(R.string.trip_status_1)
             } else if (tripList[position].tripStatus === 2) {
-                holder.tripBookButton.text = "Rejected"
+                holder.tripBookButton.text = mContext.getString(R.string.trip_status_2)
             } else if (tripList[position].tripStatus === 3) {
-                holder.tripBookButton.text = "Book Now"
+                holder.tripBookButton.text =  mContext.getString(R.string.book_now)
             } else if (tripList[position].tripStatus === 4) {
-                holder.tripBookButton.text = "Cancelled"
+                holder.tripBookButton.text =  mContext.getString(R.string.trip_cancelled)
             } else if (tripList[position].tripStatus === 5) {
-                holder.tripBookButton.text = "Pay now"
+                holder.tripBookButton.text =  mContext.getString(R.string.trip_status_5)
             } else if (tripList[position].tripStatus === 6) {
-                holder.tripBookButton.text = "Pay now"
+                holder.tripBookButton.text =  mContext.getString(R.string.trip_status_6)
             } else if (tripList[position].tripStatus === 7) {
-                holder.tripBookButton.text = "Paid"
+                holder.tripBookButton.text =  mContext.getString(R.string.paid)
             } else if (tripList[position].tripStatus === 9) {
-                holder.tripBookButton.text = "Expired"
+                holder.tripBookButton.text =  mContext.getString(R.string.trip_status_9)
             }
             else {
-                holder.tripBookButton.text = "Not Available"
+                holder.tripBookButton.text =  mContext.getString(R.string.trip_status_8)
             }
         }
         else
@@ -150,11 +161,31 @@ class TripListAdapter(
 //            showPaymentsPopUp(context)
             //                showIntentionPopUp();
         }
-        holder.tripPriceTextView.setText(tripList[position].totalPrice + " QAR")
-        holder.endateTextview.setText(CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(tripList[position].registrationEndDate))
+        if (PreferenceManager().getLanguage(mContext).equals("ar"))
+        {
+            holder.bookEndLinear.visibility=View.GONE
+            holder.bookEndLinearArab.visibility=View.VISIBLE
+            val params: LinearLayout.LayoutParams = LinearLayout.LayoutParams(
+                ActionBar.LayoutParams.WRAP_CONTENT, ActionBar.LayoutParams.WRAP_CONTENT
+            )
+            params.gravity = Gravity.RIGHT
+
+           holder. tripDateTextView.setLayoutParams(params)
+          
+            holder.endadteTextviewArab.setText(CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(tripList[position].registrationEndDate))
+
+        }
+        else
+        {
+            holder.bookEndLinear.visibility=View.VISIBLE
+            holder.bookEndLinearArab.visibility=View.GONE
+            holder.endateTextview.setText(CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(tripList[position].registrationEndDate))
+
+        }
+        holder.tripPriceTextView.setText(tripList[position].totalPrice +  mContext.getString(R.string.aed))
 
         holder.tripDateTextView.setText(
-            CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(tripList[position].tripStartDate) + " to " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(
+            CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(tripList[position].tripStartDate) +  mContext.getString(R.string.to) + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(
                 tripList[position].tripEndDate
             )
         )

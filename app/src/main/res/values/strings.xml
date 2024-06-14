@@ -3,6 +3,8 @@
     <string name="loading">Loading&#8230;</string>
     <string name="null_value"></string>
     <string name="no_data">No data</string>
+    <string name="no_data_available">No data Available</string>
+
     <string name="introduction">Introduction:</string>
     <string name="no_internet">Network error occurred. Please check your internet connection and try again later</string>
 
@@ -13,6 +15,10 @@
     <string name="parents_meeting">Parents Meeting</string>
     <string name="gallery">Gallery</string>
     <string name="payments">Payments</string>
+    <string name="trips">Trips</string>
+    <string name="nord_angila_education">Nord Anglia Education</string>
+
+
     <string-array name="navigation_item_reg">
         <!-- 0 -->
         <item>Home</item>
@@ -297,6 +303,8 @@
     <string name="october">October</string>
     <string name="november">November</string>
     <string name="december">December</string>
+
+
     <string name="monday">MON</string>
     <string name="tuesday">TUE</string>
     <string name="wednesday">WED</string>
@@ -304,6 +312,17 @@
     <string name="friday">FRI</string>
     <string name="saturday">SAT</string>
     <string name="sunday">SUN</string>
+
+    <string name="mon">Monday</string>
+    <string name="tue">Tuesday</string>
+    <string name="wed">Wednesday</string>
+    <string name="thur">Thursday</string>
+    <string name="fri">Friday</string>
+    <string name="sat">Saturday</string>
+    <string name="sun">Sunday</string>
+
+
+
     <string name="jan_short">JAN</string>
     <string name="feb_short">FEB</string>
     <string name="mar_short">MAR</string>
@@ -360,14 +379,14 @@
     <string name="early_pickup">Early Pickup</string>
     <string name="register_new_absence">Register New Absence</string>
     <string name="app_registered_absence">App Registered Absences</string>
-    <string name="absence_earlypickup">Absence & Early Pick-Up</string>
+    <string name="absence_earlypickup">Absence &amp; Early Pick-Up</string>
     <string name="app_registered_early">App Registered Early Pickup</string>
     <string name="no_registered_absence_found">No Registered Absence Found</string>
     <string name="no_registered_earlypickup_found">No Registered Early Pickup Found</string>
     <string name="for_planned_absences_prompt">For planned absences please email your head of school</string>
 
     <string name="submit_absence">Submit Absence</string>
-    <string name="select_a_child">Select a child</string>
+    <string name="select_a_child">Select a child :</string>
     <string name="return_to_school_if_known">Return to school (if known)</string>
     <string name="submit">SUBMIT</string>
     <string name="date_already_registered">Date already registered!</string>
@@ -384,10 +403,15 @@
     <string name="no_description">No Description available</string>
     <string name="eca_options">ECA Options</string>
     <string name="no_student">No Student Found.</string>
+    <string name="no_staff">No Staff Found.</string>
+    <string name="staff_name">Staff Name</string>
+
     <string name="fail">Fail</string>
     <string name="none">None</string>
     <string name="cca_sign_up_closed">ECA Sign-Up Closed</string>
     <string name="eca">ECA</string>
+    <string name="ecas">ECAs</string>
+
     <string name="select_eca">Select ECA</string>
     <string name="info">Info</string>
     <string name="select_eca_choice_prompt">Please select a ECA or None for each choice and each day</string>
@@ -419,6 +443,11 @@
     <string name="slot_cancel_prompt">Do you want to cancel this appointment?</string>
     <string name="slot_booking_over">Booking and cancellation date is over!</string>
     <string name="slot_confirm_prompt">Do you want to confirm this appointment?</string>
+    <string name="slot_confirm_prompt_on">Do you want to confirm your appointment on</string>
+    <string name="room">Room</string>
+    <string name="confirm_cancellation_closes">Confirm/Cancellation closes at</string>
+    <string name="translator_requested_yes">Translator Requested : Yes</string>
+
     <string name="slot_confirm_success">Successfully confirmed appointment.</string>
     <string name="slot_booking_success">Reserved Only – Please review and confirm booking Reserved Only – Please review and confirm booking</string>
     <string name="slot_not_found">Slot not found!</string>
@@ -432,9 +461,18 @@
     <string name="categories">Categories</string>
     <string name="newsletter">Newsletter</string>
     <string name="payment_details">Payment Details</string>
+    <string name="payment_not_supported_currently">Currently not supported this type of payment</string>
+    <string name="Trip_amount">Trip Amount</string>
+    <string name="Trip_date">Trip Date </string>
+    <string name="aed">QAR</string>
+    <string name="to">To</string>
+
     <string name="payment_not_supported">This type of payment is not currently supported.</string>
     <string name="file_downloaded">File Downloaded</string>
     <string name="download">Download</string>
+    <string name="book_now">Book Now</string>
+    <string name="trip_approved">Approved</string>
+
     <string name="trip_status_0">Book your Trip</string>
     <string name="trip_status_1">Pending</string>
     <string name="trip_status_2">Rejected</string>
@@ -446,6 +484,11 @@
     <string name="trip_status_8">Not Available</string>
     <string name="paid">Paid</string>
     <string name="pay">Pay</string>
+    <string name="pay_here">Pay Here</string>
+
+    <string name="installment_no">Installment No.</string>
+    <string name="registration_end_date_trip">Registration End Date   :  </string>
+
     <string name="trip_status_9">Expired</string>
     <string name="no_categories">No categories available.</string>
     <string name="trip_categories">Trip Categories</string>
@@ -453,11 +496,20 @@
     <string name="enter_content">Enter content</string>
     <string name="enter_valid_content">Enter valid content</string>
     <string name="enter_valid_subject">Enter valid subject</string>
+    <string name="please_enter_subject">Please enter your Subject"</string>
+    <string name="please_enter_content">Please enter your content"</string>
     <string name="email_invalid">Email invalid</string>
+    <string name="setting_storage_permission">Go to settings and grant access to storage</string>
+
     <string name="trip_intention_block">You cannot submit any more intentions, as you have already reached your limit.</string>
     <string name="trip_slots_filled_block">You can no longer apply for this trip, as all the slots have been filled.</string>
     <string name="trip_limit_reached">You cannot submit any more payments, as you have already reached your trip limit.</string>
     <string name="network_error">Network error occurred. Please check your internet connection and try again later.</string>
+    <string name="network">Network</string>
+    <string name="watsapp_not_install_prompt">Whatsapp app not installed in your phone</string>
+    <string name="upload_both_images">Please upload both images.</string>
+    <string name="select_your_choice">Please select your choice!</string>
+
     <string name="credit">Credit</string>
     <string name="debit">Debit</string>
     <string name="waiting_for_approval">Waiting for approval</string>
@@ -472,6 +524,20 @@
     <string name="enter_visa">Please enter Visa number.</string>
     <string name="trip_payment_block">You cannot submit any more payments, as you have already reached your trip limit.</string>
     <string name="provide_intention_prompt">Please provide your intention!</string>
+    <string name="intention_already_select_choice_prompt">Intention already submitted for this choice. Select any other choice.</string>
+    <string name="permission_slip_success">Permission slip successfully submitted.</string>
+    <string name="permission_slip_failed">Permission slip submit failed.</string>
+    <string name="document_success">Document successfully submitted.</string>
+    <string name="trip_name">Trip Name</string>
+    <string name="co_ordinator_details">Co-ordinator Details:</string>
+    <string name="co_ordinator_name">Co-ordinator Name</string>
+    <string name="co_ordinator_email">Co-ordinator Email</string>
+    <string name="medical_consent_prompt">Please provide your Medical Consent!</string>
+    <string name="installments">Installments</string>
+    <string name="no_installments_Paid">No Installments to be Paid</string>
+    <string name="invoice">Invoices</string>
+    <string name="no_trip_available">No trips available.</string>
+
     <string name="trip_intention_submit_success">Intention successfully submitted.</string>
     <string name="trip_intention_already_submitted">Intention already submitted.</string>
     <string name="trip_intention_submit_failed">Intention submit has failed.</string>
@@ -490,5 +556,96 @@
     <string name="change_password_success">Password changes successfully.</string>
     <string name="reports">Reports</string>
     <string name="parent_essentials">Parent Essentials</string>
+    <string name="select_your_child"> Select your child:</string>
+    <string name="select_first_second_choice_prompt"> Select first choice &amp; second choice for this day</string>
+    <string name="select_eca_choice_for"> Select ECA Choices for:</string>
+    <string name="next">Next</string>
+    <string name="eca_review">ECA Review</string>
+    <string name="confirm_and_submit">Confirm \u0026 Submit</string>
+    <string name="eca_waiting_for_approval">Your options are submitted &amp; waiting for approval</string>
+    <string name="edit">Edit</string>
+    <string name="external_providers">External Providers</string>
+    <string name="Location">Location</string>
+    <string name="choice1_nill">Choice 1 : Nil</string>
+    <string name="choice2_nill">Choice 2 : Nil</string>
+    <string name="choice1">Choice 1 :</string>
+    <string name="choice2">Choice 2 :</string>
+    <string name="choice1_none">Choice 1 : None</string>
+    <string name="choice2_none">Choice 2 : None</string>
+    <string name="not_available_attendance">No attendance details available</string>
+    <string name="successfully_deleted">Successfully Deleted the choice</string>
+    <string name="choice_deleted_failed">Unable to delete the choice. Please try again later</string>
+    <string name="first_choice">First Choice : </string>
+    <string name="second_choice">Second Choice : </string>
+    <string name="register_user_only">This feature is available for Registered users only</string>
+    <string name="email_success">Successfully send the email.</string>
+    <string name="day">DAY</string>
+    <string name="month">MONTH</string>
+    <string name="year">YEAR</string>
+    <string name="reset">RESET</string>
+    <string name="all">ALL</string>
+    <string name="term_calendar">Term Calendar</string>
+    <string name="remove_from_calendar">Remove From Calendar </string>
+    <string name="add_to_calendar">Add To Calendar </string>
+    <string name="join_meeting_here">Join meeting here</string>
+    <string name="Dismiss">Dismiss</string>
+    <string name="Contact_form">Contact Form</string>
+    <string name="enter_subject_here">Enter your subject here...</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="select_child">Select Child</string>
+    <string name="student_name">Student Name:-</string>
+    <string name="select_staff">Select Staff-</string>
+    <string name="Student_nocolon">Student</string>
+    <string name="Staff_nocolon">Staff</string>
+    <string name="reserved_date_and_time">Reserved date and time :</string>
+    <string name="updated">Updated</string>
+    <string name="new_keyword">New</string>
+    <string name="register_early_pickup">Register Early Pickup</string>
+    <string name="intention_question">Are you willing to join the trip?</string>
+    <string name="submit_intention">Submit Intention</string>
+    <string name="trip_intention">Trip Intention</string>
+    <string name="passport_details">Passport Details:</string>
+    <string name="passport_number">Passport Number</string>
+    <string name="passport_front_attach">(Attach front of Passport)</string>
+    <string name="passport_back_attach">(Attach back of Passport)</string>
+    <string name="choose_file">Choose file</string>
+    <string name="upload">Upload</string>
+    <string name="visa_details">VISA Details:</string>
+    <string name="visa_number">VISA Number</string>
+    <string name="attach_visa">(Attach VISA)</string>
+    <string name="qid_details">QID Details:</string>
+    <string name="attach_front_QID">(Attach front of QID)</string>
+    <string name="attach_back_QID">(Attach back of QID)</string>
+    <string name="medical_consent_details">Medical consent Details:</string>
+    <string name="permission_form">Permission Form</string>
+    <string name="agree">I agree</string>
+    <string name="amount_pay_now">Amount Pay Now</string>
+    <string name="student_details_form">Student Details Form</string>
+    <string name="trip_payment">Trip Payment</string>
+    <string name="pay_total">Pay Total</string>
+    <string name="pay_installment">Pay in Installments</string>
+    <string name="select_payment_method">Select Payment Method</string>
+    <string name="debit_card">Debit Card</string>
+    <string name="credit_card">Credit Card</string>
+
+
+
+    <string name="jan">JAN</string>
+    <string name="feb">FEB</string>
+    <string name="mar">MAR</string>
+    <string name="apr">APR</string>
+    <string name="ma">May</string>
+    <string name="jun">JUN</string>
+    <string name="jul">JUL</string>
+    <string name="aug">AUG</string>
+    <string name="sep">SEP</string>
+    <string name="oct">OCT</string>
+    <string name="nov">NOV</string>
+    <string name="dec">DEC</string>
+
+
+
+
 
 </resources>

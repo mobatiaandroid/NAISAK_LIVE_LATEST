@@ -175,33 +175,33 @@ class ParentsMeetingTimeSlotActivity : AppCompatActivity() {
                             }else{
 
                                 //CustomStatusDialog();
-                                Toast.makeText(mContext, "No Data Available", Toast.LENGTH_SHORT)
+                                Toast.makeText(mContext, getString(R.string.no_data_available), Toast.LENGTH_SHORT)
                                     .show()
 
                             }
                         }else if(response.body()!!.status!!.equals("310")){
                             showDialogAlertSingleBtn(
                                 mContext as Activity,
-                                "Alert",
-                                "Slot is already booked by an another user.",
+                                getString(R.string.alert),
+                                getString(R.string.slot_already_booked),
                                 R.drawable.tick,
                                 R.drawable.round
                             )
                         }else{
 
-                            Toast.makeText(mContext, "No Data Available", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(mContext, getString(R.string.no_data_available), Toast.LENGTH_SHORT).show()
                         }
                     }else{
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                     }
                 }else{
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<TimeSlotsResponseModel>, t: Throwable) {
                 progressBar.visibility = View.GONE
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
             }
 
         })
@@ -318,8 +318,8 @@ class ParentsMeetingTimeSlotActivity : AppCompatActivity() {
         reviewConfirmTextView!!.setOnClickListener {
             showDialogAlertReview(
                 mContext as Activity,
-                "Alert",
-                "Reserved Only - Please review and confirm booking.",
+                getString(R.string.alert),
+                getString(R.string.slot_reserved),
                 R.drawable.exclamationicon,
                 R.drawable.round
             )
@@ -351,8 +351,8 @@ class ParentsMeetingTimeSlotActivity : AppCompatActivity() {
 //            if (mListViewArrayPost!![0].booking_open.equals("y",ignoreCase = true)) {
             showDialogAlertCancelDoubleBtn(
                 mContext as Activity,
-                "Confirm",
-                "Do you want to cancel this appointment?",
+                getString(R.string.confirm),
+                getString(R.string.slot_cancel_prompt),
                 R.drawable.questionmark_icon,
                 R.drawable.round
             )
@@ -376,16 +376,16 @@ class ParentsMeetingTimeSlotActivity : AppCompatActivity() {
                 if (mListViewArray[position].status.equals("1",ignoreCase = true)) {
                     showDialogAlertSingleBtn(
                         mContext as Activity,
-                        "Alert",
-                        "This slot is not available.",
+                        getString(R.string.alert),
+                        getString(R.string.slot_unavailable),
                         R.drawable.exclamationicon,
                         R.drawable.round
                     )
                 } else if (confirmedslotBookedByUser) {
                     showDialogAlertSingleBtn(
                         mContext as Activity,
-                        "Alert",
-                        "Your time slot is already confirmed.",
+                        getString(R.string.alert),
+                        getString(R.string.slot_confirmed),
                         R.drawable.exclamationicon,
                         R.drawable.round
                     )
@@ -395,28 +395,28 @@ class ParentsMeetingTimeSlotActivity : AppCompatActivity() {
                     if (mListViewArrayPost!![0].booking_open.equals("y",ignoreCase = true)) {
                         showDialogAlertDoubleBtn(
                             mContext as Activity,
-                            "Alert",
-                            "Do you want to confirm your appointment on " + dateTextValue + "," + mListViewArrayPost!![0].startTime + " - " + mListViewArrayPost!![0].endTime + "?",
+                            getString(R.string.alert),
+                            getString(R.string.slot_confirm_prompt_on) + dateTextValue + "," + mListViewArrayPost!![0].startTime + " - " + mListViewArrayPost!![0].endTime + "?",
                             R.drawable.questionmark_icon,
                             R.drawable.round
                         )
                     } else {
-                        CommonMethods.showDialogueWithOk(mContext, getString(R.string.datexpirecontact),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext, getString(R.string.datexpirecontact), getString(R.string.alert))
                     }
                 } else {
                     if (mListViewArray[position].status.equals("2",ignoreCase = true)) {
                         showDialogAlertSingleBtn(
                             mContext as Activity,
-                            "Alert",
-                            "This slot is reserved by you for the Parents' Evening. Click 'Cancel' option to cancel this appointment",
+                            getString(R.string.alert),
+                            getString(R.string.slot_booked_message_first),
                             R.drawable.exclamationicon,
                             R.drawable.round
                         )
                     } else {
                         showDialogAlertSingleBtn(
                             mContext as Activity,
-                            "Alert",
-                            "Another Slot is already booked by you. If you want to take appointment on this time, please cancel earlier appointment and try",
+                            getString(R.string.alert),
+                            getString(R.string.slot_booked_message_second),
                             R.drawable.exclamationicon,
                             R.drawable.round
                         )
@@ -596,8 +596,8 @@ class ParentsMeetingTimeSlotActivity : AppCompatActivity() {
 //            slotId = mListViewArrayPost!![0].getId().toString()
             showAlertForTranslator(
                 mContext as Activity,
-                "Alert",
-                "Do you require a translator for the meeting",
+                getString(R.string.alert),
+                getString(R.string.require_translator_prompt),
                 R.drawable.questionmark_icon,
                 R.drawable.round
             )
@@ -635,8 +635,8 @@ class ParentsMeetingTimeSlotActivity : AppCompatActivity() {
 
                             showDialogAlertSingleBtn(
                                 mContext as Activity,
-                                "Alert",
-                                "Request cancelled successfully",
+                                getString(R.string.alert),
+                                getString(R.string.slot_cancel_success),
                                 R.drawable.tick,
                                 R.drawable.round
                             )
@@ -644,16 +644,16 @@ class ParentsMeetingTimeSlotActivity : AppCompatActivity() {
                         }
                         else{
 
-                            Toast.makeText(mContext, "Failure", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(mContext,  getString(R.string.failure), Toast.LENGTH_SHORT).show()
                         }
 
                     }else{
 
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error), getString(R.string.alert))
                     }
                 }else{
 
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error), getString(R.string.alert))
                 }
             }
 
@@ -662,7 +662,7 @@ class ParentsMeetingTimeSlotActivity : AppCompatActivity() {
                 CommonMethods.showDialogueWithOk(
                     mContext,
                     getString(R.string.common_error),
-                    "Alert"
+                    getString(R.string.alert)
                 )
             }
 
@@ -701,8 +701,8 @@ class ParentsMeetingTimeSlotActivity : AppCompatActivity() {
 
                             showDialogAlertSingleBtn(
                                 mContext as Activity,
-                                "Alert",
-                                "Request cancelled successfully",
+                                getString(R.string.alert),
+                                getString(R.string.slot_cancel_success),
                                 R.drawable.tick,
                                 R.drawable.round
                             )
@@ -713,21 +713,21 @@ class ParentsMeetingTimeSlotActivity : AppCompatActivity() {
                         }else{
 
 
-                            Toast.makeText(mContext, "Failure", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(mContext,  getString(R.string.failure), Toast.LENGTH_SHORT).show()
                         }
 
                     }else{
 
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error), getString(R.string.alert))
                     }
                 }else{
 
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error), getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<PostSlotResponseModel>, t: Throwable) {
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error), getString(R.string.alert))
             }
 
         })

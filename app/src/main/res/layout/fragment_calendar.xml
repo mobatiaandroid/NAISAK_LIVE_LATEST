@@ -15,7 +15,7 @@
             android:gravity="center"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:text="Calendar"
+            android:text="@string/calendar"
             android:textColor="@color/white"
             android:textSize="17dp" />
         <ImageView
@@ -67,7 +67,7 @@
                         android:layout_weight="30"
                         android:textSize="12sp"
                         android:textStyle="bold"
-                        android:text="DAY"
+                        android:text="@string/day"
                         android:background="@drawable/drop"
                         />
 
@@ -80,7 +80,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="10dp"
                         android:layout_weight="30"
-                        android:text="MONTH"
+                        android:text="@string/month"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:background="@drawable/drop"
@@ -94,7 +94,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginTop="10dp"
                         android:layout_weight="30"
-                        android:text="YEAR"
+                        android:text="@string/year"
                         android:textSize="12sp"
                         android:textStyle="bold"
                         android:background="@drawable/drop"
@@ -178,7 +178,7 @@
                     android:background="@color/term_button_bg"
                     android:gravity="center"
                     android:padding="7dp"
-                    android:text="Term Calendar"
+                    android:text="@string/term_calendar"
                     android:textColor="@color/white"
                     android:textSize="15dp" />
 

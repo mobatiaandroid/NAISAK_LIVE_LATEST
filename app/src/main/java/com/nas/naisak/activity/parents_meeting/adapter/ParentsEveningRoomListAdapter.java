@@ -56,7 +56,7 @@ public class ParentsEveningRoomListAdapter extends  RecyclerView.Adapter<Parents
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
     holder.listTxtView.setText(String.format("%s - %s", mSocialMediaModels.get(position).getStartTime(), mSocialMediaModels.get(position).getEndTime()));
-    holder.listTxtClass.setText(String.format("Room:%s", mSocialMediaModels.get(position).getRoom()));
+    holder.listTxtClass.setText(String.format(mContext.getString(R.string.room)+":%s", mSocialMediaModels.get(position).getRoom()));
 
 
     }

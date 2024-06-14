@@ -5,10 +5,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.nas.naisak.R
+import com.nas.naisak.constants.PreferenceManager
 import com.nas.naisak.fragment.calendar.model.TermCalendarListModel
 
 class TermCalendarListAdapter (private var mContext: Context, private var repoetDetailArray: ArrayList<TermCalendarListModel>) :
@@ -17,6 +20,10 @@ class TermCalendarListAdapter (private var mContext: Context, private var repoet
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var termname: TextView = view.findViewById(R.id.listTxtTitle)
+        var arrowImg: ImageView = view.findViewById(R.id.arrowImg)
+        var arrowImgarab: ImageView = view.findViewById(R.id.arrowImgarab)
+        var relativeheader: RelativeLayout = view.findViewById(R.id.relativeheader)
+
 //        var clickLinear: LinearLayout = view.findViewById(R.id.clickLinear)
 
     }
@@ -31,6 +38,22 @@ class TermCalendarListAdapter (private var mContext: Context, private var repoet
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val summary = repoetDetailArray[position]
+        if (PreferenceManager().getLanguage(mContext).equals("ar"))
+        {
+
+            holder.arrowImg.visibility= View.GONE
+            holder.arrowImgarab.visibility= View.VISIBLE
+            val layoutParams = holder.relativeheader.layoutParams as ViewGroup.MarginLayoutParams
+            val marginrightInPixels = 16 // Adjust this value according to your requirement
+            layoutParams.rightMargin = marginrightInPixels
+            holder. relativeheader.layoutParams = layoutParams
+            val layoutParamsleft = holder.relativeheader.layoutParams as ViewGroup.MarginLayoutParams
+            val marginLeftInPixels = 0 // Adjust this value according to your requirement
+            layoutParamsleft.leftMargin = marginLeftInPixels
+            holder. relativeheader.layoutParams = layoutParamsleft
+
+
+        }
         holder.termname.text = repoetDetailArray[position].title
 
     }

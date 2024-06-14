@@ -22,7 +22,7 @@
             android:layout_centerHorizontal="true"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Trip Payment"
+            android:text="@string/trip_payment"
             android:textColor="@android:color/darker_gray" />
 
         <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
@@ -140,7 +140,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Pay Total"
+            android:text="@string/pay_total"
             android:textColor="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/totalAmountTextView"
@@ -268,7 +268,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_weight="2"
-            android:text="Pay in Installments"
+            android:text="@string/pay_installment"
             android:textColor="@android:color/darker_gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

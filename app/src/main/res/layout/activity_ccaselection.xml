@@ -67,7 +67,7 @@
             android:gravity="center"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:text="ECA Options"
+            android:text="@string/eca_options"
             android:textColor="@color/white"
             android:textSize="17dp" />
         <ImageView
@@ -114,7 +114,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="Select first choice &amp; second choice for this day"
+            android:text="@string/select_first_second_choice_prompt"
             android:gravity="center"/>
     </RelativeLayout>
 
@@ -134,7 +134,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:textStyle="bold"
-            android:text="Select ECA Choices for:"
+            android:text="@string/select_eca_choice_for"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -147,7 +147,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="5dp"
             android:layout_toRightOf="@+id/textViewCCAaSelect"
-            android:text="Sunday"
+            android:text="@string/sun"
             android:textColor="@color/black"
             android:textSize="15sp" />
 
@@ -201,7 +201,7 @@
         android:id="@+id/nextBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Next"
+        android:text="@string/next"
         android:layout_centerHorizontal="true"
         android:textColor="@color/white"
         android:background="@drawable/yellow_buttonsubmit_new"

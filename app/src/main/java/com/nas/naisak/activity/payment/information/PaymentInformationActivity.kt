@@ -58,7 +58,7 @@ class PaymentInformationActivity : AppCompatActivity() {
         primaryRecyclerdetails = findViewById(R.id.primaryRecyclerdetails)
         progress = findViewById(R.id.progress)
         primaryRecyclerdetails.layoutManager = linearLayoutManager
-        titleTextView.text = "Information"
+        titleTextView.text = getString(R.string.information)
 
         if (CommonMethods.isInternetAvailable(mContext)) {
             ibdetailslist()
@@ -97,7 +97,7 @@ class PaymentInformationActivity : AppCompatActivity() {
     private fun ibdetailslist() {
         ibdetaillist = ArrayList()
         progress.visibility = View.VISIBLE
-        var page=ModelWithPageNumberOnly("1")
+        var page=ModelWithPageNumberOnly("1",PreferenceManager().getLanguage(mContext!!)!!)
         val call: Call<CommonDetailResponse> = ApiClient.getClient.paymentInformation(page,"Bearer "+ PreferenceManager.getUserCode(mContext))
         call.enqueue(object : Callback<CommonDetailResponse> {
             override fun onFailure(call: Call<CommonDetailResponse>, t: Throwable) {
@@ -111,7 +111,7 @@ class PaymentInformationActivity : AppCompatActivity() {
                 progress.visibility = View.GONE
                 if (response.body()!!.status == 100) {
                     ibdetaillist.addAll(response.body()!!.data.detaillists)
-                    val ib_detailsadapter = PaymentInformationListAdapter(ibdetaillist)
+                    val ib_detailsadapter = PaymentInformationListAdapter(ibdetaillist,mContext)
                     primaryRecyclerdetails.adapter = ib_detailsadapter
                 }
                 else if(response.body()!!.status==116)
@@ -126,7 +126,7 @@ class PaymentInformationActivity : AppCompatActivity() {
 
                 else {
                     if (response.body()!!.status == 101) {
-                        CommonMethods.showDialogueWithOk(mContext, "Some error occured", "Alert")
+                        CommonMethods.showDialogueWithOk(mContext, getString(R.string.some_error_occurred), getString(R.string.alert))
                     }
                 }
             }

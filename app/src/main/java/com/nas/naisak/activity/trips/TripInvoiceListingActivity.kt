@@ -70,7 +70,7 @@ class TripInvoiceListingActivity : AppCompatActivity() {
         primaryRecyclerdetails = findViewById(R.id.primaryRecyclerdetails)
         progress = findViewById(R.id.progress)
         primaryRecyclerdetails.layoutManager = linearLayoutManager
-        titleTextView.text = "Invoices"
+        titleTextView.text = getString(R.string.invoice)
 
         if (CommonMethods.isInternetAvailable(mContext)) {
             getTripDetails(tripID)
@@ -105,6 +105,8 @@ class TripInvoiceListingActivity : AppCompatActivity() {
        // Log.e("tripID name", tripID)
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(mContext))
         paramObject.addProperty("trip_id", tripID)
+        paramObject.addProperty("language_type", PreferenceManager().getLanguage(mContext!!)!!)
+
         val call: Call<TripDetailsResponseModel> = ApiClient.getClient.tripDetail(
             "Bearer " + PreferenceManager.getUserCode(mContext), paramObject
         )
@@ -129,7 +131,7 @@ class TripInvoiceListingActivity : AppCompatActivity() {
             override fun onFailure(call: Call<TripDetailsResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
                 CommonMethods.showDialogueWithOk(
-                    mContext as Activity, getString(R.string.common_error), "Alert"
+                    mContext as Activity, getString(R.string.common_error), getString(R.string.alert)
                 )
             }
         })

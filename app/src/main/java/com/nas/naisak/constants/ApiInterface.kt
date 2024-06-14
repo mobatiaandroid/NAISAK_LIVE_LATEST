@@ -110,13 +110,16 @@ interface ApiInterface {
 
     /*************CONTACT US****************/
     @GET("api/v1/parent/contact_us")
-    fun contact_us(): Call<Contactusresponse>
+    fun contact_us(
+        @Query("language_type")language_type:String
+    ): Call<Contactusresponse>
 
     /*************PAYMENT BANNER****************/
     @GET("api/v1/parent/payment/banner")
     @Headers("Content-Type: application/json")
     fun paymentBanner(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("language_type")language_type:String
     ): Call<PaymentBannerResponse>
 
     /*************PAYMENT List****************/
@@ -189,35 +192,40 @@ interface ApiInterface {
     @GET("api/v1/parent/nordangliaeducation/get/nordangliaeducation")
     @Headers("Content-Type: application/x-www-form-urlencode", "Accept: application/json")
     fun naeDetails(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("language_type") language_type:String
     ): Call<NAEResponseModel>
 
     /*************NAE  DETAILS****************/
     @GET("api/v1/parent/term_calendar")
     @Headers("Content-Type: application/x-www-form-urlencode", "Accept: application/json")
     fun termCalendar(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("language_type")language_type:String
     ): Call<TermCalendarResponseModel>
 
     /*************NAE  DETAILS****************/
     @GET("api/v1/parent/parentessential/get/parent_essentials")
     @Headers("Content-Type: application/x-www-form-urlencode", "Accept: application/json")
     fun parentessentials(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("language_type")language_type:String
     ): Call<ParentsEssentialResponseModel>
 
     /*************COMMUNICATION****************/
     @GET("api/v1/parent/communication/get/communications")
     @Headers("Content-Type: application/x-www-form-urlencode", "Accept: application/json")
     fun communication(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("language_type")language_type:String
     ): Call<CommunicationResponseModel>
 
     /*************COMMUNICATION****************/
     @GET("api/v1/parent/communication/get/socialmedia")
     @Headers("Content-Type: application/x-www-form-urlencode", "Accept: application/json")
     fun socialmedia(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("language_type")language_type:String
     ): Call<SocialMediaResponse>
 
     /************PAYMENT INFORMATION****************/
@@ -237,7 +245,9 @@ interface ApiInterface {
 
     /*************TERMS OF SERVICES****************/
     @GET("api/v1/parent/terms_of_services")
-    fun termsofservice(): Call<TermsOfServiceModel>
+    fun termsofservice(
+        @Query("language_type")language_type:String
+    ): Call<TermsOfServiceModel>
 
     /*************HOME BANNER****************/
 
@@ -256,7 +266,8 @@ interface ApiInterface {
     @GET("api/v1/parent/calendar")
     @Headers("Content-Type: application/json")
     fun calendar(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("language_type")language_type:String
     ): Call<CalendarResponseModel>
 
     /*************CHANGE PASSWORD****************/
@@ -349,7 +360,8 @@ interface ApiInterface {
     @GET("api/v1/parent/cca/banner")
     @Headers("Content-Type: application/json")
     fun getBanner(
-        @Header("Authorization") token: String
+        @Header("Authorization") token: String,
+        @Query("language_type")language_type:String
     ): Call<BannerResponseModel>
 
     /* EXTERNAL PROVIDERS*/
@@ -430,7 +442,8 @@ interface ApiInterface {
 
     @GET("api/v1/parent/trip_categories")
     @Headers("Content-Type: application/json")
-    fun tripCategories(@Header("Authorization") token: String?): Call<TripCategoriesResponseModel>
+    fun tripCategories(@Header("Authorization") token: String?,
+        @Query("language_type")language_type:String): Call<TripCategoriesResponseModel>
 
     @POST("api/v1/parent/trip_items")
     @Headers("Content-Type: application/json")
@@ -599,7 +612,8 @@ interface ApiInterface {
 
     @GET("api/v1/parent/trip/banner")
     @Headers("Content-Type: application/json")
-    fun trip_banner(@Header("Authorization") token: String): Call<TripBannerResponseModel>
+    fun trip_banner(@Header("Authorization") token: String,
+                    @Query("language_type")language_type:String): Call<TripBannerResponseModel>
 
     @POST("api/v1/parent/trip_informations")
     @Headers("Content-Type: application/json")

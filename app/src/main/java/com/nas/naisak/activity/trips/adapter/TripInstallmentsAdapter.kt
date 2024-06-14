@@ -44,15 +44,15 @@ class TripInstallmentsAdapter(
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val summary = repoetDetailArray[position]
         holder.termname.text =
-            "Installment No." + (position + 1) + " - " + repoetDetailArray[position].amount + " QAR"
+            mContext.getString(R.string.installment_no) + (position + 1) + " - " + repoetDetailArray[position].amount +  mContext.getString(R.string.aed)
         holder.tripsDateTxt.text= CommonMethods.dateConversionddmmyyyytoddMMYYYY(repoetDetailArray[position].dueDate)
         if (repoetDetailArray[position].paidStatus == 1) {
             holder.statusLayout.visibility = View.VISIBLE
-            holder.status.text = "Paid"
+            holder.status.text =  mContext.getString(R.string.paid)
             holder.statusLayout.setBackgroundResource(R.drawable.rect_green)
         } else {
             holder.statusLayout.visibility = View.VISIBLE
-            holder.status.text = "Pay"
+            holder.status.text =  mContext.getString(R.string.pay)
             holder.statusLayout.setBackgroundResource(R.drawable.rectangle_blue_update)
         }
 

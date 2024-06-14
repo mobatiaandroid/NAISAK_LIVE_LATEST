@@ -194,7 +194,7 @@ class CCA_Activity : AppCompatActivity() {
                                     stud_class =
                                         studentsModelArrayList!![studentSelectPosition].student_class.toString()
                                     textViewYear!!.text =
-                                        "Class : " + studentsModelArrayList!![studentSelectPosition].student_class.toString()
+                                       getString(R.string.class_text)+" : " + studentsModelArrayList!![studentSelectPosition].student_class.toString()
                                     stud_img =
                                         studentsModelArrayList!![studentSelectPosition].photo.toString()
                                     if (stud_img != "") {
@@ -209,30 +209,30 @@ class CCA_Activity : AppCompatActivity() {
                             }else{
 
                                 //CustomStatusDialog();
-                                Toast.makeText(mContext, "No Student Found.", Toast.LENGTH_SHORT)
+                                Toast.makeText(mContext, resources.getString(R.string.no_student), Toast.LENGTH_SHORT)
                                     .show()
                             }
                         }else{
-                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                         }
                     }else{
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                     }
                 }else{
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<StudentListReponseModel>, t: Throwable) {
                 progress.visibility = View.GONE
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
             }
 
         })
     }
 
     private fun getCCAListAPI(studId: String) {
-        val body = CCAListRequestModel(studId)
+        val body = CCAListRequestModel(studId,PreferenceManager().getLanguage(mContext!!)!!)
         val token = PreferenceManager.getUserCode(mContext)
         val call: Call<CCAListResponseModel> =
             ApiClient.getClient.getCCAList( body,"Bearer $token")
@@ -279,7 +279,7 @@ class CCA_Activity : AppCompatActivity() {
                                 ).show()*/
                             }
                         }else{
-                            Toast.makeText(mContext, "Fail", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(mContext, getString(R.string.failure), Toast.LENGTH_SHORT).show()
                         }
                     }
 //                    else if (response_code.equals("500", ignoreCase = true)) {
@@ -310,14 +310,14 @@ class CCA_Activity : AppCompatActivity() {
 //                        })
 //                    }
                     else {
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                     }
 
             }
 
             override fun onFailure(call: Call<CCAListResponseModel>, t: Throwable) {
                 progress.visibility = View.GONE
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
             }
 
         })
@@ -566,10 +566,10 @@ class CCA_Activity : AppCompatActivity() {
                             )
                             startActivity(intent)
                         } else {
-                            CommonMethods.showDialogueWithOk(mContext,"No Data Available","Alert")
+                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.no_data_available),getString(R.string.alert))
                         }
                     } else {
-                        CommonMethods.showDialogueWithOk(mContext,"CCA Sign-Up Closed","Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.cca_sign_up_closed),getString(R.string.alert))
                         
                     }
                 } else if (mCCAmodelArrayList!![position].isAttendee.equals("2")) {

@@ -11,6 +11,7 @@ import com.nas.naisak.activity.absence_and_early_pick_up.model.AbsenceListRespon
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale
 
 internal class RequestAbsenceRecyclerAdapter(private var studentInfoList: ArrayList<AbsenceListResponseModel.Absence>) :
     RecyclerView.Adapter<RequestAbsenceRecyclerAdapter.MyViewHolder>() {
@@ -31,16 +32,16 @@ internal class RequestAbsenceRecyclerAdapter(private var studentInfoList: ArrayL
         val movie = studentInfoList[position]
 
         val fromDate = movie.fromDate
-        val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd")
-        val outputFormat: DateFormat = SimpleDateFormat("dd MMM yyyy")
+        val inputFormat: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        val outputFormat: DateFormat = SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH)
         val inputDateStr = fromDate
         val date: Date = inputFormat.parse(inputDateStr)
         val outputDateStr: String = outputFormat.format(date)
 
         if (movie.toDate != "") {
             val toDate = movie.toDate
-            val inputFormat1: DateFormat = SimpleDateFormat("yyyy-MM-dd")
-            val outputFormat1: DateFormat = SimpleDateFormat("dd MMM yyyy")
+            val inputFormat1: DateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+            val outputFormat1: DateFormat = SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH)
             val inputDateStr1 = toDate
             val date1: Date = inputFormat1.parse(inputDateStr1)
             val outputDateStr1: String = outputFormat1.format(date1)

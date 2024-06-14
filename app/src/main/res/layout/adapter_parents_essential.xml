@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:background="@color/term_button_bg">
         <RelativeLayout
+            android:id="@+id/relativeheader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
@@ -27,6 +28,16 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/statusImg"
                 android:paddingBottom="10dp">
+                <ImageView
+                    android:id="@+id/arrowImgarab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="visible"
+                    android:rotation="180"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/arrow_list" />
 
                 <com.nas.naisak.customviews.textview.CustomFontTextViewRegularWhite
                     android:id="@+id/listTxtTitle"

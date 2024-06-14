@@ -93,12 +93,12 @@
 
         <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
             android:id="@+id/tripIntentionQuestion"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
 
-            android:text="Are you willing to join the trip?"
+            android:text="@string/intention_question"
             app:layout_constraintBottom_toTopOf="@+id/yesNoRadioGroup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -186,7 +186,7 @@
             android:gravity="center"
             android:layout_marginRight="10dp"
             android:paddingEnd="8dp"
-            android:text="Submit Intention"
+            android:text="@string/submit_intention"
             android:textAllCaps="false"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -163,7 +163,7 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                                     }
                                 }
                             }else{
-                                CommonMethods.showDialogueWithOk(mContext,"No Appointments available","Alert")
+                                CommonMethods.showDialogueWithOk(mContext,getString(R.string.no_appointments),getString(R.string.alert))
 
                             }
                             for (j in reviewArrayList!!.indices) {
@@ -185,15 +185,15 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                                     ) {
                                         showDialogAlertDoubeBtn(
                                             mContext as Activity,
-                                            "Alert",
-                                            "Do you want to cancel this appointment?",
+                                            getString(R.string.alert),
+                                            getString(R.string.slot_cancel_prompt),
                                             R.drawable.questionmark_icon,
                                             R.drawable.round,
                                             "1",
                                             position
                                         )
                                     } else {
-                                        CommonMethods.showDialogueWithOk(mContext,"Booking and cancellation date is over","Alert")
+                                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.slot_booking_over),getString(R.string.alert))
                                     }
                                 }
                             ) { position ->
@@ -219,8 +219,8 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                                     }
                                     showDialogAlertDoubeBtn(
                                         mContext as Activity,
-                                        "Alert",
-                                        "Do you want to confirm this appointment?",
+                                        getString(R.string.alert),
+                                        getString(R.string.slot_confirm_prompt),
                                         R.drawable.questionmark_icon,
                                         R.drawable.round,
                                         "2",
@@ -229,8 +229,8 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                                 } else {
                                     CommonMethods.showDialogueWithOk(
                                         mContext,
-                                        "Booking and cancellation date is over",
-                                        "Alert"
+                                        getString(R.string.slot_booking_over),
+                                        getString(R.string.alert)
                                     )
                                 }
                             }
@@ -243,19 +243,19 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                                 confirmTV!!.visibility = View.GONE
                             }
                         }else{
-                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                         }
                     }else{
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                     }
                 }else{
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<ReviewAppointmentsResponseModel>, t: Throwable) {
                 progressBar.visibility = View.GONE
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
             }
 
         })
@@ -327,8 +327,8 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
 
                             showDialogAlertSingleBtn(
                                 mContext as Activity,
-                                "Alert",
-                                "Successfully confirmed appointment.",
+                                getString(R.string.alert),
+                                getString(R.string.slot_confirm_success),
                                 R.drawable.tick,
                                 R.drawable.round,
 
@@ -345,8 +345,8 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
 
                             showDialogAlertSingleBtn(
                                 mContext as Activity,
-                                "Alert",
-                                "Request cancelled successfully",
+                                getString(R.string.alert),
+                                getString(R.string.slot_cancel_success),
                                 R.drawable.tick,
                                 R.drawable.round
                             )
@@ -354,23 +354,23 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                         }
                         else{
 
-                            Toast.makeText(mContext, "Failure", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(mContext, getString(R.string.failure), Toast.LENGTH_SHORT).show()
                         }
 
                     }else{
 
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                     }
                 }else{
 
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<PTAConfirmResponseModel>, t: Throwable) {
                 progressBar.visibility = View.GONE
 
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
             }
 
         })
@@ -438,8 +438,8 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                         if (statusCode == 100) {
                             showDialogAlertSingleBtn(
                                 mContext as Activity,
-                                "Alert",
-                                "Reserved Only – Please review and confirm bookingReserved Only – Please review and confirm booking",
+                                getString(R.string.alert),
+                                getString(R.string.slot_booking_success),
                                 R.drawable.tick,
                                 R.drawable.round,
 
@@ -448,8 +448,8 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                         } else if (statusCode == 109) {
                             showDialogAlertSingleBtn(
                                 mContext as Activity,
-                                "Alert",
-                                "Request cancelled successfully.",
+                                getString(R.string.alert),
+                                getString(R.string.slot_cancel_success),
                                 R.drawable.tick,
                                 R.drawable.round,
 
@@ -458,8 +458,8 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                         } else if (statusCode == 310) {
                             showDialogAlertSingleBtn(
                                 mContext as Activity,
-                                "Alert",
-                                "Slot is already booked by an another user.",
+                                getString(R.string.alert),
+                                getString(R.string.slot_already_booked),
                                 R.drawable.exclamationicon,
                                 R.drawable.round,
 
@@ -467,8 +467,8 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                         } else if (statusCode == 315) {
                             showDialogAlertSingleBtn(
                                 mContext as Activity,
-                                "Alert",
-                                "Slot not found.",
+                                getString(R.string.alert),
+                               getString(R.string.slot_not_found),
                                 R.drawable.exclamationicon,
                                 R.drawable.round,
 
@@ -476,21 +476,21 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
                         } else if (statusCode == 316) {
                             showDialogAlertSingleBtn(
                                 mContext as Activity,
-                                "Alert",
+                                getString(R.string.alert),
                                 getString(R.string.datexpirecontact),
                                 R.drawable.exclamationicon,
                                 R.drawable.round,
 
                                 )
                         } else {
-                            Toast.makeText(mContext, "Failure", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(mContext, getString(R.string.failure), Toast.LENGTH_SHORT).show()
                         }
                     } else {
 
                         CommonMethods.showDialogueWithOk(
                             mContext,
                             getString(R.string.common_error),
-                            "Alert"
+                            getString(R.string.alert)
                         )
                     }
                 }
@@ -498,7 +498,7 @@ class ReviewAppointmentsActivity : AppCompatActivity() {
             override fun onFailure(call: Call<PostSlotResponseModel>, t: Throwable) {
                 progressBar.visibility = View.GONE
 
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
             }
 
         })

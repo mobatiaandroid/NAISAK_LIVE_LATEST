@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.nas.naisak.R;
 import com.nas.naisak.activity.cca.model.CCAReviewAfterSubmissionModel;
 import com.nas.naisak.constants.CommonMethods;
+import com.nas.naisak.constants.PreferenceManagerJava;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,6 +55,8 @@ public class CCAfinalReviewEditAfterSubmissionAdapter extends RecyclerView.Adapt
         TextView location2Txt;
         TextView description2Txt;
         TextView readMore,readMore1;
+        ImageView point1Img,point1ImgArab,point2Img,point2ImgArab;
+
         public MyViewHolder(View view) {
             super(view);
             textViewCCAaDateItemChoice1= (TextView) view.findViewById(R.id.textViewCCAaDateItemChoice1);
@@ -71,6 +75,10 @@ public class CCAfinalReviewEditAfterSubmissionAdapter extends RecyclerView.Adapt
             deleteChoice2 = (ImageView) view.findViewById(R.id.deleteChoice2);
             linearChoice1 = (LinearLayout) view.findViewById(R.id.linearChoice1);
             linearChoice2 = (LinearLayout) view.findViewById(R.id.linearChoice2);
+            point1Img=(ImageView)  view.findViewById(R.id.point1Img);
+            point1ImgArab=(ImageView)  view.findViewById(R.id.point1ImgArab);
+            point2Img=(ImageView)  view.findViewById(R.id.point2Img);
+            point2ImgArab=(ImageView)  view.findViewById(R.id.point2ImgArab);
 
 
         }
@@ -95,7 +103,24 @@ public class CCAfinalReviewEditAfterSubmissionAdapter extends RecyclerView.Adapt
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-
+        if (PreferenceManagerJava.getlanguagejava(mContext).equals("ar"))
+        {
+            holder.point1Img.setVisibility(View.GONE);
+            holder.point2Img.setVisibility(View.GONE);
+            holder.point1ImgArab.setVisibility(View.VISIBLE);
+            holder.point2ImgArab.setVisibility(View.VISIBLE);
+            holder.textViewCCAaDateItemChoice1.setGravity(Gravity.RIGHT);
+            holder.textViewCCAaDateItemChoice2.setGravity(Gravity.RIGHT);
+        }
+        else
+        {
+            holder.point1Img.setVisibility(View.VISIBLE);
+            holder.point2Img.setVisibility(View.VISIBLE);
+            holder.point1ImgArab.setVisibility(View.GONE);
+            holder.point2ImgArab.setVisibility(View.GONE);
+            holder.textViewCCAaDateItemChoice1.setGravity(Gravity.LEFT);
+            holder.textViewCCAaDateItemChoice2.setGravity(Gravity.LEFT);
+        }
         holder.textViewCCADay.setText(mCCADetailModelArrayList.get(position).getDay());
         holder.attendanceListIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,11 +156,11 @@ public class CCAfinalReviewEditAfterSubmissionAdapter extends RecyclerView.Adapt
         if (mCCADetailModelArrayList.get(position).getChoice1().equalsIgnoreCase("0")) {
             holder.linearChoice1.setVisibility(View.GONE);
 
-            holder.textViewCCAChoice1.setText("Choice 1 : None");
+            holder.textViewCCAChoice1.setText(mContext.getString(R.string.choice1_none));
 
         } else if (mCCADetailModelArrayList.get(position).getChoice1().equalsIgnoreCase("-1")) {
             holder.linearChoice1.setVisibility(View.GONE);
-            holder.textViewCCAChoice1.setText("Choice 1 : Nil");
+            holder.textViewCCAChoice1.setText(mContext.getString(R.string.choice1_nill));
 
         } else {
             holder.linearChoice1.setVisibility(View.VISIBLE);
@@ -150,7 +175,7 @@ public class CCAfinalReviewEditAfterSubmissionAdapter extends RecyclerView.Adapt
                 {
                     holder.descriptionTxt.setVisibility(View.VISIBLE);
                     holder.readMore1.setVisibility(View.VISIBLE);
-                    holder.descriptionTxt.setText("Description      : "+mCCADetailModelArrayList.get(position).getCca_item_description());
+                    holder.descriptionTxt.setText(mContext.getString(R.string.description)+"      : "+mCCADetailModelArrayList.get(position).getCca_item_description());
 
                 }
             }
@@ -162,7 +187,7 @@ public class CCAfinalReviewEditAfterSubmissionAdapter extends RecyclerView.Adapt
                 else
                 {
                     holder.locationTxt.setVisibility(View.VISIBLE);
-                    holder.locationTxt.setText("Location            : "+mCCADetailModelArrayList.get(position).getVenue());
+                    holder.locationTxt.setText(mContext.getString(R.string.Location)+"            : "+mCCADetailModelArrayList.get(position).getVenue());
 
                 }
             }
@@ -193,11 +218,11 @@ public class CCAfinalReviewEditAfterSubmissionAdapter extends RecyclerView.Adapt
         }
         if (mCCADetailModelArrayList.get(position).getChoice2().equalsIgnoreCase("0")) {
             holder.linearChoice2.setVisibility(View.GONE);
-            holder.textViewCCAChoice2.setText("Choice 2 : None");
+            holder.textViewCCAChoice2.setText(mContext.getString(R.string.choice2_none));
 
         } else if (mCCADetailModelArrayList.get(position).getChoice2().equalsIgnoreCase("-1")) {
             holder.linearChoice2.setVisibility(View.GONE);
-            holder.textViewCCAChoice2.setText("Choice 2 : Nil");
+            holder.textViewCCAChoice2.setText(mContext.getString(R.string.choice2_nill));
 
         } else {
             holder.linearChoice2.setVisibility(View.VISIBLE);
@@ -212,7 +237,7 @@ public class CCAfinalReviewEditAfterSubmissionAdapter extends RecyclerView.Adapt
                 {
                     holder.location2Txt.setVisibility(View.VISIBLE);
                     holder.readMore.setVisibility(View.VISIBLE);
-                    holder.location2Txt.setText("Location            : "+mCCADetailModelArrayList.get(position).getVenue2());
+                    holder.location2Txt.setText(mContext.getString(R.string.Location)+"            : "+mCCADetailModelArrayList.get(position).getVenue2());
 
                 }
             }
@@ -225,7 +250,7 @@ public class CCAfinalReviewEditAfterSubmissionAdapter extends RecyclerView.Adapt
                 else
                 {
                     holder.description2Txt.setVisibility(View.VISIBLE);
-                    holder.description2Txt.setText("Description      : "+mCCADetailModelArrayList.get(position).getCca_item_description_2());
+                    holder.description2Txt.setText(mContext.getString(R.string.description)+"      : "+mCCADetailModelArrayList.get(position).getCca_item_description_2());
 
                 }
             }
@@ -240,7 +265,7 @@ public class CCAfinalReviewEditAfterSubmissionAdapter extends RecyclerView.Adapt
 
 
                     }else{
-                        Toast.makeText(mContext, "No Description available", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, mContext.getString(R.string.no_description), Toast.LENGTH_SHORT).show();
                     }
 
 

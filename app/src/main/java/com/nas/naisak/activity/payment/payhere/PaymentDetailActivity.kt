@@ -128,7 +128,7 @@ class PaymentDetailActivity  : AppCompatActivity(){
         description = findViewById(R.id.description)
         totalAmount = findViewById(R.id.totalAmount)
         mProgressRelLayout.visibility= View.GONE
-        heading.text = "Payment Details"
+        heading.text = getString(R.string.payment_details)
         descriptionTitle.text = title
 
         btn_left.setOnClickListener(View.OnClickListener {
@@ -527,7 +527,7 @@ class PaymentDetailActivity  : AppCompatActivity(){
                     else
                     {
                         method="3"
-                        CommonMethods.showDialogueWithOkPay(context,"Currently not supported this type of payment","Alert")
+                        CommonMethods.showDialogueWithOkPay(context,getString(R.string.payment_not_supported_currently),getString(R.string.alert))
                     }
 //                    mProgressRelLayout.visibility= View.VISIBLE
 //                    callGatewayLink(method)

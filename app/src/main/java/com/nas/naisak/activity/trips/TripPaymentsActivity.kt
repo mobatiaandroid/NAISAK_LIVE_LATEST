@@ -107,7 +107,7 @@ class TripPaymentsActivity : AppCompatActivity() {
 
         tripListRecycler = findViewById(R.id.tripListRecycler)
         tripListRecycler.setHasFixedSize(true)
-        heading.text = "Payments"
+        heading.text = getString(R.string.payments)
         val spacing = 5 // 50px
 
         val itemDecoration = ItemOffsetDecoration(context, spacing)
@@ -211,6 +211,7 @@ class TripPaymentsActivity : AppCompatActivity() {
         var paramObject = JsonObject()
        // android.util.Log.e("student name", studentNameTxt.getText().toString())
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
+        paramObject.addProperty("language_type",PreferenceManager().getLanguage(context!!)!!)
         val call: Call<TripHistoryResponseModel> =
             ApiClient.getClient.tripHistory(
                 "Bearer " + PreferenceManager.getUserCode(context),
@@ -243,7 +244,7 @@ class TripPaymentsActivity : AppCompatActivity() {
                             tripListRecycler.adapter = tripsCategoryAdapter
                             Toast.makeText(
                                 this@TripPaymentsActivity,
-                                "No trips available.",
+                                getString(R.string.no_trip_available),
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
@@ -254,7 +255,7 @@ class TripPaymentsActivity : AppCompatActivity() {
                         tripListRecycler.adapter = tripsCategoryAdapter
                         Toast.makeText(
                             this@TripPaymentsActivity,
-                            "No trips available.",
+                            getString(R.string.no_trip_available),
                             Toast.LENGTH_SHORT
                         ).show()
                     }
@@ -265,7 +266,7 @@ class TripPaymentsActivity : AppCompatActivity() {
                     tripListRecycler.adapter = tripsCategoryAdapter
                     Toast.makeText(
                         this@TripPaymentsActivity,
-                        "No trips available.",
+                        getString(R.string.no_trip_available),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

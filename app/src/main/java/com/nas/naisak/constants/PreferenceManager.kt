@@ -1330,6 +1330,33 @@ class PreferenceManager {
             return staffId
         }
     }
+    fun setLanguage(context: Context, token: String) {
+        val pref = context.getSharedPreferences(PREFSNAME, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString("language", token)
+        editor.apply()
+    }
 
+    fun getLanguage(context: Context): String? {
+        val pref = context.getSharedPreferences(
+            PREFSNAME, Context.MODE_PRIVATE
+        )
+        return pref.getString("language", "")
+
+    }
+    fun setLanguagetype(context: Context, token: String) {
+        val pref = context.getSharedPreferences(PREFSNAME, Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString("schoollanguagetype", token)
+        editor.apply()
+    }
+
+    fun getLanguagetype(context: Context): String? {
+        val pref = context.getSharedPreferences(
+            PREFSNAME, Context.MODE_PRIVATE
+        )
+        return pref.getString("schoollanguagetype", "")
+
+    }
 
 }

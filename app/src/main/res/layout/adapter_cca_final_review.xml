@@ -35,16 +35,16 @@
             android:visibility="visible"
             android:background="@drawable/tealdot_icon" />
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="vertical">
             <TextView
 
                 android:id="@+id/textViewCCAChoice1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Choice 1:"
+                android:text="@string/choice1"
                 android:textSize="16sp"
                 android:layout_marginLeft="5dp"
                 android:layout_gravity="center_vertical"
@@ -52,7 +52,7 @@
             <TextView
 
                 android:id="@+id/textViewCCAaDateItemChoice1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="2dp"
@@ -62,7 +62,7 @@
             <TextView
 
                 android:id="@+id/locationTxt"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="2dp"
@@ -71,13 +71,21 @@
             <TextView
 
                 android:id="@+id/descriptionTxt"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="2dp"
                 android:textColor="@color/dark_grey1"
                 android:textSize="14sp" />
         </LinearLayout>
+        <ImageView
+            android:id="@+id/point1ImgArab"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:visibility="visible"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/tealdot_icon" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,16 +104,16 @@
             android:background="@drawable/tealdot_icon" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="vertical">
             <TextView
 
                 android:id="@+id/textViewCCAChoice2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Choice 2:"
+                android:text="@string/choice2"
                 android:textSize="16sp"
                 android:layout_marginLeft="5dp"
                 android:layout_gravity="center_vertical"
@@ -113,7 +121,7 @@
             <TextView
 
                 android:id="@+id/textViewCCAaDateItemChoice2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="2dp"
@@ -123,7 +131,7 @@
             <TextView
 
                 android:id="@+id/location2Txt"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="2dp"
@@ -139,7 +147,14 @@
                 android:textColor="@color/dark_grey1"
                 android:textSize="14sp" />
         </LinearLayout>
-
+        <ImageView
+            android:id="@+id/point2ImgArab"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:visibility="visible"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/tealdot_icon" />
     </LinearLayout>
 
 </LinearLayout>

@@ -153,7 +153,7 @@ class NotificationFragment : Fragment() {
         val token = PreferenceManager.getUserCode(mContext)
         var sizeArray: Int = 0
         var earlyyearscominguplist = ArrayList<NotificationListResponse>()
-        val noticationpage = ModelWithPageNumberOnly(pageno.toString())
+        val noticationpage = ModelWithPageNumberOnly(pageno.toString(),PreferenceManager().getLanguage(mContext!!)!!)
         val call: Call<NotificationResponseModel> =
             ApiClient.getClient.notificationList(noticationpage, "Bearer " + token)
         call.enqueue(object : Callback<NotificationResponseModel> {

@@ -38,9 +38,29 @@
         android:background="@android:color/transparent"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:visibility="gone"
         android:layout_centerVertical="true" />
 
+    <Switch
+        android:id="@+id/switchlang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:track="@drawable/switch_bg"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:thumb="@drawable/ic_baseline_circle_24"
+        android:textColor="@color/white"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:showText="false"
+        android:enabled="true"
+        android:checked="true"
+        android:visibility="gone"
+        android:scaleX="1.5"
+        android:scaleY="1">
 
+    </Switch>
 
 </RelativeLayout>
 

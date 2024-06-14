@@ -270,8 +270,8 @@ class CCAsReviewActivity : AppCompatActivity() {
         submitBtn!!.setOnClickListener(View.OnClickListener {
             showDialogReviewSubmit(
                 mContext as Activity,
-                "Confirm",
-                "Do you want to confirm this ECA?",
+                getString(R.string.confirm),
+                getString(R.string.confirm_eca_prompt),
                 R.drawable.exclamationicon,
                 R.drawable.round
             )
@@ -309,9 +309,9 @@ class CCAsReviewActivity : AppCompatActivity() {
     }
 
     private fun ccaSubmitAPI() {
-        Log.e("stud", PreferenceManager.getStudIdForCCA(mContext).toString())
-        Log.e("day",PreferenceManager.getCCAItemId(mContext).toString())
-        Log.e("details",cca_detailsId)
+       // Log.e("stud", PreferenceManager.getStudIdForCCA(mContext).toString())
+      //  Log.e("day",PreferenceManager.getCCAItemId(mContext).toString())
+      //  Log.e("details",cca_detailsId)
         val ccaDetail: ArrayList<String> = ArrayList()
         for (i in mCCAItemIdArray!!.indices){
 //            if ( i != 0) {
@@ -320,7 +320,7 @@ class CCAsReviewActivity : AppCompatActivity() {
 //            }
 
         }
-        Log.e("details1",ccaDetail.toString())
+        //Log.e("details1",ccaDetail.toString())
 
         var model= CCASumbitRequestModel(PreferenceManager.getStudIdForCCA(mContext).toString(),
             PreferenceManager.getCCAItemId(mContext).toString(),ccaDetail.toString()
@@ -342,8 +342,8 @@ class CCAsReviewActivity : AppCompatActivity() {
 //                            val survey: Int = secobj.optInt("survey")
                             showDialogAlert(
                                 mContext as Activity,
-                                "Success",
-                                "You are able to make changes until the closing date. After the closing date selections are final",
+                                getString(R.string.success),
+                                getString(R.string.eca_submit_success),
                                 R.drawable.tickicon,
                                 R.drawable.round,
                             )
@@ -356,22 +356,22 @@ class CCAsReviewActivity : AppCompatActivity() {
                         }
                         else{
 
-                            Toast.makeText(mContext, "Failure", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(mContext, getString(R.string.failure), Toast.LENGTH_SHORT).show()
                         }
 
                     }else{
 
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                     }
                 }else{
 
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<CCASubmitResponseModel>, t: Throwable) {
                 progressBar.visibility = View.GONE
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
             }
 
         })

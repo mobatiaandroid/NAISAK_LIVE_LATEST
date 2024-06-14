@@ -102,7 +102,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/ccaImg"
                                 android:layout_centerHorizontal="true"
-                                android:text="ECA Options"
+                                android:text="@string/eca_options"
                                 android:textColor="@color/white" />
                             <TextView
                                 android:id="@+id/ccaDot"
@@ -142,7 +142,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/external"
-                                    android:text="External Providers"
+                                    android:text="@string/external_providers"
                                     android:textColor="@color/white"
                                     android:layout_centerHorizontal="true"/>
                             </RelativeLayout>
@@ -164,7 +164,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_below="@+id/information"
-                                    android:text="Information"
+                                    android:text="@string/information"
                                     android:textColor="@color/white"
                                     android:layout_centerHorizontal="true"/>
                             </RelativeLayout>

@@ -30,9 +30,11 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.JsonObject
 import com.nas.naisak.R
 import com.nas.naisak.constants.ApiClient
 import com.nas.naisak.constants.CommonMethods
+import com.nas.naisak.constants.PreferenceManager
 import com.nas.naisak.fragment.contactus.adapter.ContactUsAdapter
 import com.nas.naisak.fragment.contactus.model.Contact
 import com.nas.naisak.fragment.contactus.model.Contactusresponse
@@ -168,7 +170,8 @@ class ContactUsFragment : Fragment(), LocationListener,
 
     private fun getaboutusdata() {
         progress.visibility = View.VISIBLE
-        val call: Call<Contactusresponse> = ApiClient.getClient.contact_us()
+
+        val call: Call<Contactusresponse> = ApiClient.getClient.contact_us(PreferenceManager().getLanguage(mContext)!!)
         call.enqueue(object : Callback<Contactusresponse> {
             override fun onFailure(call: Call<Contactusresponse>, t: Throwable) {
                 progress.visibility = View.GONE

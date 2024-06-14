@@ -67,7 +67,7 @@
             android:gravity="center"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:text="ECA"
+            android:text="@string/eca"
             android:textColor="@color/white"
             android:textSize="17dp" />
         <ImageView
@@ -91,10 +91,9 @@
         android:orientation="vertical">
         <TextView
             android:id="@+id/select"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="left|center"
-            android:text="Select your child:"
+            android:text="@string/select_your_child"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
@@ -133,7 +132,7 @@
                 android:gravity="left|center"
                 android:paddingLeft="10dp"
                 android:textColor="@color/black"
-                android:text="Select a child"
+                android:text="@string/select_a_child"
                 android:textSize="16sp" />
 
             <View
@@ -176,9 +175,9 @@
         <TextView
             android:textSize="16sp"
             android:id="@+id/enterTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select ECA"
+            android:text="@string/select_eca"
             android:layout_marginTop="5dp"
             android:visibility="visible"
             android:layout_marginLeft="10dp"

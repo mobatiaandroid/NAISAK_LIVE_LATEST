@@ -22,7 +22,7 @@
             android:layout_centerHorizontal="true"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Select Payment Method"
+            android:text="@string/select_payment_method"
             android:textColor="@android:color/darker_gray" />
 
         <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
@@ -190,7 +190,7 @@
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Debit Card"
+                android:text="@string/debit_card"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/radioButton"
@@ -225,7 +225,7 @@
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Credit Card"
+                android:text="@string/credit_card"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/radioButton2"

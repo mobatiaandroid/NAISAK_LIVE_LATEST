@@ -80,7 +80,7 @@ class PaymentActivity : AppCompatActivity(){
         btn_left = findViewById(R.id.btn_left)
         logoClickImgView = findViewById(R.id.logoClickImgView)
         progressDialog = findViewById(R.id.progressDialog)
-        heading.text = "Categories"
+        heading.text = getString(R.string.categories)
         studentNameTxt=findViewById(R.id.studentName)
         imagicon=findViewById(R.id.imagicon)
         studentSpinner=findViewById(R.id.studentSpinner)

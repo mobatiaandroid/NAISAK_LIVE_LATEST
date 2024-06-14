@@ -74,7 +74,7 @@ class ExternalProviderActivity : AppCompatActivity() {
 
     private fun getList() {
         val token = PreferenceManager.getUserCode(mContext)
-        val body = ExternalProvidersRequestModel("1")
+        val body = ExternalProvidersRequestModel("1",PreferenceManager().getLanguage(mContext!!)!!)
         val call: Call<ExternalProvidersResponseModel> =
             ApiClient.getClient.getExternalProviders( body,"Bearer $token")
         progressBar.visibility = View.VISIBLE
@@ -105,23 +105,23 @@ class ExternalProviderActivity : AppCompatActivity() {
                                 mnewsLetterListView!!.adapter =
                                     ExternalProviderRecyclerAdapter(mContext, mListViewArray!!)
                             } else {
-                                CommonMethods.showDialogueWithOk(mContext,"No Data Available","Alert")
+                                CommonMethods.showDialogueWithOk(mContext,getString(R.string.no_data_available),getString(R.string.alert))
                             }
 
                         }else{
-                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                            CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                         }
                     }else{
-                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                     }
                 }else{
-                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<ExternalProvidersResponseModel>, t: Throwable) {
                 progressBar.visibility = View.GONE
-                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.common_error),getString(R.string.alert))
             }
 
         })

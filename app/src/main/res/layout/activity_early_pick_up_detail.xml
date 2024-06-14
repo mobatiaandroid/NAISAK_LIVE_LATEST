@@ -133,7 +133,43 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/namelayoutArab"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:visibility="gone"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="100">
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:id="@+id/stnameValueArab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:text="Gayathri"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
+
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/colon"
+                    android:textColor="@color/black" />
+                <com.nas.naisak.customviews.textview.CustomFontTextViewSemiBoldBlack
+                    android:id="@+id/stNameArab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="@string/name"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/studClassLinear"
                 android:layout_width="match_parent"
@@ -171,7 +207,44 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/studClassLinearArab"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="100">
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:id="@+id/studClassValueArab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:text="X1"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
 
+
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/colon"
+                    android:textColor="@color/black" />
+
+                <com.nas.naisak.customviews.textview.CustomFontTextViewSemiBoldBlack
+                    android:id="@+id/studClassTextViewArab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="@string/class_text"
+
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/fromlayout"
                 android:layout_width="match_parent"
@@ -209,7 +282,45 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/fromlayoutArab"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:visibility="gone"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="100">
 
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:id="@+id/leaveDateFromValueArab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:text="12/06/2017"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/colon"
+                    android:textColor="@color/black" />
+                <com.nas.naisak.customviews.textview.CustomFontTextViewSemiBoldBlack
+                    android:id="@+id/leaveDateFromArab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="@string/day_of_pickup"
+
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/tolayout"
                 android:layout_width="match_parent"
@@ -284,7 +395,43 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/pickuplayoutArab"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:visibility="gone"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="100">
 
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:id="@+id/pickupbyNameArab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:text="12/06/2017"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/colon"
+                    android:textColor="@color/black" />
+                <com.nas.naisak.customviews.textview.CustomFontTextViewSemiBoldBlack
+                    android:id="@+id/pickuptitleArab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="@string/pickup_at"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/statuslayout"
                 android:layout_width="match_parent"
@@ -321,7 +468,43 @@
                     android:textColor="@color/black"
                     android:textSize="14sp" />
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/statusLayoutarab"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:visibility="gone"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="100">
 
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:id="@+id/statusArab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:text="12/06/2017"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/colon"
+                    android:textColor="@color/black" />
+                <com.nas.naisak.customviews.textview.CustomFontTextViewSemiBoldBlack
+                    android:id="@+id/statustitleArab"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="@string/status"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/reasonlayout"
                 android:layout_width="match_parent"

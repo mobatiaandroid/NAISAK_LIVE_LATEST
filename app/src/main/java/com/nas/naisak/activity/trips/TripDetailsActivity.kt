@@ -323,8 +323,8 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             } else {
                 CommonMethods.showDialogueWithOk(
                     context as Activity,
-                    "You cannot submit any more intentions, as you have already reached your limit.",
-                    "Alert",
+                    getString(R.string.trip_intention_block),
+                    getString(R.string.alert),
                 )
             }
         }
@@ -391,7 +391,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                                         )
                                         Toast.makeText(
                                             context,
-                                            "Go to settings and grant access to storage",
+                                            getString(R.string.setting_storage_permission),
                                             Toast.LENGTH_LONG
                                         ).show()
                                     }
@@ -428,7 +428,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                                         )
                                         Toast.makeText(
                                             context,
-                                            "Go to settings and grant access to storage",
+                                            getString(R.string.setting_storage_permission),
                                             Toast.LENGTH_LONG
                                         ).show()
                                     }
@@ -458,8 +458,8 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     } else {
                         CommonMethods.showDialogueWithOk(
                             context,
-                            "You can no longer apply for this trip, as all the slots have been filled.",
-                            "Alert"
+                            getString(R.string.trip_slots_filled_block),
+                            getString(R.string.alert)
                         )
 
                     }
@@ -476,8 +476,8 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     showPaymentsPopUp(context)
                 } else CommonMethods.showDialogueWithOk(
                     context,
-                    "You cannot submit any more payments, as you have already reached your trip limit.",
-                    "Alert"
+                    getString(R.string.trip_limit_reached),
+                    getString(R.string.alert)
                 )
             }
         }
@@ -495,8 +495,8 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         } else {
             CommonMethods.showDialogueWithOk(
                 context,
-                "Network error occurred. Please check your internet connection and try again later",
-                "Network Error"
+                getString(R.string.network_error),
+                getString(R.string.network)
             )
 
         }
@@ -582,7 +582,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             } catch (e: PackageManager.NameNotFoundException) {
                 Toast.makeText(
                     context,
-                    "Whatsapp app not installed in your phone",
+                    getString(R.string.watsapp_not_install_prompt),
                     Toast.LENGTH_SHORT
                 ).show()
                 e.printStackTrace()
@@ -728,8 +728,8 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                         method = "3"
                         CommonMethods.showDialogueWithOkPay(
                             context,
-                            "Currently not supported this type of payment",
-                            "Alert"
+                            getString(R.string.payment_not_supported_currently),
+                            getString(R.string.alert)
                         )
                     }
 //                    mProgressRelLayout.visibility= View.VISIBLE
@@ -940,9 +940,9 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     //                        tripQuestion = response.body().getResponse().getData().q
                     tripNameTextView.setText(response.body()!!.data.lists.tripNameEn)
                     tripAmountTextView.text =
-                        "Trip Amount : " + response.body()!!.data.lists.totalPrice + " AED"
+                       getString(R.string.Trip_amount) +": " + response.body()!!.data.lists.totalPrice +  getString(R.string.aed)
                     dateTextView.text =
-                        "Trip Date : " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(response.body()!!.data.lists.tripStartDate) + " To " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(
+                        getString(R.string.Trip_date)+": " + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(response.body()!!.data.lists.tripStartDate) + getString(R.string.to) + CommonMethods.dateParsingyyyyMMddToDdMmmYyyy(
                             response.body()!!.data.lists.tripEndDate
                         )
                     coordinatorNameTextView.setText(
@@ -985,7 +985,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                         submitDetailsButton.visibility = View.GONE
                         paymentButton.visibility = View.GONE
                         tripStatusTextView.visibility = View.VISIBLE
-                        tripStatusTextView.text = "Waiting for approval"
+                        tripStatusTextView.text = getString(R.string.waiting_for_approval)
                     } else if (tripStatus == 2) {
                         submitIntentionButton.visibility = View.GONE
                         submitDetailsButton.visibility = View.GONE
@@ -1001,7 +1001,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                         submitDetailsButton.visibility = View.GONE
                         paymentButton.visibility = View.GONE
                         tripStatusTextView.visibility = View.VISIBLE
-                        tripStatusTextView.text = "Trip Canceled"
+                        tripStatusTextView.text = getString(R.string.trip_cancelled)
                     } else if (tripStatus == 5) {
                         submitIntentionButton.visibility = View.GONE
                         submitDetailsButton.visibility = View.GONE
@@ -1031,10 +1031,10 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
             override fun onFailure(call: Call<TripDetailsResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
-                Log.e("error", t.localizedMessage)
+              //  Log.e("error", t.localizedMessage)
                 CommonMethods.showDialogueWithOk(context, getString(R.string.common_error), "")
                 CommonMethods.showDialogueWithOk(
-                    context as Activity, getString(R.string.common_error), "Alert"
+                    context as Activity, getString(R.string.common_error), getString(R.string.alert)
                 )
             }
         })
@@ -1088,7 +1088,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         val visaAdd = dial.findViewById<ImageView>(R.id.visaAdd)
         val emiratesAdd = dial.findViewById<ImageView>(R.id.emiratesAdd)
         val permissionAdd = dial.findViewById<ImageView>(R.id.permissionAdd)
-        Log.e("permission", permissionSlip)
+      //  Log.e("permission", permissionSlip)
 //        permissiontitle.text = permissionSlip
         //        if (tripType.equalsIgnoreCase("1")) {
 //            studentAdd.setVisibility(View.GONE);
@@ -1186,7 +1186,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         payButtonConstraint.setOnClickListener {
             if (passportStatus == 1 && visaStatus == 1 && eIDStatus == 1 && permissionStatus == 1) {
                 showPaymentsPopUp(context)
-            } else Toast.makeText(context, "Please upload all documents.", Toast.LENGTH_SHORT)
+            } else Toast.makeText(context, getString(R.string.upload_documents), Toast.LENGTH_SHORT)
                 .show()
         }
         studentAdd.setOnClickListener {
@@ -1242,10 +1242,10 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         submitConsentButton.setOnClickListener {
             if (signature_pad.isEmpty()) {
                 // Prompt the user to enter a signature
-                Toast.makeText(context, "Please enter your signature", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.enter_signature_prompt), Toast.LENGTH_SHORT).show()
             } else if (!rememeberMeImg.isChecked) {
                 Toast.makeText(
-                    context, "Please agree to terms and conditions", Toast.LENGTH_SHORT
+                    context, getString(R.string.agree_to_terms_prompt), Toast.LENGTH_SHORT
                 ).show()
             } else {
                 val signatureBitmap: Bitmap = signature_pad.getSignatureBitmap()
@@ -1279,9 +1279,9 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     dial, passportURIArray, passportNumberEditText.text.toString(), "passport"
                 )
             } else if (passportNumberEditText.text.toString().equals("", ignoreCase = true)) {
-                Toast.makeText(context, "Please enter passport number.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.enter_passport), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(context, "Please upload both images.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.upload_both_images), Toast.LENGTH_SHORT).show()
             }
         }
         chooseFileVisaFront.setOnClickListener {
@@ -1302,9 +1302,9 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     dial, visaURIArray[0], visaEditText.text.toString(), "visa"
                 )
             } else if (visaEditText.text.toString().equals("", ignoreCase = true)) {
-                Toast.makeText(context, "Please enter Visa number.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.enter_visa), Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(context, "Please upload both images.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.upload_both_images), Toast.LENGTH_SHORT).show()
             }
         }
         chooseFileEIDFront.setOnClickListener {
@@ -1316,9 +1316,9 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             openGallery(PICK_IMAGE_BACK_EID)
         }
         uploadEIDDetailsButton.setOnClickListener {
-            Log.e("herer", eIDURIArray[0].path!!)
-            Log.e("front", eIDURIArray[0].path!!)
-            Log.e("back", eIDURIArray[1].path!!)
+          //  Log.e("herer", eIDURIArray[0].path!!)
+         //   Log.e("front", eIDURIArray[0].path!!)
+         //   Log.e("back", eIDURIArray[1].path!!)
             if (!eIDURIArray[0].path.equals(
                     "", ignoreCase = true
                 ) && !eIDURIArray[1].path.equals(
@@ -1329,10 +1329,10 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     dial, eIDURIArray, eIDEditText.text.toString(), "emirates"
                 )
             } else if (eIDEditText.text.toString().equals("", ignoreCase = true)) {
-                Toast.makeText(context, "Please enter QID number.", Toast.LENGTH_SHORT)
+                Toast.makeText(context, getString(R.string.enter_QID), Toast.LENGTH_SHORT)
                     .show()
             } else {
-                Toast.makeText(context, "Please upload both images.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.upload_both_images), Toast.LENGTH_SHORT).show()
             }
         }
         dial.show()
@@ -1358,32 +1358,32 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 when (requestCode) {
                     PICK_IMAGE_FRONT_PASSPORT -> {
                         passportURIArray[currentPosition!!] = Uri.parse(imagePath)
-                        Log.e("uri", passportURIArray[currentPosition!!].path!!)
+                       // Log.e("uri", passportURIArray[currentPosition!!].path!!)
                     }
 
                     PICK_IMAGE_BACK_PASSPORT -> {
                         passportURIArray[currentPosition!!] = Uri.parse(imagePath)
-                        Log.e("uri", passportURIArray[currentPosition!!].path!!)
+                       // Log.e("uri", passportURIArray[currentPosition!!].path!!)
                     }
 
                     PICK_IMAGE_FRONT_VISA -> {
                         visaURIArray[currentPosition!!] = Uri.parse(imagePath)
-                        Log.e("uri", visaURIArray[currentPosition!!].path!!)
+                       // Log.e("uri", visaURIArray[currentPosition!!].path!!)
                     }
 
                     PICK_IMAGE_FRONT_EID -> {
                         eIDURIArray[currentPosition!!] = Uri.parse(imagePath)
-                        Log.e("uri", eIDURIArray[currentPosition!!].path!!)
-                        Log.e("ursai", Uri.parse(imagePath).toString())
+                        //Log.e("uri", eIDURIArray[currentPosition!!].path!!)
+                       // Log.e("ursai", Uri.parse(imagePath).toString())
                     }
 
                     PICK_IMAGE_BACK_EID -> {
                         eIDURIArray[currentPosition!!] = Uri.parse(imagePath)
-                        Log.e("uri", eIDURIArray[currentPosition!!].path.toString())
-                        Log.e("ursai", Uri.parse(imagePath).toString())
+                       // Log.e("uri", eIDURIArray[currentPosition!!].path.toString())
+                      //  Log.e("ursai", Uri.parse(imagePath).toString())
                     }
 
-                    else -> Toast.makeText(context, "Transaction failed", Toast.LENGTH_SHORT).show()
+                    else -> Toast.makeText(context, getString(R.string.transaction_failed), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -1411,7 +1411,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
             }
 
             override fun onFailure(call: Call<TripChoicePreferenceResponseModel>, t: Throwable) {
-                Toast.makeText(this@TripDetailsActivity, "Some error occurred.", Toast.LENGTH_SHORT)
+                Toast.makeText(this@TripDetailsActivity, getString(R.string.some_error_occurred), Toast.LENGTH_SHORT)
                     .show()
             }
 
@@ -1424,7 +1424,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         tripID: String?, callback: TripCountCheckCallback
     ) {
         val paramObject = JsonObject()
-        Log.e("tripID name", tripID!!)
+        //Log.e("tripID name", tripID!!)
         paramObject.addProperty("trip_id", tripID)
         val call: Call<TripChoicePaymentCountResponseModel> = ApiClient.getClient.tripCountCheck(
             "Bearer " + PreferenceManager.getUserCode(context), paramObject
@@ -1500,12 +1500,12 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
         )
         submitIntentionButton.setOnClickListener {
             if (yesButton.isChecked && selectedChoice == "") {
-                Toast.makeText(context, "Please select your choice!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, getString(R.string.select_your_choice), Toast.LENGTH_SHORT).show()
             } else if (yesButton.isChecked && selectedChoice != "") {
                 submitIntent("1", dialog, selectedChoice)
             } else if (noButton.isChecked) {
                 submitIntent("2", dialog, "")
-            } else Toast.makeText(context, "Please provide your intention!", Toast.LENGTH_SHORT)
+            } else Toast.makeText(context, getString(R.string.provide_intention_prompt), Toast.LENGTH_SHORT)
                 .show()
         }
         yesButton.setOnCheckedChangeListener { compoundButton, b ->
@@ -1529,7 +1529,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
     private fun submitIntent(intent: String, dialog: Dialog, preference: String) {
         progressDialogP.show()
         val paramObject = JsonObject()
-        Log.e("tripID name", tripID)
+        //Log.e("tripID name", tripID)
         paramObject.addProperty("student_id", PreferenceManager.getStudentID(context))
         paramObject.addProperty("trip_item_id", tripID)
         paramObject.addProperty("status", intent)
@@ -1547,22 +1547,22 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 if (response.body()!!.status == 100) {
                     Toast.makeText(
                         this@TripDetailsActivity,
-                        "Intention successfully submitted.",
+                        getString(R.string.trip_intention_submit_success),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else if (response.body()!!.status == (313)) {
                     Toast.makeText(
-                        this@TripDetailsActivity, "Intention already submitted.", Toast.LENGTH_SHORT
+                        this@TripDetailsActivity, getString(R.string.trip_intention_already_submitted), Toast.LENGTH_SHORT
                     ).show()
                 } else if (response.body()!!.status == 314) {
                     Toast.makeText(
                         this@TripDetailsActivity,
-                        "Intention already submitted for this choice. Select any other choice.",
+                        getString(R.string.intention_already_select_choice_prompt),
                         Toast.LENGTH_SHORT
                     ).show()
                 } else {
                     Toast.makeText(
-                        this@TripDetailsActivity, "Intention Submission Failed.", Toast.LENGTH_SHORT
+                        this@TripDetailsActivity, getString(R.string.trip_intention_submit_failed), Toast.LENGTH_SHORT
                     ).show()
                 }
 
@@ -1571,9 +1571,9 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
             override fun onFailure(call: Call<GeneralSubmitResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
-                Log.e("error", t.localizedMessage)
+              //  Log.e("error", t.localizedMessage)
                 CommonMethods.showDialogueWithOk(
-                    context as Activity, getString(R.string.common_error), "Alert"
+                    context as Activity, getString(R.string.common_error), getString(R.string.alert)
 
                 )
             }
@@ -1621,7 +1621,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     dial.dismiss()
                     Toast.makeText(
                         this@TripDetailsActivity,
-                        "Permission slip successfully submitted.",
+                        getString(R.string.permission_slip_success),
                         Toast.LENGTH_SHORT
                     ).show()
                     passportStatus = response.body()!!.data.documentStatus.passportStatus
@@ -1638,7 +1638,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 } else {
                     Toast.makeText(
                         this@TripDetailsActivity,
-                        "Permission slip submit failed.",
+                        getString(R.string.permission_slip_failed),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -1646,7 +1646,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
             override fun onFailure(call: Call<SubmitDocResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
-                Log.e("failed", "failed")
+              //  Log.e("failed", "failed")
             }
         })
 
@@ -1726,7 +1726,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     dial.dismiss()
                     Toast.makeText(
                         this@TripDetailsActivity,
-                        "Document successfully submitted.",
+                        getString(R.string.document_success),
                         Toast.LENGTH_SHORT
                     ).show()
                     passportStatus = response.body()!!.data.documentStatus.passportStatus
@@ -1743,7 +1743,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 } else {
                     Toast.makeText(
                         this@TripDetailsActivity,
-                        "Document submit failed.",
+                        getString(R.string.document_submit_failed),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -1751,7 +1751,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
             override fun onFailure(call: Call<SubmitDocResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
-                Log.e("failed", "Failed")
+             //   Log.e("failed", "Failed")
             }
 
         })
@@ -1798,7 +1798,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                     dial.dismiss()
                     Toast.makeText(
                         this@TripDetailsActivity,
-                        "Document successfully submitted.",
+                        getString(R.string.document_success),
                         Toast.LENGTH_SHORT
                     ).show()
                     passportStatus = response.body()!!.data.documentStatus.passportStatus
@@ -1815,7 +1815,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
                 } else {
                     Toast.makeText(
                         this@TripDetailsActivity,
-                        "Document submit failed.",
+                        getString(R.string.document_submit_failed),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -1823,7 +1823,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
             override fun onFailure(call: Call<SubmitDocResponseModel>, t: Throwable) {
                 progressDialogP.dismiss()
-                Log.e("failed", "Failed")
+               // Log.e("failed", "Failed")
             }
 
         })
@@ -1832,7 +1832,7 @@ class TripDetailsActivity : AppCompatActivity(), ChoicePreferenceAdapter.OnItemS
 
     override fun onItemSelected(choice: String?) {
         selectedChoice = choice!!
-        Log.e("Selected", selectedChoice)
+        //Log.e("Selected", selectedChoice)
     }
 
 }

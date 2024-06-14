@@ -70,7 +70,7 @@ class InformationCCAActivity : AppCompatActivity() {
 
     private fun getList() {
 
-        val body = CCAInfoRequestModel("1")
+        val body = CCAInfoRequestModel("1",PreferenceManager().getLanguage(mContext!!)!!)
         val token = PreferenceManager.getUserCode(mContext)
         val call: Call<CCAInfoResponseModel> =
             ApiClient.getClient.getCCAInfo(body, "Bearer $token")
@@ -97,22 +97,22 @@ class InformationCCAActivity : AppCompatActivity() {
                             } else {
                                 CommonMethods.showDialogueWithOk(
                                     mContext,
-                                    "No data available",
-                                    "Alert"
+                                    getString(R.string.no_data_available),
+                                    getString(R.string.alert)
                                 )
                             }
                         } else {
                             CommonMethods.showDialogueWithOk(
                                 mContext,
                                 getString(R.string.common_error),
-                                "Alert"
+                                getString(R.string.alert)
                             )
                         }
                     } else {
                         CommonMethods.showDialogueWithOk(
                             mContext,
                             getString(R.string.common_error),
-                            "Alert"
+                            getString(R.string.alert)
                         )
                     }
                 }
@@ -124,7 +124,7 @@ class InformationCCAActivity : AppCompatActivity() {
                 CommonMethods.showDialogueWithOk(
                     mContext,
                     getString(R.string.common_error),
-                    "Alert"
+                    getString(R.string.alert)
                 )
             }
 

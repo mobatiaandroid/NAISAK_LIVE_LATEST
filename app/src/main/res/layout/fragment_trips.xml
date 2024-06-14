@@ -40,6 +40,10 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+<RelativeLayout
+    android:id="@+id/relmail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
                     <ImageView
                         android:id="@+id/sendEmail"
@@ -48,13 +52,21 @@
                         android:layout_alignParentRight="true"
                         android:src="@drawable/mailiconpe"
                         android:visibility="gone" />
+                    <ImageView
+                        android:id="@+id/sendEmailArab"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/mailiconpe"
+                        android:visibility="gone" />
+</RelativeLayout>
 
                     <RelativeLayout
                         android:id="@+id/title"
                         android:layout_width="match_parent"
                         android:visibility="visible"
                         android:layout_marginTop="5dp"
-                        android:layout_below="@+id/sendEmail"
+                        android:layout_below="@+id/relmail"
                         android:layout_height="wrap_content">
 
 
@@ -64,7 +76,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="10dp"
-                            android:text="Description"
+                            android:text="@string/description"
                             android:textColor="@color/black"
                             android:textSize="16sp"
                             android:visibility="gone" />
@@ -100,7 +112,7 @@
                             <com.nas.naisak.customviews.textview.CustomFontTextViewRegularWhite
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Register Trip" />
+                                android:text="@string/register_trip" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -131,7 +143,7 @@
                                 <com.nas.naisak.customviews.textview.CustomFontTextViewRegularWhite
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Payment" />
+                                    android:text="@string/payment" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -153,7 +165,7 @@
                                 <com.nas.naisak.customviews.textview.CustomFontTextViewRegularWhite
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Information" />
+                                    android:text="@string/information" />
                             </LinearLayout>
                         </LinearLayout>
 

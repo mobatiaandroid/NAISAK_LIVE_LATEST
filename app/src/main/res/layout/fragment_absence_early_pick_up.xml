@@ -210,7 +210,7 @@
         android:background="@drawable/buttonred_new"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Register Early Pickup"
+        android:text="@string/register_early_pickup"
         android:textColor="@color/white"
         android:textSize="18dp"
         android:visibility="gone"

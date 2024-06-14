@@ -135,7 +135,7 @@ public class CCAsActivityAdapter extends RecyclerView.Adapter<CCAsActivityAdapte
                         AppController.weekList.get(dayPosition).setChoiceStatus1("1");
                     }
 
-                    holder.listTxtView.setText("First Choice : ");// + (position + 1)
+                    holder.listTxtView.setText(mContext.getString(R.string.first_choice));// + (position + 1)
                     if (ccaedit==1) {
                         for (int k = 0; k < CCADetailModelArrayList.size(); k++) {
                         for (int i = 0; i < mCCAchoiceModel1.size(); i++) {
@@ -177,7 +177,7 @@ public class CCAsActivityAdapter extends RecyclerView.Adapter<CCAsActivityAdapte
                     if (mCCAchoiceModel1.size() <= 0) {
                         AppController.weekList.get(dayPosition).setChoiceStatus("1");
                     }
-                    holder.listTxtView.setText("Second Choice : ");// + (position + 1)
+                    holder.listTxtView.setText(mContext.getString(R.string.second_choice));// + (position + 1)
                     if (ccaedit==1) {
                         for (int k = 0; k < CCADetailModelArrayList.size(); k++) {
 

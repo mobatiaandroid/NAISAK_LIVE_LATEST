@@ -62,7 +62,7 @@
                 android:layout_marginRight="4dp"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:text="Contact Form"
+                android:text="@string/Contact_form"
                 android:textColor="@color/rel_two"
                 android:textSize="18sp" />
 
@@ -80,7 +80,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:gravity="center"
-                android:hint="Enter your subject here..."
+                android:hint="@string/enter_subject_here"
                 android:imeOptions="actionNext"
                 android:singleLine="true"
                 android:textColor="@color/black"
@@ -95,7 +95,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:gravity="left"
-                android:text="Enter content:"
+                android:text="@string/enter_content"
                 android:textColor="#ff000000"
                 android:textSize="18sp" />
 
@@ -127,7 +127,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/button"
-                android:text="Submit"
+                android:text="@string/submit"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
@@ -141,7 +141,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/buttonred_new"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 

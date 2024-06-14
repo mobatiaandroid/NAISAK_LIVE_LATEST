@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">CIS Doha</string>
+    <string name="app_name">NAISAK</string>
     <string name="loading">تحميل…</string>
     <string name="no_data">لايوجد بيانات</string>
+    <string name="no_data_available">لا تتوافر بيانات</string>
+
     <string name="introduction">مقدمة</string>
     <string name="no_internet">حدث خطأ في الشبكة. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى لاحقًا.</string>
+
+    <string name="home">بيت</string>
+    <string name="calendar">تقويم</string>
+    <string name="notifications">إشعارات</string>
+    <string name="communications">مجال الاتصالات</string>
+    <string name="parents_meeting">اجتماع الأهل</string>
+    <string name="gallery">صالة عرض</string>
+    <string name="payments">المدفوعات</string>
+    <string name="trips">رحلات</string>
+    <string name="nord_angila_education">تعليم نورد أنجليا</string>
 
     <string-array name="navigation_item_reg">
         <!-- 0 -->
@@ -68,7 +80,11 @@
         <item>Contact Us</item>
         <item>Settings</item>
     </string-array>
-
+    <string name="no_message_available">لا توجد رسائل متاحة</string>
+    <string name="please_enter_current_psswrd">الرجاء إدخال كلمة المرور الحالية</string>
+    <string name="please_enter_new_psswrd">الرجاء إدخال كلمة المرور الجديدة.</string>
+    <string name="contact_us">اتصل بنا</string>
+    <string name="no_reports_available">لا توجد تقارير متاحة</string>
     <string name="add_cal_success">تمت إضافة الحدث إلى تقويم الجهاز</string>
     <string name="del_cal_success">تمت إزالة الحدث من تقويم الجهاز</string>
     <string name="del_cal_fail">فشل حذف الحدث</string>
@@ -89,12 +105,20 @@
     <string name="november">شهر نوفمبر</string>
     <string name="december">ديسمبر</string>
     <string name="monday">الاثنين</string>
-    <string name="tuesday">يوم الثلاثاء</string>
+    <string name="tuesday"> الثلاثاء</string>
     <string name="wednesday">الأربعاء</string>
-    <string name="thursday">يوم الخميس</string>
+    <string name="thursday">الخميس</string>
     <string name="friday">جمعة</string>
     <string name="saturday">السبت</string>
     <string name="sunday">الأحد</string>
+    <string name="mon">الاثنين</string>
+    <string name="tue">الثلاثاء</string>
+    <string name="wed">الأربعاء</string>
+    <string name="thur">الخميس</string>
+    <string name="fri">جمعة</string>
+    <string name="sat">السبت</string>
+    <string name="sun">الأحد</string>
+
     <string name="jan_short">يناير</string>
     <string name="feb_short">شهر فبراير</string>
     <string name="mar_short">يمشي</string>
@@ -133,9 +157,16 @@
     <string name="pick_up_by">التقط من قبل</string>
     <string name="date">تاريخ</string>
     <string name="time">وقت</string>
-    <string name="if_you_need_to_cancel_a_absence_earlypickup">If you need to cancel a registered absence/early pickup please contact reception (phone or email).</string>
-    <string name="Register_absence">Registered Absence</string>
-    <string name="early_pickup">Early Pickup</string>
+    <string name="if_you_need_to_cancel_a_absence_earlypickup">إذا كنت بحاجة إلى إلغاء الغياب المسجل/الاستلام المبكر، فيرجى الاتصال بمكتب الاستقبال (الهاتف أو البريد الإلكتروني).</string>
+    <string name="Register_absence">الغياب المسجل</string>
+    <string name="early_pickup">الاستلام المبكر</string>
+    <string name="register_new_absence">تسجيل غياب جديد</string>
+    <string name="app_registered_absence">التطبيق المسجل الغياب</string>
+    <string name="absence_earlypickup">الغياب &amp; الاستلام المبكر</string>
+    <string name="app_registered_early">تم تسجيل التطبيق للاستلام المبكر</string>
+    <string name="no_registered_absence_found">لم يتم العثور على غياب مسجل</string>
+    <string name="no_registered_earlypickup_found">لم يتم العثور على خدمة الاستلام المبكر المسجلة</string>
+    <string name="for_planned_absences_prompt">بالنسبة للغياب المخطط له، يرجى إرسال بريد إلكتروني إلى مدير المدرسة</string>
     <string name="day_of_pickup">يوم الاستلام</string>
     <string name="time_of_pickup">وقت الاستلام</string>
     <string name="pickup_at">تلتقط في</string>
@@ -218,6 +249,8 @@
     <string name="payment_not_supported">هذا النوع من الدفع غير مدعوم حاليًا.</string>
     <string name="file_downloaded">تم تنزيل الملف</string>
     <string name="download">تحميل</string>
+    <string name="book_now">احجز الآن</string>
+    <string name="trip_approved">موافقة</string>
     <string name="trip_status_0">احجز رحلتك</string>
     <string name="trip_status_1">قيد الانتظار</string>
     <string name="trip_status_2">مرفوض</string>
@@ -227,6 +260,8 @@
     <string name="trip_status_6">ادفع الآن</string>
     <string name="trip_status_7">عرض الفاتورة</string>
     <string name="trip_status_8">غير متاح</string>
+    <string name="installment_no">رقم القسط.</string>
+    <string name="registration_end_date_trip">تاريخ انتهاء التسجيل:  </string>
     <string name="paid">مدفوع</string>
     <string name="pay">يدفع</string>
     <string name="trip_status_9">منتهي الصلاحية</string>
@@ -259,6 +294,15 @@
     <string name="trip_intention_already_submitted">النية قدمت بالفعل.</string>
     <string name="trip_intention_submit_failed">فشل إرسال النية.</string>
     <string name="document_submit_failed">فشل إرسال المستند.</string>
+    <string name="trip_name">اسم رحلة</string>
+    <string name="co_ordinator_details">تفاصيل المنسق:</string>
+    <string name="co_ordinator_name">اسم المنسق</string>
+    <string name="co_ordinator_email">البريد الإلكتروني للمنسق</string>
+    <string name="medical_consent_prompt">يرجى تقديم موافقتك الطبية!</string>
+    <string name="installments">أقساط</string>
+    <string name="no_installments_Paid">لا توجد أقساط ليتم سدادها</string>
+    <string name="invoice">الفواتير</string>
+    <string name="no_trip_available">لا توجد رحلات متاحة.</string>
     <string name="description">وصف</string>
     <string name="register_trip">سجل الرحلة</string>
     <string name="payment">قسط</string>
@@ -273,4 +317,118 @@
     <string name="change_password_success">تم تغيير كلمة المرور بنجاح.</string>
     <string name="reports">التقارير</string>
     <string name="parent_essentials">أساسيات الوالدين</string>
+
+    <string name="no_staff">لم يتم العثور على طاقم العمل.</string>
+    <string name="payment_not_supported_currently">هذا النوع من الدفع غير مدعوم حاليًا</string>
+    <string name="Trip_amount">مبلغ الرحلة</string>
+    <string name="Trip_date">تاريخ الرحلة</string>
+    <string name="aed">درهم</string>
+    <string name="to">ل</string>
+    <string name="select_your_child"> اختر طفلك:</string>
+    <string name="select_first_second_choice_prompt"> اختر الخيار الأول&amp; الخيار الثاني لهذا اليوم</string>
+    <string name="select_eca_choice_for"> حدد اختيارات ECA من أجل:</string>
+    <string name="next">التالي</string>
+    <string name="eca_review">ECA Review</string>
+    <string name="confirm_and_submit">تأكيد \u0026 إرسال</string>
+    <string name="eca_waiting_for_approval">تم تقديم خياراتك &amp; بانتظار الموافقة</string>
+    <string name="edit">Edit</string>
+    <string name="external_providers">مقدمي الخدمات الخارجيين</string>
+    <string name="Location">موقع</string>
+    <string name="choice1_nill">الاختيار 1: لا شيء</string>
+    <string name="choice2_nill">الاختيار 2: لا شيء</string>
+    <string name="choice1">الاختيار 1 :</string>
+    <string name="choice2">الاختيار 2 :</string>
+    <string name="choice1_none">الاختيار 1: لا شيء</string>
+    <string name="choice2_none">الاختيار 2: لا شيء</string>
+    <string name="not_available_attendance">لا توجد تفاصيل الحضور المتاحة</string>
+    <string name="successfully_deleted">تم حذف الاختيار بنجاح</string>
+    <string name="choice_deleted_failed">غير قادر على حذف الاختيار. الرجاء معاودة المحاولة في وقت لاحق</string>
+    <string name="first_choice">الاختيار الاول :</string>
+    <string name="second_choice">الاختيار الثاني :</string>
+    <string name="register_user_only">هذه الميزة متاحة للمستخدمين المسجلين فقط</string>
+    <string name="email_success">أرسل البريد الإلكتروني بنجاح.</string>
+    <string name="intention_already_select_choice_prompt">النية المقدمة بالفعل لهذا الاختيار. حدد أي خيار آخر.</string>
+    <string name="permission_slip_success">تم إرسال قسيمة الإذن بنجاح.</string>
+    <string name="permission_slip_failed">فشل إرسال قسيمة الإذن.</string>
+    <string name="document_success">تم إرسال الوثيقة بنجاح.</string>
+    <string name="network">شبكة</string>
+    <string name="watsapp_not_install_prompt">تطبيق Whatsapp غير مثبت في هاتفك</string>
+    <string name="upload_both_images">يرجى تحميل كلتا الصورتين.</string>
+    <string name="select_your_choice">الرجاء تحديد اختيارك!</string>
+    <string name="setting_storage_permission">انتقل إلى الإعدادات ومنح الوصول إلى التخزين</string>
+    <string name="please_enter_subject">الرجاء إدخال الموضوع الخاص بك</string>
+    <string name="please_enter_content">الرجاء إدخال المحتوى الخاص بك</string>
+    <string name="slot_confirm_prompt_on">هل تريد تأكيد موعدك على</string>
+    <string name="room">غرفة</string>
+    <string name="confirm_cancellation_closes">التأكيد/الإلغاء يغلق عند</string>
+    <string name="translator_requested_yes">المترجم المطلوب: نعم</string>
+    <string name="ecas">ECAs</string>
+    <string name="staff_name">اسم الموظفين</string>
+    <string name="pay_here">ادفع هنا</string>
+    <string name="day">يوم</string>
+    <string name="month">شهر</string>
+    <string name="year">سنة</string>
+    <string name="reset">إعادة ضبط</string>
+    <string name="all">الجميع</string>
+    <string name="term_calendar">تقويم المصطلح</string>
+    <string name="remove_from_calendar">إزالة من التقويم</string>
+    <string name="add_to_calendar">إضافة إلى التقويم</string>
+    <string name="join_meeting_here">انضم إلى الاجتماع هنا</string>
+    <string name="Dismiss">رفض</string>
+    <string name="select_child">حدد الطفل</string>
+    <string name="student_name">أسم الطالب:-</string>
+    <string name="select_staff">اختر طاقم العمل-</string>
+    <string name="Student_nocolon">طالب</string>
+    <string name="reserved_date_and_time">التاريخ والوقت المحجوز:</string>
+    <string name="Staff_nocolon">طاقم عمل</string>
+    <string name="updated">محدث</string>
+    <string name="new_keyword">جديد</string>
+    <string name="Contact_form">نموذج الاتصال</string>
+    <string name="enter_subject_here">أدخل موضوعك هنا...</string>
+    <string name="cancel">يلغي</string>
+    <string name="register_early_pickup">سجل الاستلام المبكر</string>
+    <string name="intention_question">هل أنت على استعداد للانضمام إلى الرحلة؟</string>
+    <string name="submit_intention">إرسال النية</string>
+    <string name="trip_intention">نية الرحلة</string>
+
+    <string name="passport_details">تفاصيل جواز السفر:</string>
+    <string name="passport_number">رقم جواز السفر</string>
+    <string name="passport_front_attach">(إرفاق واجهة جواز السفر)</string>
+    <string name="passport_back_attach">(إرفاق الجزء الخلفي من جواز السفر)</string>
+    <string name="choose_file">اختر ملف</string>
+    <string name="upload">رفع</string>
+    <string name="visa_details">تفاصيل التأشيرة:</string>
+    <string name="visa_number">رقم الفيزا</string>
+    <string name="attach_visa">(إرفاق التأشيرة)</string>
+    <string name="qid_details">تفاصيل البطاقة الشخصية:</string>
+    <string name="attach_front_QID">(إرفاق واجهة البطاقة الشخصية)</string>
+    <string name="attach_back_QID">(إرفاق البطاقة الشخصية القطرية)</string>
+    <string name="medical_consent_details">تفاصيل الموافقة الطبية:</string>
+    <string name="permission_form">شكل إذن</string>
+    <string name="agree">أنا موافق</string>
+    <string name="amount_pay_now">المبلغ ادفع الآن</string>
+    <string name="student_details_form">نموذج بيانات الطالب</string>
+    <string name="trip_payment">دفع الرحلة</string>
+    <string name="pay_total">ادفع الإجمالي</string>
+    <string name="pay_installment">دفع على أقساط</string>
+    <string name="select_payment_method">اختار طريقة الدفع</string>
+    <string name="debit_card">بطاقة ائتمان</string>
+    <string name="credit_card">بطاقة إئتمان</string>
+
+
+    <string name="jan">يناير</string>
+    <string name="feb">شهر </string>
+    <string name="mar">يمشي</string>
+    <string name="apr">أبريل</string>
+    <string name="ma">يمكن</string>
+    <string name="jun">يونيو</string>
+    <string name="jul">يوليو</string>
+    <string name="aug">أغسطس</string>
+    <string name="sep">سبتمبر</string>
+    <string name="oct">اكتوبر</string>
+    <string name="nov">نوفمبر</string>
+    <string name="dec">ديسمبر</string>
+
+
+
 </resources>

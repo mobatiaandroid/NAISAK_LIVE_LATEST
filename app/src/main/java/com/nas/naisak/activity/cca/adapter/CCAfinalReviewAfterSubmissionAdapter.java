@@ -146,10 +146,10 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
 
         if (mCCADetailModelArrayList.get(position).getChoice1().equalsIgnoreCase("0")) {
             holder.linearChoice1.setVisibility(View.GONE);
-            holder.textViewCCAChoice1.setText("Choice 1 : None");
+            holder.textViewCCAChoice1.setText(mContext.getString(R.string.choice1_none));
         } else if (mCCADetailModelArrayList.get(position).getChoice1().equalsIgnoreCase("-1")) {
             holder.linearChoice1.setVisibility(View.GONE);
-            holder.textViewCCAChoice1.setText("Choice 1 : Nil");
+            holder.textViewCCAChoice1.setText(mContext.getString(R.string.choice1_nill));
         } else {
             if(mCCADetailModelArrayList.get(position).getCca_item_description().length()>40)
             {
@@ -168,7 +168,7 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
             else
             {
                 holder.locationTxt.setVisibility(View.VISIBLE);
-                holder.locationTxt.setText("Location            : "+mCCADetailModelArrayList.get(position).getVenue());
+                holder.locationTxt.setText(mContext.getString(R.string.Location)+"            : "+mCCADetailModelArrayList.get(position).getVenue());
 
             }
             System.out.println("DESC EDIT"+mCCADetailModelArrayList.get(position).getCca_item_description());
@@ -181,7 +181,7 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
             {
                 holder.descriptionTxt.setVisibility(View.VISIBLE);
                 holder.readMore1.setVisibility(View.VISIBLE);
-                holder.descriptionTxt.setText("Description      : "+mCCADetailModelArrayList.get(position).getCca_item_description());
+                holder.descriptionTxt.setText(mContext.getString(R.string.description)+"      : "+mCCADetailModelArrayList.get(position).getCca_item_description());
 
             }
             if (mCCADetailModelArrayList.get(position).getCca_item_start_time() != null && mCCADetailModelArrayList.get(position).getCca_item_end_time() != null) {
@@ -215,10 +215,10 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
         }
         if (mCCADetailModelArrayList.get(position).getChoice2().equalsIgnoreCase("0")) {
             holder.linearChoice2.setVisibility(View.GONE);
-            holder.textViewCCAChoice2.setText("Choice 2 : None");
+            holder.textViewCCAChoice2.setText(mContext.getString(R.string.choice2_none));
         } else if (mCCADetailModelArrayList.get(position).getChoice2().equalsIgnoreCase("-1")) {
             holder.linearChoice2.setVisibility(View.GONE);
-            holder.textViewCCAChoice2.setText("Choice 2 : Nil");
+            holder.textViewCCAChoice2.setText(mContext.getString(R.string.choice2_nill));
         } else {
             holder.linearChoice2.setVisibility(View.VISIBLE);
             holder.textViewCCAChoice2.setText(mCCADetailModelArrayList.get(position).getChoice2());
@@ -231,7 +231,7 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
             {
                 holder.location2Txt.setVisibility(View.VISIBLE);
                 holder.readMore.setVisibility(View.VISIBLE);
-                holder.location2Txt.setText("Location            : "+mCCADetailModelArrayList.get(position).getVenue2());
+                holder.location2Txt.setText(mContext.getString(R.string.Location)+"            : "+mCCADetailModelArrayList.get(position).getVenue2());
 
             }
 
@@ -243,7 +243,7 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
             else
             {
                 holder.description2Txt.setVisibility(View.VISIBLE);
-                holder.description2Txt.setText("Description      : "+mCCADetailModelArrayList.get(position).getCca_item_description_2());
+                holder.description2Txt.setText(mContext.getString(R.string.description)+"      : "+mCCADetailModelArrayList.get(position).getCca_item_description_2());
 
             }
             if (mCCADetailModelArrayList.get(position).getCca_item_start_time() != null && mCCADetailModelArrayList.get(position).getCca_item_end_time() != null) {
@@ -285,7 +285,7 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
             @Override
             public void onClick(View v) {
                 if (mCCADetailModelArrayList.get(position).getAttending_status().equalsIgnoreCase("1")) {
-                    showDialogAlertDelete((Activity) mContext, "Alert", mContext.getResources().getString(R.string.deltechoicealertques), R.drawable.questionmark_icon, R.drawable.round, position, mCCADetailModelArrayList.get(position).getCca_details_id());
+                    showDialogAlertDelete((Activity) mContext, mContext.getString(R.string.alert), mContext.getResources().getString(R.string.deltechoicealertques), R.drawable.questionmark_icon, R.drawable.round, position, mCCADetailModelArrayList.get(position).getCca_details_id());
                     notifyItemChanged(position);
                     notifyDataSetChanged();
                 } else {
@@ -297,7 +297,7 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
             @Override
             public void onClick(View v) {
                 if (mCCADetailModelArrayList.get(position).getAttending_status2().equalsIgnoreCase("1")) {
-                    showDialogAlertDelete((Activity) mContext, "Alert", mContext.getResources().getString(R.string.deltechoicealertques), R.drawable.questionmark_icon, R.drawable.round, position, mCCADetailModelArrayList.get(position).getCca_details_id2());
+                    showDialogAlertDelete((Activity) mContext, mContext.getString(R.string.alert), mContext.getResources().getString(R.string.deltechoicealertques), R.drawable.questionmark_icon, R.drawable.round, position, mCCADetailModelArrayList.get(position).getCca_details_id2());
                     notifyItemChanged(position);
                     notifyDataSetChanged();
 
@@ -497,7 +497,7 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
         }
         else
         {
-            Toast.makeText(mContext, "No attendance details available", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, mContext.getString(R.string.not_available_attendance), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -557,21 +557,21 @@ public class CCAfinalReviewAfterSubmissionAdapter extends RecyclerView.Adapter<C
                     if (response.body() != null){
                         if (response.body().getStatus().equals(100)){
 //                            CommonMethods.Companion.showDialogueWithOk(mContext,"Successfully deleted the choice","Alert");
-                            showDialogAlert(mContext,"Alert","Successfully Deleted the choice",R.drawable.exclamationicon, R.drawable.round);
+                            showDialogAlert(mContext,mContext.getString(R.string.alert),mContext.getString(R.string.successfully_deleted),R.drawable.exclamationicon, R.drawable.round);
                         }else{
-                            CommonMethods.Companion.showDialogueWithOk(mContext,"Unable to delete the choice. Please try again later","Alert");
+                            CommonMethods.Companion.showDialogueWithOk(mContext,mContext.getString(R.string.choice_deleted_failed),mContext.getString(R.string.alert));
 
                         }
                     }
                 }else{
-                    CommonMethods.Companion.showDialogueWithOk(mContext,"Cannot continue. Please try again later","Alert");
+                    CommonMethods.Companion.showDialogueWithOk(mContext,mContext.getString(R.string.some_error_occurred),mContext.getString(R.string.alert));
 
                 }
             }
 
             @Override
             public void onFailure(Call<CCACancelResponseModel> call, Throwable t) {
-                CommonMethods.Companion.showDialogueWithOk(mContext,"Cannot continue. Please try again later","Alert");
+                CommonMethods.Companion.showDialogueWithOk(mContext,mContext.getString(R.string.some_error_occurred),mContext.getString(R.string.alert));
             }
         });
 

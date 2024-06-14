@@ -34,7 +34,7 @@ class CCAsReviewAfterSubmissionActivity : AppCompatActivity() {
     var recycler_review: RecyclerView? = null
     var relativeHeader: RelativeLayout? = null
     var attendanceListIcon: ImageView? = null
-    var tab_type = "ECAs"
+    var tab_type =getString(R.string.ecas)
     var extras: Bundle? = null
     var mCCADetailModelArrayList: ArrayList<CCAReviewAfterSubmissionModel>? = null
     var textViewCCAaItem: TextView? = null
@@ -78,13 +78,13 @@ class CCAsReviewAfterSubmissionActivity : AppCompatActivity() {
             submissiondateover = extras!!.getString("submissiondateover", "-1")
         }
         weekList = java.util.ArrayList<String>()
-        weekList!!.add("Sunday")
-        weekList!!.add("Monday")
-        weekList!!.add("Tuesday")
-        weekList!!.add("Wednesday")
-        weekList!!.add("Thursday")
-        weekList!!.add("Friday")
-        weekList!!.add("Saturday")
+        weekList!!.add(getString(R.string.sun))
+        weekList!!.add(getString(R.string.mon))
+        weekList!!.add(getString(R.string.tue))
+        weekList!!.add(getString(R.string.wed))
+        weekList!!.add(getString(R.string.thur))
+        weekList!!.add(getString(R.string.fri))
+        weekList!!.add(getString(R.string.sat))
         absentDaysChoice2Array = java.util.ArrayList<String>()
         presentDaysChoice2Array = java.util.ArrayList<String>()
         upcomingDaysChoice2Array = java.util.ArrayList<String>()
@@ -138,8 +138,8 @@ class CCAsReviewAfterSubmissionActivity : AppCompatActivity() {
     private fun ccaReviewListAPI() {
         val body = CCAReviewRequestModel(
             PreferenceManager.getStudIdForCCA(mContext)!!,
-            PreferenceManager.getCCAItemId(mContext)!!
-        )
+            PreferenceManager.getCCAItemId(mContext)!!,
+                    PreferenceManager().getLanguage(mContext!!)!!)
         val token = PreferenceManager.getUserCode(mContext)
         val call: Call<CCAReviewResponseModel> =
             ApiClient.getClient.ccaReview(body, "Bearer $token")
@@ -185,7 +185,7 @@ class CCAsReviewAfterSubmissionActivity : AppCompatActivity() {
                                 )
                                 Toast.makeText(
                                     mContext,
-                                    "No ECA available",
+                                    getString(R.string.no_eca),
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }
@@ -193,14 +193,14 @@ class CCAsReviewAfterSubmissionActivity : AppCompatActivity() {
                             CommonMethods.showDialogueWithOk(
                                 mContext,
                                 getString(R.string.common_error),
-                                "Alert"
+                                getString(R.string.alert)
                             )
                         }
                     } else {
                         CommonMethods.showDialogueWithOk(
                             mContext,
                             getString(R.string.common_error),
-                            "Alert"
+                            getString(R.string.alert)
                         )
                     }
                 }
@@ -211,7 +211,7 @@ class CCAsReviewAfterSubmissionActivity : AppCompatActivity() {
                 CommonMethods.showDialogueWithOk(
                     mContext,
                     getString(R.string.common_error),
-                    "Alert"
+                    getString(R.string.alert)
                 )
             }
 

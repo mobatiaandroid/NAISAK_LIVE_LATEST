@@ -44,7 +44,7 @@ class TripInvoiceListAdapter(
         holder.termname.text = repoetDetailArray[position].invoiceNo
 
         holder.statusLayout.visibility = View.VISIBLE
-        holder.status.text = "Paid"
+        holder.status.text =  mContext.getString(R.string.paid)
         holder.statusLayout.setBackgroundResource(R.drawable.rect_green)
 
 

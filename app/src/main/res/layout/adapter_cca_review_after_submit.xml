@@ -58,20 +58,19 @@
             android:background="@drawable/tealdot_icon"
             android:visibility="visible" />
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="vertical">
             <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
 
                 android:id="@+id/textViewCCAChoice1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_alignParentLeft="true"
                 android:layout_marginRight="5dp"
-                android:layout_toLeftOf="@+id/deleteChoice1"
                 android:text="Choice 1:"
                 android:textColor="#ff000000"
                 android:textSize="16sp" />
@@ -79,7 +78,7 @@
             <TextView
 
                 android:id="@+id/textViewCCAaDateItemChoice1"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewCCAChoice1"
                 android:layout_alignParentLeft="true"
@@ -93,7 +92,7 @@
             <TextView
 
                 android:id="@+id/locationTxt"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewCCAaDateItemChoice1"
                 android:layout_alignParentLeft="true"
@@ -147,6 +146,14 @@
                 android:visibility="visible" />
 
         </RelativeLayout>
+        <ImageView
+            android:id="@+id/point1ImgArab"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/tealdot_icon"
+            android:visibility="gone" />
     </LinearLayout>
 
     <LinearLayout
@@ -166,26 +173,26 @@
             android:background="@drawable/tealdot_icon"
             android:visibility="visible" />
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="vertical">
             <com.nas.naisak.customviews.textview.CustomFontTextViewRegularBlack
 
                 android:id="@+id/textViewCCAChoice2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:text="Choice 2:"
+                android:text="@string/choice2"
                 android:textColor="#ff000000"
                 android:textSize="16sp" />
             <TextView
                 android:layout_below="@+id/textViewCCAChoice2"
 
                 android:id="@+id/textViewCCAaDateItemChoice2"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_alignParentLeft="true"
@@ -196,7 +203,7 @@
                 android:textSize="14sp" />
             <TextView
                 android:id="@+id/location2Txt"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/textViewCCAaDateItemChoice2"
                 android:layout_alignParentLeft="true"
@@ -250,6 +257,14 @@
                 android:visibility="visible" />
 
         </RelativeLayout>
+        <ImageView
+            android:id="@+id/point2ImgArab"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/tealdot_icon"
+            android:visibility="gone" />
     </LinearLayout>
 
 </LinearLayout>

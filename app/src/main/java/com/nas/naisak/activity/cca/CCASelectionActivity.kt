@@ -117,9 +117,12 @@ class CCASelectionActivity : AppCompatActivity() {
             mWeekListModel.setWeekDay(getWeekday(i))
             mWeekListModel.setWeekDayMMM(getWeekdayMMM(i))
             if (ccaedit == 0) {
+               // Log.e("ccedit","ccedit")
                 mWeekListModel.setChoiceStatus("0")
                 mWeekListModel.setChoiceStatus1("0")
             } else {
+             //   Log.e("ccedit","ccedit")
+
                 mWeekListModel.setChoiceStatus("1")
                 mWeekListModel.setChoiceStatus1("1")
             }
@@ -153,7 +156,7 @@ class CCASelectionActivity : AppCompatActivity() {
             )
         }
         if (ccaedit == 0) {
-            CommonMethods.showDialogueWithOk(mContext,"Please select a ECA or None for each choice and each day","Info")
+            CommonMethods.showDialogueWithOk(mContext,getString(R.string.select_eca_choice_prompt),getString(R.string.info))
 
             submitBtn!!.getBackground().setAlpha(150)
             submitBtn!!.setVisibility(View.INVISIBLE)
@@ -188,7 +191,7 @@ class CCASelectionActivity : AppCompatActivity() {
                 intent.putExtra("detail_array", CCADetailModelArrayList)
                 startActivity(mInent)
             } else {
-                CommonMethods.showDialogueWithOk(mContext,"Select choice for all available days","Alert")
+                CommonMethods.showDialogueWithOk(mContext,getString(R.string.select_eca_all_days_prompt),getString(R.string.alert))
 
             }
         })
@@ -219,7 +222,7 @@ class CCASelectionActivity : AppCompatActivity() {
 //                    break;
 //                }
 //            }
-        TVselectedForWeek!!.text = "Sunday"
+        TVselectedForWeek!!.text = getString(R.string.sun)
 //        for (int j = 0; j < AppController.weekList.size(); j++) {
 //            for (int i = 0; i < CCADetailModelArrayList.size(); i++) {
 //                if (!AppController.weekList.get(j).getWeekDay().equalsIgnoreCase(CCADetailModelArrayList.get(i).getDay())) {
@@ -273,8 +276,9 @@ class CCASelectionActivity : AppCompatActivity() {
             }
         }
         for (i in this.CCADetailModelArrayList!!.indices) {
+            Log.e("day",CCADetailModelArrayList!!.get(i).getDay())
             if (CCADetailModelArrayList!!.get(i).getDay()
-                    .equals("Sunday")
+                    .equals(getString(R.string.sun))
             ) {
                 ccaDetailpos = i
                 textViewCCAaSelect!!.visibility = View.VISIBLE
@@ -291,7 +295,7 @@ class CCASelectionActivity : AppCompatActivity() {
                 break
             } else if (i == CCADetailModelArrayList!!!!.size - 1) {
                 if (!CCADetailModelArrayList!!.get(i).getDay()
-                        .equals("Sunday",ignoreCase = true)
+                        .equals(getString(R.string.sun))
                 ) {
                     mCCAsActivityAdapter = CCAsActivityAdapter(mContext, 0)
                     recycler_review!!.adapter = mCCAsActivityAdapter
@@ -354,7 +358,7 @@ class CCASelectionActivity : AppCompatActivity() {
                     mCCAsActivityAdapter.notifyDataSetChanged()
                     AppController.weekList!!.get(position).setChoiceStatus("2")
                     AppController.weekList!!.get(position).setChoiceStatus1("2")
-                    Toast.makeText(mContext, "ECA choice not available", Toast.LENGTH_SHORT)
+                    Toast.makeText(mContext, getString(R.string.eca_choice_not_available), Toast.LENGTH_SHORT)
                         .show()
                 } else {
                     textViewCCAaSelect!!.visibility = View.VISIBLE
@@ -440,7 +444,7 @@ class CCASelectionActivity : AppCompatActivity() {
                     mCCAsActivityAdapter.notifyDataSetChanged()
                     AppController.weekList!!.get(j).setChoiceStatus("2")
                     AppController.weekList!!.get(j).setChoiceStatus1("2")
-                    Toast.makeText(mContext, "ECA choice not available", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(mContext, getString(R.string.eca_choice_not_available), Toast.LENGTH_SHORT).show()
                 } else {
                     textViewCCAaSelect!!.visibility = View.VISIBLE
                     TVselectedForWeek!!.visibility = View.VISIBLE
@@ -640,13 +644,13 @@ class CCASelectionActivity : AppCompatActivity() {
     fun getWeekday(weekDay: Int): String? {
         var day = ""
         when (weekDay) {
-            0 -> day = "Sunday"
-            1 -> day = "Monday"
-            2 -> day = "Tuesday"
-            3 -> day = "Wednesday"
-            4 -> day = "Thursday"
-            5 -> day = "Friday"
-            6 -> day = "Saturday"
+            0 -> day = getString(R.string.sun)
+            1 -> day = getString(R.string.mon)
+            2 -> day = getString(R.string.tue)
+            3 -> day = getString(R.string.wed)
+            4 -> day = getString(R.string.thur)
+            5 -> day = getString(R.string.fri)
+            6 -> day = getString(R.string.sat)
         }
         return day
     }
@@ -654,13 +658,13 @@ class CCASelectionActivity : AppCompatActivity() {
     fun getWeekdayMMM(weekDay: Int): String? {
         var day = ""
         when (weekDay) {
-            0 -> day = "SUN"
-            1 -> day = "MON"
-            2 -> day = "TUE"
-            3 -> day = "WED"
-            4 -> day = "THU"
-            5 -> day = "FRI"
-            6 -> day = "SAT"
+            0 -> day = getString(R.string.sunday)
+            1 -> day = getString(R.string.monday)
+            2 -> day = getString(R.string.tuesday)
+            3 -> day = getString(R.string.wednesday)
+            4 -> day = getString(R.string.thursday)
+            5 -> day = getString(R.string.friday)
+            6 -> day = getString(R.string.saturday)
         }
         return day
     }

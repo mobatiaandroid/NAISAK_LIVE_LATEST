@@ -2,9 +2,11 @@ package com.nas.naisak.activity.cca.adapter;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nas.naisak.R;
 import com.nas.naisak.activity.cca.model.CCADetailModel;
+import com.nas.naisak.constants.PreferenceManager;
+import com.nas.naisak.constants.PreferenceManagerJava;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -38,6 +42,7 @@ public class CCAfinalReviewAdapter extends  RecyclerView.Adapter<CCAfinalReviewA
         TextView description2Txt;
         TextView descriptionTxt;
         LinearLayout linearChoice1,linearChoice2;
+        ImageView point1Img,point1ImgArab,point2Img,point2ImgArab;
         public MyViewHolder(View view) {
             super(view);
 
@@ -52,6 +57,10 @@ public class CCAfinalReviewAdapter extends  RecyclerView.Adapter<CCAfinalReviewA
             descriptionTxt= (TextView) view.findViewById(R.id.descriptionTxt);
             linearChoice1= (LinearLayout) view.findViewById(R.id.linearChoice1);
             linearChoice2= (LinearLayout) view.findViewById(R.id.linearChoice2);
+            point1Img=(ImageView)  view.findViewById(R.id.point1Img);
+            point1ImgArab=(ImageView)  view.findViewById(R.id.point1ImgArab);
+            point2Img=(ImageView)  view.findViewById(R.id.point2Img);
+            point2ImgArab=(ImageView)  view.findViewById(R.id.point2ImgArab);
 
 
         }
@@ -79,6 +88,25 @@ public CCAfinalReviewAdapter(Context mContext, ArrayList<CCADetailModel>mCCADeta
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
+        if (PreferenceManagerJava.getlanguagejava(mContext).equals("ar"))
+        {
+            holder.point1Img.setVisibility(View.GONE);
+            holder.point2Img.setVisibility(View.GONE);
+            holder.point1ImgArab.setVisibility(View.VISIBLE);
+            holder.point2ImgArab.setVisibility(View.VISIBLE);
+            holder.textViewCCAaDateItemChoice1.setGravity(Gravity.RIGHT);
+            holder.textViewCCAaDateItemChoice2.setGravity(Gravity.RIGHT);
+        }
+        else
+        {
+            holder.point1Img.setVisibility(View.VISIBLE);
+            holder.point2Img.setVisibility(View.VISIBLE);
+            holder.point1ImgArab.setVisibility(View.GONE);
+            holder.point2ImgArab.setVisibility(View.GONE);
+            holder.textViewCCAaDateItemChoice1.setGravity(Gravity.LEFT);
+            holder.textViewCCAaDateItemChoice2.setGravity(Gravity.LEFT);
+        }
+
 if (mCCADetailModelArrayList.get(position).getLocation()==null){
     holder.locationTxt.setVisibility(View.GONE);
 }else{
@@ -89,7 +117,7 @@ if (mCCADetailModelArrayList.get(position).getLocation()==null){
     else
     {
         holder.locationTxt.setVisibility(View.VISIBLE);
-        holder.locationTxt.setText("Location       : "+mCCADetailModelArrayList.get(position).getLocation());
+        holder.locationTxt.setText(mContext.getString(R.string.Location)       +": "+mCCADetailModelArrayList.get(position).getLocation());
     }
 }
         if (mCCADetailModelArrayList.get(position).getLocation2()==null){
@@ -99,7 +127,7 @@ if (mCCADetailModelArrayList.get(position).getLocation()==null){
                 holder.location2Txt.setVisibility(View.GONE);
             } else {
                 holder.location2Txt.setVisibility(View.VISIBLE);
-                holder.location2Txt.setText("Location       : " + mCCADetailModelArrayList.get(position).getLocation2());
+                holder.location2Txt.setText(mContext.getString(R.string.Location)       +": " + mCCADetailModelArrayList.get(position).getLocation2());
             }
         }
 
@@ -112,7 +140,7 @@ if (mCCADetailModelArrayList.get(position).getLocation()==null){
                 holder.descriptionTxt.setVisibility(View.GONE);
             } else {
                 holder.descriptionTxt.setVisibility(View.VISIBLE);
-                holder.descriptionTxt.setText("Description : " + mCCADetailModelArrayList.get(position).getDescription());
+                holder.descriptionTxt.setText(mContext.getString(R.string.description)+" : " + mCCADetailModelArrayList.get(position).getDescription());
             }
         }
         if (mCCADetailModelArrayList.get(position).getDescription2()==null){
@@ -122,20 +150,20 @@ if (mCCADetailModelArrayList.get(position).getLocation()==null){
                 holder.description2Txt.setVisibility(View.GONE);
             } else {
                 holder.description2Txt.setVisibility(View.VISIBLE);
-                holder.description2Txt.setText("Description : " + mCCADetailModelArrayList.get(position).getDescription2());
+                holder.description2Txt.setText(mContext.getString(R.string.description)+" : " + mCCADetailModelArrayList.get(position).getDescription2());
             }
         }
     holder.textViewCCADay.setText(mCCADetailModelArrayList.get(position).getDay());
         if (mCCADetailModelArrayList.get(position).getChoice1()==null)
         {
             holder.linearChoice1.setVisibility(View.GONE);
-            holder.textViewCCAChoice1.setText("Choice 1 : Nil");
+            holder.textViewCCAChoice1.setText(mContext.getString(R.string.choice1_nill));
 
         }else
         {
             holder.linearChoice1.setVisibility(View.VISIBLE);
 
-            holder.textViewCCAChoice1.setText("Choice 1 : "+mCCADetailModelArrayList.get(position).getChoice1());
+            holder.textViewCCAChoice1.setText(mContext.getString(R.string.choice1)+mCCADetailModelArrayList.get(position).getChoice1());
 
 
             if (mCCADetailModelArrayList.get(position).getCca_item_start_timechoice1()!=null && mCCADetailModelArrayList.get(position).getCca_item_end_timechoice1()!=null)
@@ -165,13 +193,13 @@ if (mCCADetailModelArrayList.get(position).getLocation()==null){
         if (mCCADetailModelArrayList.get(position).getChoice2()==null)
         {
             holder.linearChoice2.setVisibility(View.GONE);
-            holder.textViewCCAChoice2.setText("Choice 2 : Nil");
+            holder.textViewCCAChoice2.setText(mContext.getString(R.string.choice2_nill));
 
         }else
         {
             holder.linearChoice2.setVisibility(View.VISIBLE);
 
-            holder.textViewCCAChoice2.setText("Choice 2 : "+mCCADetailModelArrayList.get(position).getChoice2());
+            holder.textViewCCAChoice2.setText(mContext.getString(R.string.choice2)+mCCADetailModelArrayList.get(position).getChoice2());
             if (mCCADetailModelArrayList.get(position).getCca_item_start_timechoice2()!=null && mCCADetailModelArrayList.get(position).getCca_item_end_timechoice2()!=null)
             {
                 holder.textViewCCAaDateItemChoice2.setVisibility(View.VISIBLE);

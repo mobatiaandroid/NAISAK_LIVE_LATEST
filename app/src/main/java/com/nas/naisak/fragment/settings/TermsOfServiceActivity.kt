@@ -74,7 +74,7 @@ class TermsOfServiceActivity : AppCompatActivity(){
     fun callMessageDetailAPI()
     {
         val token = PreferenceManager.getUserCode(mContext)
-        val call: Call<TermsOfServiceModel> = ApiClient.getClient.termsofservice()
+        val call: Call<TermsOfServiceModel> = ApiClient.getClient.termsofservice(PreferenceManager().getLanguage(mContext)!!)
         call.enqueue(object : Callback<TermsOfServiceModel> {
             override fun onFailure(call: Call<TermsOfServiceModel>, t: Throwable) {
                 progressDialog.visibility = View.GONE

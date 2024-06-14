@@ -70,7 +70,7 @@ class PhotosRecyclerViewActivity : AppCompatActivity() {
     }
 
     private fun photosListApiCall(start: String, limit: String) {
-        val body = GetAlbumsRequestModel("5","0")
+        val body = GetAlbumsRequestModel("5","0",PreferenceManager().getLanguage(mContext!!)!!)
         val token = PreferenceManager.getUserCode(mContext)
         val call: Call<GetAlbumsResponseModel> =
             ApiClient.getClient.getAlbums(body, "Bearer $token")

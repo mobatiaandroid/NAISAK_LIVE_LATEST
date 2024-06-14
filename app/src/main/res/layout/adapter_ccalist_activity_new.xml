@@ -11,8 +11,9 @@
         android:id="@+id/confirmationImageview"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:layoutDirection="rtl"
         android:background="@drawable/close_icon_with_white"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,4 +78,5 @@
                 android:textColor="@color/dark_grey1" />
         </RelativeLayout>
     </LinearLayout>
+
 </LinearLayout>

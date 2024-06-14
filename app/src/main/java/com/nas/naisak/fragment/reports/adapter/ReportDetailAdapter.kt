@@ -33,8 +33,12 @@ class ReportDetailAdapter(
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var report_cycle: TextView = view.findViewById(R.id.termname)
+        var termnamearab:TextView = view.findViewById(R.id.termnamearab)
         var relativeclick: LinearLayout = view.findViewById(R.id.clickLinear)
+        var relativeclickarab:LinearLayout=view.findViewById(R.id.clickLineararab)
         var statusLayout: RelativeLayout = view.findViewById(R.id.statusLayout)
+        var statusLayoutarab: RelativeLayout = view.findViewById(R.id.statusLayoutarab)
+
         var status: TextView = view.findViewById(R.id.status)
     }
 
@@ -49,20 +53,57 @@ class ReportDetailAdapter(
     @SuppressLint("SimpleDateFormat")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val summary = repoetDetailArray[position]
-        holder.report_cycle.text = repoetDetailArray[position].reportingCycle
-        if (repoetDetailArray.get(position).status.equals("0")) {
-            holder.statusLayout.setVisibility(View.VISIBLE)
-            holder.status.setBackgroundResource(R.drawable.rectangle_red)
-            holder.status.setText("New")
-        } else if (repoetDetailArray.get(position).status.equals("2")) {
-            holder.statusLayout.setVisibility(View.VISIBLE)
-            holder.status.setBackgroundResource(R.drawable.rectangle_orange)
-            holder.status.setText("Updated")
-        } else if (repoetDetailArray.get(position).status.equals("")) {
-            holder.statusLayout.setVisibility(View.GONE)
-        } else if (repoetDetailArray.get(position).status.equals("1")) {
-            holder.statusLayout.setVisibility(View.GONE)
+        if (PreferenceManager().getLanguage(mContext).equals("ar"))
+        {
+            holder.relativeclick.visibility=View.GONE
+            holder.relativeclickarab.visibility=View.VISIBLE
+            holder.termnamearab.text = repoetDetailArray[position].reportingCycle
+            if (repoetDetailArray.get(position).status.equals("0")) {
+                Log.e("0","0")
+                holder.statusLayoutarab.setVisibility(View.VISIBLE)
+                holder.status.setBackgroundResource(R.drawable.rectangle_red)
+                holder.status.setText(mContext.getString(R.string.new_keyword))
+            } else if (repoetDetailArray.get(position).status.equals("2")) {
+                Log.e("1","1")
+
+                holder.statusLayoutarab.setVisibility(View.VISIBLE)
+                holder.status.setBackgroundResource(R.drawable.rectangle_orange)
+                holder.status.setText(mContext.getString(R.string.updated))
+            } else if (repoetDetailArray.get(position).status.equals("")) {
+                Log.e("2","2")
+
+                holder.statusLayoutarab.setVisibility(View.GONE)
+            } else if (repoetDetailArray.get(position).status.equals("1")) {
+                Log.e("3","3")
+
+                holder.statusLayoutarab.setVisibility(View.GONE)
+            }
+
         }
+        else
+        {
+            holder.relativeclick.visibility=View.VISIBLE
+            holder.relativeclickarab.visibility=View.GONE
+            holder.report_cycle.text = repoetDetailArray[position].reportingCycle
+            if (repoetDetailArray.get(position).status.equals("0")) {
+                Log.e("0","0")
+                holder.statusLayout.setVisibility(View.VISIBLE)
+                holder.status.setBackgroundResource(R.drawable.rectangle_red)
+                holder.status.setText(mContext.getString(R.string.new_keyword))
+            } else if (repoetDetailArray.get(position).status.equals("2")) {
+                Log.e("1","1")
+                holder.statusLayout.setVisibility(View.VISIBLE)
+                holder.status.setBackgroundResource(R.drawable.rectangle_orange)
+                holder.status.setText(mContext.getString(R.string.updated))
+            } else if (repoetDetailArray.get(position).status.equals("")) {
+                Log.e("2","2")
+                holder.statusLayout.setVisibility(View.GONE)
+            } else if (repoetDetailArray.get(position).status.equals("1")) {
+                Log.e("3","3")
+                holder.statusLayout.setVisibility(View.GONE)
+            }
+        }
+
         holder.relativeclick.setOnClickListener {
 
             clickedurl = repoetDetailArray[position].fileUrl

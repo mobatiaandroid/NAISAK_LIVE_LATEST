@@ -1,5 +1,6 @@
 package com.nas.naisak.fragment.trips
 
+import android.R.attr.button
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -38,12 +39,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+
 class TripsFragment : Fragment() {
 
     private lateinit var mContext: Context
     private lateinit var progressDialogP: ProgressBarDialog
     private lateinit var mRootView: View
     private lateinit var sendEmail: ImageView
+    private lateinit var sendEmailArab:ImageView
     private lateinit var descriptionTitle: TextView
     private lateinit var mtitle: RelativeLayout
     private lateinit var bannerImagePager: ImageView
@@ -78,6 +81,7 @@ class TripsFragment : Fragment() {
             CommonMethods.showSuccessInternetAlert(mContext)
         }
 
+
         return mRootView
 
     }
@@ -87,7 +91,9 @@ class TripsFragment : Fragment() {
         var token = "Bearer " + PreferenceManager.getUserCode(mContext)
 
         progressDialogP.show()
-        val call: Call<TripBannerResponseModel> = ApiClient.getClient.trip_banner(token)
+        val call: Call<TripBannerResponseModel> = ApiClient.getClient.trip_banner(token,
+            PreferenceManager().getLanguage(mContext)!!
+        )
         call.enqueue(object : Callback<TripBannerResponseModel> {
             override fun onFailure(call: Call<TripBannerResponseModel>, t: Throwable) {
                 progressDialogP.hide()
@@ -112,9 +118,25 @@ class TripsFragment : Fragment() {
                     }
                     else descriptionTitle.visibility = View.GONE
                     if (!response.body()!!.data.bannerContactEmail.equals("")) {
-                        sendEmail.visibility = View.VISIBLE
+                        if (PreferenceManager().getLanguage(mContext).equals("ar"))
+                        {
+
+                            sendEmail.visibility = View.GONE
+                            sendEmailArab.visibility = View.VISIBLE
+
+                        }
+                        else
+                        {
+                            sendEmail.visibility = View.VISIBLE
+                            sendEmailArab.visibility = View.GONE
+                        }
                         contactEmail = response.body()!!.data.bannerContactEmail
-                    } else sendEmail.visibility = View.GONE
+                    } else
+                    {
+                        sendEmail.visibility = View.GONE
+                        sendEmailArab.visibility = View.GONE
+                    }
+                  //
 
 
 
@@ -127,7 +149,7 @@ class TripsFragment : Fragment() {
 
     private fun initFn() {
         val mTitleTextView = mRootView.findViewById<View>(R.id.titleTextView) as TextView
-        mTitleTextView.text = "Trips"
+        mTitleTextView.text = getString(R.string.trips)
 
         progressDialogP =
             ProgressBarDialog(mContext, R.drawable.spinner)
@@ -142,6 +164,7 @@ class TripsFragment : Fragment() {
 
         descriptionTitle = mRootView.findViewById<View>(R.id.descriptionTitle) as TextView
         sendEmail = mRootView.findViewById<View>(R.id.sendEmail) as ImageView
+       sendEmailArab = mRootView.findViewById<View>(R.id.sendEmailArab) as ImageView
 
 
         registerTripLinear.setOnClickListener {
@@ -157,7 +180,79 @@ class TripsFragment : Fragment() {
             val intent = Intent(activity, TripPaymentsActivity::class.java)
             activity?.startActivity(intent)
         }
+        sendEmailArab.setOnClickListener(View.OnClickListener {
 
+            val dialog = Dialog(mContext)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.alert_send_email_dialog)
+            var iconImageView = dialog.findViewById(R.id.iconImageView) as ImageView
+            var cancelButton = dialog.findViewById(R.id.cancelButton) as Button
+            var submitButton = dialog.findViewById(R.id.submitButton) as Button
+            var text_dialog = dialog.findViewById(R.id.text_dialog) as EditText
+            var text_content = dialog.findViewById(R.id.text_content) as EditText
+            iconImageView.setImageResource(R.drawable.roundemail)
+            text_dialog.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    text_dialog.hint = ""
+                    text_dialog.gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
+                    text_dialog.setPadding(5, 5, 0, 0)
+                } else {
+                    text_dialog.hint = "Enter your subject here..."
+                    text_dialog.gravity = Gravity.CENTER
+                }
+            }
+            text_content.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) {
+                    text_content.gravity = Gravity.LEFT
+                } else {
+                    text_content.gravity = Gravity.CENTER
+                }
+            }
+
+            cancelButton.setOnClickListener()
+            {
+                dialog.dismiss()
+            }
+            submitButton.setOnClickListener()
+            {
+                if (text_dialog.text.toString().trim().equals("")) {
+                    CommonMethods.showDialogueWithOk(
+                        mContext,
+                        getString(R.string.please_enter_subject),
+                        getString(R.string.alert)
+                    )
+
+                } else {
+                    if (text_content.text.toString().trim().equals("")) {
+                        CommonMethods.showDialogueWithOk(
+                            mContext,
+                            getString(R.string.please_enter_content),
+                            getString(R.string.alert)
+                        )
+
+                    } else {
+                        progressDialogP.show()
+
+                        var internetCheck = CommonMethods.isInternetAvailable(mContext)
+                        if (internetCheck) {
+                            callSendEmailToStaffApi(
+                                text_dialog.text.toString().trim(),
+                                text_content.text.toString().trim(),
+                                contactEmail,
+                                dialog,
+                                progressDialogP
+                            )
+
+                        } else {
+                            CommonMethods.showSuccessInternetAlert(mContext)
+                        }
+                    }
+                }
+            }
+            dialog.show()
+        })
         sendEmail.setOnClickListener(View.OnClickListener {
 
             val dialog = Dialog(mContext)
@@ -198,16 +293,16 @@ class TripsFragment : Fragment() {
                 if (text_dialog.text.toString().trim().equals("")) {
                     CommonMethods.showDialogueWithOk(
                         mContext,
-                        "Please enter your subject",
-                        "Alert"
+                        getString(R.string.please_enter_subject),
+                        getString(R.string.alert)
                     )
 
                 } else {
                     if (text_content.text.toString().trim().equals("")) {
                         CommonMethods.showDialogueWithOk(
                             mContext,
-                            "Please enter your content",
-                            "Alert"
+                            getString(R.string.please_enter_content),
+                            getString(R.string.alert)
                         )
 
                     } else {
@@ -265,8 +360,8 @@ class TripsFragment : Fragment() {
                                 dialog.dismiss()
                                 CommonMethods.showDialogueWithOk(
                                     mContext,
-                                    "Successfully send the email.",
-                                    "Success"
+                                    getString(R.string.email_success),
+                                    getString(R.string.success)
                                 )
                                 //dialog.dismiss()
 

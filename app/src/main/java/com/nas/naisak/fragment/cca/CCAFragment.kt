@@ -72,7 +72,7 @@ class CCAFragment : Fragment() {
         mTitleTextView = mRootView!!.findViewById<View>(R.id.titleTextView) as TextView
         descriptionTV = mRootView!!.findViewById<View>(R.id.descriptionTitle) as TextView
         ccaDot = mRootView!!.findViewById<View>(R.id.ccaDot) as TextView
-        mTitleTextView!!.text = EAP
+        mTitleTextView!!.text = getString(R.string.eca)
         mtitleRel = mRootView!!.findViewById<View>(R.id.title) as LinearLayout
 
         externalCCA = mRootView!!.findViewById<View>(R.id.epRelative) as RelativeLayout
@@ -103,7 +103,7 @@ class CCAFragment : Fragment() {
                 intent.putExtra("tab_type", "ECA Options")
                 startActivity(intent)
             } else {
-               CommonMethods.showDialogueWithOk(mContext!!,"This feature is available for Registered users only","Alert")
+               CommonMethods.showDialogueWithOk(mContext!!,getString(R.string.register_user_only),getString(R.string.alert))
             }
         }
         mailImageView!!.setOnClickListener {
@@ -145,16 +145,16 @@ class CCAFragment : Fragment() {
                 if (text_dialog.text.toString().trim().equals("")) {
                     CommonMethods.showDialogueWithOk(
                         mContext!!,
-                        "Please enter your subject",
-                        "Alert"
+                        getString(R.string.enter_subject),
+                        getString(R.string.alert)
                     )
 
                 } else {
                     if (text_content.text.toString().trim().equals("")) {
                         CommonMethods.showDialogueWithOk(
                             mContext!!,
-                            "Please enter your content",
-                            "Alert"
+                            getString(R.string.enter_content),
+                            getString(R.string.alert)
                         )
 
                     } else {
@@ -208,8 +208,8 @@ class CCAFragment : Fragment() {
                                 dialog.dismiss()
                                 CommonMethods.showDialogueWithOk(
                                     mContext!!,
-                                    "Successfully send the email.",
-                                    "Success")
+                                    getString(R.string.email_success),
+                                    getString(R.string.success))
                                 //dialog.dismiss()
 
                             }
@@ -242,7 +242,7 @@ class CCAFragment : Fragment() {
     private fun getList() {
         val token = PreferenceManager.getUserCode(mContext!!)
         val call: Call<BannerResponseModel> =
-            ApiClient.getClient.getBanner( "Bearer $token")
+            ApiClient.getClient.getBanner( "Bearer "+token,PreferenceManager().getLanguage(mContext!!)!!)
         call.enqueue(object : Callback<BannerResponseModel> {
             override fun onResponse(
                 call: Call<BannerResponseModel>,
@@ -355,18 +355,18 @@ class CCAFragment : Fragment() {
                             // CCAFRegisterRel.setVisibility(View.VISIBLE);
 
                         }else{
-                            CommonMethods.showDialogueWithOk(mContext!!,getString(R.string.common_error),"Alert")
+                            CommonMethods.showDialogueWithOk(mContext!!,getString(R.string.common_error), getString(R.string.alert))
                         }
                     }else{
-                        CommonMethods.showDialogueWithOk(mContext!!,getString(R.string.common_error),"Alert")
+                        CommonMethods.showDialogueWithOk(mContext!!,getString(R.string.common_error), getString(R.string.alert))
                     }
                 }else{
-                    CommonMethods.showDialogueWithOk(mContext!!,getString(R.string.common_error),"Alert")
+                    CommonMethods.showDialogueWithOk(mContext!!,getString(R.string.common_error), getString(R.string.alert))
                 }
             }
 
             override fun onFailure(call: Call<BannerResponseModel>, t: Throwable) {
-                CommonMethods.showDialogueWithOk(mContext!!,getString(R.string.common_error),"Alert")
+                CommonMethods.showDialogueWithOk(mContext!!,getString(R.string.common_error), getString(R.string.alert))
             }
 
         })

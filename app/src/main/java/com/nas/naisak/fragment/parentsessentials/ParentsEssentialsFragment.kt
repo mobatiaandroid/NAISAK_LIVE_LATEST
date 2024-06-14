@@ -43,6 +43,7 @@ class ParentsEssentialsFragment : Fragment() {
     lateinit var titleTextView: TextView
     lateinit var bannerImagePager: ImageView
     lateinit var sendEmail: ImageView
+    private lateinit var sendEmailArab:ImageView
     lateinit var descriptionTV: TextView
     lateinit var ContactEmail: String
     override fun onCreateView(
@@ -71,8 +72,10 @@ class ParentsEssentialsFragment : Fragment() {
         titleTextView = view?.findViewById(R.id.titleTextView) as TextView
         bannerImagePager=view!!.findViewById(R.id.bannerImagePager)
         sendEmail=view!!.findViewById(R.id.sendEmail)
+        sendEmailArab =view!!.findViewById<View>(R.id.sendEmailArab) as ImageView
+
         descriptionTV=view!!.findViewById(R.id.descriptionTV)
-        titleTextView.text="Parents Essentials"
+        titleTextView.text= getString(R.string.parent_essentials)
         linearLayoutManager = LinearLayoutManager(mContext)
         mListView.layoutManager = linearLayoutManager
         val aniRotate: Animation =
@@ -131,16 +134,16 @@ class ParentsEssentialsFragment : Fragment() {
                 if (text_dialog.text.toString().trim().equals("")) {
                     CommonMethods.showDialogueWithOk(
                         mContext,
-                        "Please enter your subject",
-                        "Alert"
+                        getString(R.string.please_enter_subject),
+                        getString(R.string.alert)
                     )
 
                 } else {
                     if (text_content.text.toString().trim().equals("")) {
                         CommonMethods.showDialogueWithOk(
                             mContext,
-                            "Please enter your content",
-                            "Alert"
+                            getString(R.string.please_enter_content),
+                            getString(R.string.alert)
                         )
 
                     } else {
@@ -171,7 +174,8 @@ class ParentsEssentialsFragment : Fragment() {
     private fun callParentsEssentialBanner() {
         progressDialog.visibility = View.VISIBLE
         parentsEssentialArrayList= ArrayList()
-        val call: Call<ParentsEssentialResponseModel> = ApiClient.getClient.parentessentials("Bearer "+PreferenceManager.getUserCode(mContext))
+        val call: Call<ParentsEssentialResponseModel> = ApiClient.getClient.parentessentials("Bearer "+PreferenceManager.getUserCode(mContext),
+            PreferenceManager().getLanguage(mContext)!!)
         call.enqueue(object : Callback<ParentsEssentialResponseModel> {
             override fun onFailure(call: Call<ParentsEssentialResponseModel>, t: Throwable) {
                 progressDialog.visibility = View.GONE
@@ -202,8 +206,20 @@ class ParentsEssentialsFragment : Fragment() {
                     }
                     if (contactEmail.equals("")) {
                         sendEmail.visibility = View.GONE
+                        sendEmailArab.visibility = View.GONE
                     } else {
-                        sendEmail.visibility = View.VISIBLE
+                        if (PreferenceManager().getLanguage(mContext).equals("ar"))
+                        {
+
+                            sendEmail.visibility = View.GONE
+                            sendEmailArab.visibility = View.VISIBLE
+
+                        }
+                        else
+                        {
+                            sendEmail.visibility = View.VISIBLE
+                            sendEmailArab.visibility = View.GONE
+                        }
                     }
                     if (description.equals("")) {
                         descriptionTV.visibility = View.GONE
@@ -224,7 +240,7 @@ class ParentsEssentialsFragment : Fragment() {
 
                 } else {
                     if (response.body()!!.status == 101) {
-                        CommonMethods.showDialogueWithOk(mContext, "Some error occured", "Alert")
+                        CommonMethods.showDialogueWithOk(mContext,  getString(R.string.some_error_occurred),  getString(R.string.alert))
                     }
                 }
 
@@ -266,8 +282,8 @@ class ParentsEssentialsFragment : Fragment() {
                                 dialog.dismiss()
                                 CommonMethods.showDialogueWithOk(
                                     mContext,
-                                    "Successfully send the email.",
-                                    "Success"
+                                    getString(R.string.email_success),
+                                    getString(R.string.success)
                                 )
                                 //dialog.dismiss()
 

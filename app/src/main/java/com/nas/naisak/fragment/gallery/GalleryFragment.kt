@@ -132,7 +132,7 @@ class GalleryFragment : Fragment() {
     private fun photosListApiCall() {
         progressDialog.visibility=View.VISIBLE
         mPhotosModelArrayList = ArrayList()
-        val body = GetAlbumsRequestModel("5","0")
+        val body = GetAlbumsRequestModel("5","0",PreferenceManager().getLanguage(mContext!!)!!)
         val token = PreferenceManager.getUserCode(mContext!!)
         val call: Call<GetAlbumsResponseModel> =
             ApiClient.getClient.getAlbums(body, "Bearer $token")

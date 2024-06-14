@@ -115,7 +115,7 @@ public class CCAsChoiceListActivityAdapter extends RecyclerView.Adapter<CCAsChoi
             if (mCCAmodelArrayList.get(position).getVenue().equalsIgnoreCase("0") || (mCCAmodelArrayList.get(position).getVenue().equalsIgnoreCase(""))) {
                 holder.textViewCCAVenue.setVisibility(View.GONE);
             } else {
-                holder.textViewCCAVenue.setText(String.format("Location: %s", mCCAmodelArrayList.get(position).getVenue()));
+                holder.textViewCCAVenue.setText(String.format(mContext.getString(R.string.Location)+": %s", mCCAmodelArrayList.get(position).getVenue()));
                 holder.textViewCCAVenue.setVisibility(View.VISIBLE);
 
             }
@@ -131,7 +131,7 @@ public class CCAsChoiceListActivityAdapter extends RecyclerView.Adapter<CCAsChoi
                 holder.descriptionRel.setVisibility(View.GONE);
             } else {
                 holder.descriptionRel.setVisibility(View.VISIBLE);
-                holder.descriptionTxt.setText(String.format("Description : %s", mCCAmodelArrayList.get(position).getDescription()));
+                holder.descriptionTxt.setText(String.format(mContext.getString(R.string.description)+" : %s", mCCAmodelArrayList.get(position).getDescription()));
                 if (mCCAmodelArrayList.get(position).getDescription().length() > 22) {
                     holder.readMoreTxt.setVisibility(View.VISIBLE);
                 } else {
